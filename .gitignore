@@ -1,0 +1,39 @@
+# Dipendenze di Node.js
+node_modules/
+
+# File di log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# File ambiente (personalizza se necessario)
+.env
+.env.*.local
+
+# Directory di build per il frontend (React/Vite)
+dist/
+build/
+.vite/
+
+# Cache di Vite
+.vite_cache/
+
+# File temporanei
+*.tmp
+*.temp
+
+# Directory generate da Hardhat
+artifacts/
+cache/
+coverage/
+
+# Output di TypeChain (se utilizzi questo plugin con Hardhat)
+typechain/
+
+# Altri file o directory specifici che potrebbero essere generati
+.DS_Store
+Thumbs.db
+
+# Configurazioni dell'editor (personalizza in base alle tue esigenze)
+.vscode/
+.idea/
