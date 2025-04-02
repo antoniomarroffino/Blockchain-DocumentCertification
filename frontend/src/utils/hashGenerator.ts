@@ -1,4 +1,6 @@
 import {Document} from "@dti-isin/backend-api-client"
+import CryptoJS from "crypto-js";
+import {ethers} from "ethers";
 
 export const calculateDocumentHash = async (document: Document) => {
     let baseString = document.title! + document.ownerWallet + document.uploadTimestamp;
@@ -9,6 +11,6 @@ export const calculateDocumentHash = async (document: Document) => {
         const fileHex = fileWordArray.toString();
         baseString += fileHex;
     }
-
-    return CryptoJS.SHA256(baseString).toString();
+    const hash = CryptoJS.SHA256(baseString).toString();
+    return ethers.hexlify(ethers.toUtf8Bytes(hash)).substring(0, 66);
 };

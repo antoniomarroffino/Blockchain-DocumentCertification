@@ -64,7 +64,6 @@ public class DocumentController {
             )
     )
     public Response getDocumentsByOwner(@PathParam("ownerWallet") String ownerWallet) {
-        System.out.println(ownerWallet);
         List<Document> docs = this.documentService.getDocumentsByOwner(ownerWallet);
         return Response.ok(docs).build();
     }

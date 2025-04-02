@@ -1,5 +1,5 @@
 import {useNavigate} from 'react-router-dom';
-import {ArrowRightIcon, DocumentTextIcon} from '@heroicons/react/24/outline';
+import {DocumentTextIcon} from '@heroicons/react/24/outline';
 import {useGetAllDocumentsGivenAddressWallet} from "../hook/backend/useGetAllDocumentsGivenAddressWallet.ts";
 import {signer} from "../../config/config.ts";
 
@@ -48,7 +48,6 @@ const MyDocuments = () => {
                     <tr>
                         <th>Documento</th>
                         <th>Data</th>
-                        <th>Azioni</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,14 +60,6 @@ const MyDocuments = () => {
                                 </div>
                             </td>
                             <td>{new Date(doc.uploadTimestamp!).toLocaleDateString()}</td>
-                            <td>
-                                <button
-                                    className="btn btn-ghost btn-sm"
-                                    onClick={() => navigate(`/document/${doc.id}`)}
-                                >
-                                    Dettagli <ArrowRightIcon className="h-4 w-4 ml-2"/>
-                                </button>
-                            </td>
                         </tr>
                     ))}
                     </tbody>

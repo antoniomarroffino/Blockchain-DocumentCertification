@@ -1,5 +1,5 @@
-import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import {useGetAllDocuments} from "../hook/backend/useGetAllDocuments.ts";
+import DocumentCard from "../components/DocumentCard.tsx";
 
 const AllDocuments = () => {
     const { data: documents, isLoading, isError } = useGetAllDocuments();
@@ -31,17 +31,7 @@ const AllDocuments = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documents?.map((doc) => (
-                    <div key={doc.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-                        <div className="card-body">
-                            <div className="flex items-start mb-4">
-                                <DocumentTextIcon className="h-8 w-8 text-blue-600 mr-4" />
-                                <div>
-                                    <h2 className="card-title">{doc.title}</h2>
-                                    <p className="text-sm text-gray-500">{new Date(doc.uploadTimestamp!).toLocaleDateString()}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <DocumentCard key={doc.id} document={doc} />
                 ))}
             </div>
         </div>

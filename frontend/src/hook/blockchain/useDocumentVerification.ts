@@ -1,14 +1,14 @@
 import {useQuery} from "@tanstack/react-query";
-import {documentCertificationContract} from "../../../config/config.ts";
+import {documentCertificationContractNoTX} from "../../../config/config.ts";
 
 
 export const useDocumentVerification = (docHash: string) => {
     return useQuery<boolean, Error>({
         queryKey: ['certification', docHash],
         queryFn: async () => {
-            if(!documentCertificationContract || !docHash)
+            if(!documentCertificationContractNoTX || !docHash)
                 throw new Error("Document Certification contract not initialized!");
-            return documentCertificationContract.isDocumentCertified(docHash);
+            return documentCertificationContractNoTX.isDocumentCertified(docHash);
         },
         enabled: !!docHash,
         staleTime: Infinity,
