@@ -1,6 +1,7 @@
 package ch.supsi.controller;
 
 import ch.supsi.model.document.Document;
+import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.service.IDocumentService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -31,9 +32,9 @@ public class DocumentController {
                     schema = @Schema(implementation = Document.class)
             )
     )
-    public Response uploadDocument(Document document) {
-        Document createdDocument = this.documentService.createDocument(document);
-        return Response.ok(createdDocument).type(MediaType.APPLICATION_JSON).build();
+    public Response uploadDocument(DocumentDTO documentDTO) {
+        Document createdDocument = this.documentService.createDocument(documentDTO);
+        return Response.ok(createdDocument).build();
     }
 
     @GET

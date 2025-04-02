@@ -32,8 +32,8 @@ contract DocumentCertification {
         emit DocumentCertified(_docHash, msg.sender);
     }
 
-    function getCertification(bytes32 _docHash) public view returns (Certification memory) {
-        return documentCertifications[_docHash];
+    function isDocumentCertified(bytes32 _docHash) public view returns (bool) {
+        return documentCertifications[_docHash].timestamp != 0;
     }
 
     function isCertifiedBy(address _certifier, bytes32 _docHash) public view returns(bool) {

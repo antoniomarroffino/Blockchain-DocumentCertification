@@ -1,60 +1,14 @@
-import CryptoJS from 'crypto-js';
+import {Document} from "@dti-isin/backend-api-client"
 
-interface HashResult {
-    hash: string;
-    fileType: string;
-    fileName: string;
-    fileSize: number;
-}
+export const calculateDocumentHash = async (document: Document) => {
+    let baseString = document.title! + document.ownerWallet + document.uploadTimestamp;
 
-export const generateFileHash = (file: File): Promise<HashResult> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+    if (document.content) {
+        const buffer = await document.content.arrayBuffer();
+        const fileWordArray = CryptoJS.lib.WordArray.create(buffer);
+        const fileHex = fileWordArray.toString();
+        baseString += fileHex;
+    }
 
-        reader.onload = (event) => {
-            try {
-                const wordArray = CryptoJS.lib.WordArray.create(event.target!.result as ArrayBuffer);
-                const hash = CryptoJS.SHA256(wordArray);
-
-                resolve({
-                    hash: hash.toString(),
-                    fileType: file.type,
-                    fileName: file.name,
-                    fileSize: file.size
-                });
-            } catch (error) {
-                reject(new Error(`Errore generazione hash: ${error instanceof Error ? error.message : 'Errore sconosciuto'}`));
-            }
-        };
-
-        reader.onerror = (error) => {
-            reject(new Error(`Errore lettura file: ${error}`));
-        };
-
-        reader.readAsArrayBuffer(file);
-    });
-};
-
-interface VerificationResult {
-    isValid: boolean;
-    currentHash?: string;
-    originalHash?: string;
-}
-
-export const verifyDocumentIntegrity = (
-    file: File,
-    originalHash: string
-): Promise<VerificationResult> => {
-    return new Promise((resolve, reject) => {
-        generateFileHash(file)
-            .then(result => {
-                const isIntact = result.hash === originalHash;
-                resolve({
-                    isValid: isIntact,
-                    currentHash: result.hash,
-                    originalHash: originalHash
-                });
-            })
-            .catch(reject);
-    });
+    return CryptoJS.SHA256(baseString).toString();
 };

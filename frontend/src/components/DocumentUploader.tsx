@@ -1,18 +1,15 @@
-import React, { useState, useRef } from 'react';
-import {
-    DocumentArrowUpIcon,
-    DocumentCheckIcon,
-    ExclamationTriangleIcon
-} from '@heroicons/react/24/solid';
-import DocumentVerifier from './DocumentVerifier';
-import CertificationStatus from './CertificationStatus';
+import React, {useRef, useState} from 'react';
+import {DocumentArrowUpIcon, DocumentCheckIcon, ExclamationTriangleIcon} from '@heroicons/react/24/solid';
+import {useUploadDocument} from "../hook/backend/useUploadDocument.ts";
+import {signer} from "../../config/config.ts";
 
 const DocumentUploader: React.FC = () => {
     const [document, setDocument] = useState<File | null>(null);
     const [isCertified, setIsCertified] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const {mutateAsync: uploadDocument} = useUploadDocument();
 
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
 
         const allowedTypes = [
@@ -25,14 +22,13 @@ const DocumentUploader: React.FC = () => {
         if (file && allowedTypes.includes(file.type)) {
             setDocument(file);
             setIsCertified(false);
+            await uploadDocument({
+                title: file.name,
+                ownerWallet: signer.address,
+            });
         } else {
             alert('Formato documento non supportato');
         }
-    };
-
-    const handleCertification = () => {
-        // Logica di certificazione
-        setIsCertified(true);
     };
 
     const triggerFileInput = () => {
@@ -54,7 +50,7 @@ const DocumentUploader: React.FC = () => {
                     onClick={triggerFileInput}
                     className="cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center p-6 border-2 border-dashed border-primary/50 rounded-xl hover:border-primary/80 hover:bg-primary/5"
                 >
-                    <DocumentArrowUpIcon className="h-16 w-16 text-primary/70 mb-4" />
+                    <DocumentArrowUpIcon className="h-16 w-16 text-primary/70 mb-4"/>
                     <h3 className="text-xl font-semibold text-center text-base-content/70">
                         Carica Documento
                     </h3>
@@ -67,9 +63,9 @@ const DocumentUploader: React.FC = () => {
                     <div className="flex items-center justify-between bg-base-100 p-4 rounded-lg shadow-md">
                         <div className="flex items-center space-x-3">
                             {isCertified ? (
-                                <DocumentCheckIcon className="h-8 w-8 text-success" />
+                                <DocumentCheckIcon className="h-8 w-8 text-success"/>
                             ) : (
-                                <ExclamationTriangleIcon className="h-8 w-8 text-warning" />
+                                <ExclamationTriangleIcon className="h-8 w-8 text-warning"/>
                             )}
                             <div>
                                 <p className="font-semibold">{document.name}</p>
@@ -85,17 +81,6 @@ const DocumentUploader: React.FC = () => {
                             Cambia
                         </button>
                     </div>
-
-                    <DocumentVerifier
-                        document={document}
-                        isCertified={isCertified}
-                    />
-
-                    <CertificationStatus
-                        document={document}
-                        isCertified={isCertified}
-                        onCertify={handleCertification}
-                    />
                 </div>
             )}
         </div>

@@ -1,11 +1,14 @@
 import React, { ReactNode } from 'react';
 import DocumentUploader from './DocumentUploader';
+import {useNavigate} from "react-router-dom";
 
 interface BaseComponentProps {
     children?: ReactNode;
 }
 
 const BaseComponent: React.FC<BaseComponentProps> = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="flex min-h-screen">
             {/* Sidebar Blu Fissa con bordo */}
@@ -15,19 +18,25 @@ const BaseComponent: React.FC<BaseComponentProps> = () => {
                 </div>
                 <ul className="space-y-2">
                     <li>
-                        <a href="#" className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
-                            <i className="mr-2 fas fa-home group-hover:text-white"></i>
-                            <span className="group-hover:text-white">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
+                        <a onClick={() => navigate('/uploadDocument')} className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
                             <i className="mr-2 fas fa-file-upload group-hover:text-white"></i>
-                            <span className="group-hover:text-white">Certifica Documento</span>
+                            <span className="group-hover:text-white">Carica Documento</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
+                        <a onClick={() => navigate('/myDocuments')} className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
+                            <i className="mr-2 fas fa-home group-hover:text-white"></i>
+                            <span className="group-hover:text-white" >Miei Documenti</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a onClick={() => navigate('/allDocuments')} className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
+                            <i className="mr-2 fas fa-file-upload group-hover:text-white"></i>
+                            <span className="group-hover:text-white" >Certifica Documento</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
                             <i className="mr-2 fas fa-history group-hover:text-white"></i>
                             <span className="group-hover:text-white">Storico Certificazioni</span>
                         </a>

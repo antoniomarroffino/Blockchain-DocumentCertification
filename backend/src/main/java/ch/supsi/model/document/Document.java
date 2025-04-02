@@ -6,9 +6,8 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-public class Document extends PanacheEntity {
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Document {
+    @Id @GeneratedValue private Long id;
     private String title;
     private String ownerWallet;
     private Instant uploadTimestamp;
@@ -18,7 +17,7 @@ public class Document extends PanacheEntity {
     public Document() {
     }
 
-    public Document(int id, String title, String ownerWallet, Instant uploadTimestamp,  byte[] content) {
+    public Document(Long id, String title, String ownerWallet, Instant uploadTimestamp,  byte[] content) {
         this.id = id;
         this.title = title;
         this.ownerWallet = ownerWallet;
@@ -26,7 +25,7 @@ public class Document extends PanacheEntity {
         this.content = content;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 

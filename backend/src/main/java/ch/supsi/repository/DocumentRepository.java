@@ -9,6 +9,6 @@ import java.util.List;
 @ApplicationScoped
 public class DocumentRepository implements PanacheRepository<Document> {
     public List<Document> findByOwner(String ownerWallet) {
-        return list("owner", ownerWallet);
+        return list("ownerWallet", ownerWallet);
     }
 }

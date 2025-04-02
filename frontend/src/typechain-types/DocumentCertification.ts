@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -23,23 +22,9 @@ import type {
   TypedContractMethod,
 } from "./common";
 
-export declare namespace DocumentCertification {
-  export type CertificationStruct = {
-    hash: BytesLike;
-    certifier: AddressLike;
-    timestamp: BigNumberish;
-  };
-
-  export type CertificationStructOutput = [
-    hash: string,
-    certifier: string,
-    timestamp: bigint
-  ] & { hash: string; certifier: string; timestamp: bigint };
-}
-
 export interface DocumentCertificationInterface extends Interface {
   getFunction(
-    nameOrSignature: "certifyDocument" | "getCertification" | "isCertifiedBy"
+    nameOrSignature: "certifyDocument" | "isCertifiedBy" | "isDocumentCertified"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "DocumentCertified"): EventFragment;
@@ -49,12 +34,12 @@ export interface DocumentCertificationInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "getCertification",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "isCertifiedBy",
     values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isDocumentCertified",
+    values: [BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -62,11 +47,11 @@ export interface DocumentCertificationInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getCertification",
+    functionFragment: "isCertifiedBy",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "isCertifiedBy",
+    functionFragment: "isDocumentCertified",
     data: BytesLike
   ): Result;
 }
@@ -133,14 +118,14 @@ export interface DocumentCertification extends BaseContract {
     "nonpayable"
   >;
 
-  getCertification: TypedContractMethod<
-    [_docHash: BytesLike],
-    [DocumentCertification.CertificationStructOutput],
+  isCertifiedBy: TypedContractMethod<
+    [_certifier: AddressLike, _docHash: BytesLike],
+    [boolean],
     "view"
   >;
 
-  isCertifiedBy: TypedContractMethod<
-    [_certifier: AddressLike, _docHash: BytesLike],
+  isDocumentCertified: TypedContractMethod<
+    [_docHash: BytesLike],
     [boolean],
     "view"
   >;
@@ -153,19 +138,15 @@ export interface DocumentCertification extends BaseContract {
     nameOrSignature: "certifyDocument"
   ): TypedContractMethod<[_docHash: BytesLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "getCertification"
-  ): TypedContractMethod<
-    [_docHash: BytesLike],
-    [DocumentCertification.CertificationStructOutput],
-    "view"
-  >;
-  getFunction(
     nameOrSignature: "isCertifiedBy"
   ): TypedContractMethod<
     [_certifier: AddressLike, _docHash: BytesLike],
     [boolean],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "isDocumentCertified"
+  ): TypedContractMethod<[_docHash: BytesLike], [boolean], "view">;
 
   getEvent(
     key: "DocumentCertified"
