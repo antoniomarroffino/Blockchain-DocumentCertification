@@ -1,12 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        "./src/**/*.{js,jsx,ts,tsx}",
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            screens: {
+                'xs': '480px',
+            },
+            spacing: {
+                'card': '1rem',
+            },
+            borderRadius: {
+                'card': '0.75rem',
+            }
+        },
     },
-    plugins: [require("daisyui")],
+    plugins: [
+        require('daisyui')
+    ],
     daisyui: {
         themes: [
             {
@@ -16,10 +29,6 @@ module.exports = {
                     accent: "#37CDBE",
                     neutral: "#3D4451",
                     "base-100": "#FFFFFF",
-                    info: "#3ABFF8",
-                    success: "#36D399",
-                    warning: "#FBBD23",
-                    error: "#F87272",
                 },
             },
         ],
