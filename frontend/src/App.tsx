@@ -3,16 +3,16 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import {ethers, Wallet} from "ethers";
-import {SimpleContract__factory} from "./contracts-types";
+import {SimpleContract__factory} from "./typechain-types";
 
 function App() {
     const [count, setCount] = useState(0)
     const [contractAddress, setContractAddress] = useState('');
 
     const setValue = async (value:number) => {
-        const contractAddress = '0x5fbdb2315678afecb367f032d93f642f64180aa3';
+        const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
         const provider =  new ethers.JsonRpcProvider('http://localhost:8545')
-        const signer = new Wallet('0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80', provider)
+        const signer = new Wallet('0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e', provider)
         const simpleContract = SimpleContract__factory.connect(contractAddress, signer);
 
         const tx = await simpleContract.setValue(value);
@@ -21,7 +21,7 @@ function App() {
     }
 
     const getContractValue = async () => {
-        const contractAddress = '0x5fbdb2315678afecb367f032d93f642f64180aa3';
+        const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
         const provider =  new ethers.JsonRpcProvider('http://localhost:8545');
         const simpleContract = SimpleContract__factory.connect(contractAddress, provider);
 

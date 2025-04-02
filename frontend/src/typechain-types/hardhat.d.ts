@@ -14,6 +14,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "DocumentCertification",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DocumentCertification__factory>;
+    getContractFactory(
       name: "Lock",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Lock__factory>;
@@ -23,6 +27,11 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.SimpleContract__factory>;
 
     getContractAt(
+      name: "DocumentCertification",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DocumentCertification>;
+    getContractAt(
       name: "Lock",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -34,6 +43,10 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.SimpleContract>;
 
     deployContract(
+      name: "DocumentCertification",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.DocumentCertification>;
+    deployContract(
       name: "Lock",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Lock>;
@@ -42,6 +55,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SimpleContract>;
 
+    deployContract(
+      name: "DocumentCertification",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.DocumentCertification>;
     deployContract(
       name: "Lock",
       args: any[],

@@ -1,14 +1,14 @@
 import { ethers } from 'hardhat';
-import {SimpleContract__factory} from "../typechain-types";
+import {DocumentCertification__factory, SimpleContract__factory} from "../typechain-types";
 
 
 const deploy = async () =>{
 
     const signer = (await ethers.getSigners())[0];
 
-    const newSimpleContractDeployTx = await new SimpleContract__factory(signer).deploy(8);
+    const newDocumentCertificationDeployTx = await new DocumentCertification__factory(signer).deploy();
 
-    console.log(`SimpleContract deployed at ${await newSimpleContractDeployTx.getAddress()}`);
+    console.log(`Document Certification deployed at ${await newDocumentCertificationDeployTx.getAddress()}`);
 
 }
 
