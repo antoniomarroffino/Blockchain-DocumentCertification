@@ -1,0 +1,105 @@
+import React, { useState, useRef } from 'react';
+import {
+    DocumentArrowUpIcon,
+    DocumentCheckIcon,
+    ExclamationTriangleIcon
+} from '@heroicons/react/24/solid';
+import DocumentVerifier from './DocumentVerifier';
+import CertificationStatus from './CertificationStatus';
+
+const DocumentUploader: React.FC = () => {
+    const [document, setDocument] = useState<File | null>(null);
+    const [isCertified, setIsCertified] = useState<boolean>(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+
+        const allowedTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'application/docx'
+        ];
+
+        if (file && allowedTypes.includes(file.type)) {
+            setDocument(file);
+            setIsCertified(false);
+        } else {
+            alert('Formato documento non supportato');
+        }
+    };
+
+    const handleCertification = () => {
+        // Logica di certificazione
+        setIsCertified(true);
+    };
+
+    const triggerFileInput = () => {
+        fileInputRef.current?.click();
+    };
+
+    return (
+        <div className="card w-96 bg-gradient-to-br from-primary/10 to-secondary/10 shadow-xl p-4 space-y-2">
+            <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileUpload}
+                accept=".pdf,.jpg,.jpeg,.png,.docx"
+            />
+
+            {!document ? (
+                <div
+                    onClick={triggerFileInput}
+                    className="cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center p-6 border-2 border-dashed border-primary/50 rounded-xl hover:border-primary/80 hover:bg-primary/5"
+                >
+                    <DocumentArrowUpIcon className="h-16 w-16 text-primary/70 mb-4" />
+                    <h3 className="text-xl font-semibold text-center text-base-content/70">
+                        Carica Documento
+                    </h3>
+                    <p className="text-sm text-base-content/50 text-center mt-2">
+                        Supportati: PDF, JPEG, PNG, DOCX
+                    </p>
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between bg-base-100 p-4 rounded-lg shadow-md">
+                        <div className="flex items-center space-x-3">
+                            {isCertified ? (
+                                <DocumentCheckIcon className="h-8 w-8 text-success" />
+                            ) : (
+                                <ExclamationTriangleIcon className="h-8 w-8 text-warning" />
+                            )}
+                            <div>
+                                <p className="font-semibold">{document.name}</p>
+                                <p className="text-sm text-base-content/50">
+                                    {(document.size / 1024).toFixed(2)} KB
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={triggerFileInput}
+                            className="btn btn-ghost btn-sm"
+                        >
+                            Cambia
+                        </button>
+                    </div>
+
+                    <DocumentVerifier
+                        document={document}
+                        isCertified={isCertified}
+                    />
+
+                    <CertificationStatus
+                        document={document}
+                        isCertified={isCertified}
+                        onCertify={handleCertification}
+                    />
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default DocumentUploader;
