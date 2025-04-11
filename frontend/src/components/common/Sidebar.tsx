@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
         <motion.div
             initial={{ x: -250 }}
             animate={{ x: 0 }}
-            className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white h-screen flex flex-col"
+            className="fixed left-0 top-0 w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white h-screen flex flex-col overflow-y-auto"
         >
             {/* Logo Section */}
             <div className="p-6 border-b border-slate-700/50">

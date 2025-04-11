@@ -1,14 +1,11 @@
 import React from 'react';
 import {motion} from 'framer-motion';
 import DocumentUploader from './DocumentUploader';
-import Sidebar from "./common/Sidebar.tsx";
-import {FaBell, FaChartLine, FaCubes, FaFileAlt, FaSearch, FaShieldAlt} from 'react-icons/fa';
+import {FaSearch, FaBell, FaShieldAlt, FaFileAlt, FaChartLine, FaCubes} from 'react-icons/fa';
 
 const HomePage: React.FC = () => {
     return (
         <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            <Sidebar/>
-
             <div className="flex-1 flex flex-col min-h-screen">
                 <motion.nav
                     initial={{y: -20, opacity: 0}}
@@ -31,7 +28,7 @@ const HomePage: React.FC = () => {
                                                  text-transparent bg-clip-text">
                                         Document Certification
                                     </h1>
-                                    <p className="text-sm text-slate-500">Powered by Blockchain</p>
+                                    <p className="text-sm text-slate-500">Powered by KROSTchain</p>
                                 </div>
                             </div>
                         </div>

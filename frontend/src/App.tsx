@@ -6,6 +6,7 @@ import AllDocuments from "./pages/AllDocuments.tsx";
 import MyDocuments from "./pages/MyDocuments.tsx";
 import Footer from "./components/common/Footer.tsx";
 import HomePage from "./components/HomePage.tsx";
+import Sidebar from "./components/common/Sidebar.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -21,13 +22,21 @@ const queryClient = new QueryClient({
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <Routes>
-                <Route path={"/"} element={<HomePage />} />
-                <Route path={"/uploadDocument"} element={<DocumentUploader />} />
-                <Route path={"/myDocuments"} element={<MyDocuments />} />
-                <Route path={"/allDocuments"} element={<AllDocuments />} />
-            </Routes>
-            <Footer />
+            <div className="flex min-h-screen">
+                <Sidebar />
+                <div className="flex flex-col flex-1 ml-64">
+                    <main className="flex-1">
+                        <Routes>
+                            <Route path={"/"} element={<HomePage />} />
+                            <Route path={"/uploadDocument"} element={<DocumentUploader />} />
+                            <Route path={"/myDocuments"} element={<MyDocuments />} />
+                            <Route path={"/allDocuments"} element={<AllDocuments />} />
+                        </Routes>
+                    </main>
+                    <Footer />
+                </div>
+
+            </div>
         </QueryClientProvider>
     );
 }
