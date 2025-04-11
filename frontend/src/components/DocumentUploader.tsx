@@ -1,17 +1,22 @@
-import React, {useRef, useState} from 'react';
-import {DocumentArrowUpIcon, DocumentCheckIcon, ExclamationTriangleIcon} from '@heroicons/react/24/solid';
-import {useUploadDocument} from "../hook/backend/useUploadDocument.ts";
-import {signer} from "../../config/config.ts";
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    ExclamationTriangleIcon,
+    CloudArrowUpIcon,
+    ShieldCheckIcon
+} from '@heroicons/react/24/solid';
+import { useUploadDocument } from "../hook/backend/useUploadDocument.ts";
+import { signer } from "../../config/config.ts";
 
 const DocumentUploader: React.FC = () => {
     const [document, setDocument] = useState<File | null>(null);
     const [isCertified, setIsCertified] = useState<boolean>(false);
+    const [isUploading, setIsUploading] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const {mutateAsync: uploadDocument} = useUploadDocument();
+    const { mutateAsync: uploadDocument } = useUploadDocument();
 
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
-
         const allowedTypes = [
             'application/pdf',
             'image/jpeg',
@@ -20,28 +25,48 @@ const DocumentUploader: React.FC = () => {
         ];
 
         if (file && allowedTypes.includes(file.type)) {
+            setIsUploading(true);
             setDocument(file);
             setIsCertified(false);
-            await uploadDocument({
-                title: file.name,
-                ownerWallet: signer.address,
-            });
+
+            try {
+                await uploadDocument({
+                    title: file.name,
+                    ownerWallet: signer.address,
+                });
+                setIsCertified(true);
+            } catch (error) {
+                console.error('Upload failed:', error);
+            } finally {
+                setIsUploading(false);
+            }
         } else {
-            alert('Formato documento non supportato');
+            alert('Unsupported document format');
         }
     };
 
-    const triggerFileInput = () => {
-        fileInputRef.current?.click();
-    };
-
     return (
-        <main className="p-4 bg-gray-100 flex-1 overflow-y-auto">
-            <div className="container mx-auto max-w-7xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <h2 className="text-2xl font-bold mb-4">Certificazione Documenti</h2>
-                    <div
-                        className="card w-96 bg-gradient-to-br from-primary/10 to-secondary/10 shadow-xl p-4 space-y-2">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-8"
+        >
+            <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+                        Document Certification
+                    </h2>
+                    <p className="text-slate-500 mt-2">
+                        Upload your document to get it certified on the blockchain
+                    </p>
+                </div>
+
+                <motion.div
+                    className="bg-white rounded-3xl shadow-xl overflow-hidden"
+                    whileHover={{ scale: 1.01 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <div className="p-8">
                         <input
                             type="file"
                             ref={fileInputRef}
@@ -50,48 +75,84 @@ const DocumentUploader: React.FC = () => {
                             accept=".pdf,.jpg,.jpeg,.png,.docx"
                         />
 
-                        {!document ? (
-                            <div
-                                onClick={triggerFileInput}
-                                className="cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center p-6 border-2 border-dashed border-primary/50 rounded-xl hover:border-primary/80 hover:bg-primary/5"
-                            >
-                                <DocumentArrowUpIcon className="h-16 w-16 text-primary/70 mb-4"/>
-                                <h3 className="text-xl font-semibold text-center text-base-content/70">
-                                    Carica Documento
-                                </h3>
-                                <p className="text-sm text-base-content/50 text-center mt-2">
-                                    Supportati: PDF, JPEG, PNG, DOCX
-                                </p>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between bg-base-100 p-4 rounded-lg shadow-md">
-                                    <div className="flex items-center space-x-3">
-                                        {isCertified ? (
-                                            <DocumentCheckIcon className="h-8 w-8 text-success"/>
-                                        ) : (
-                                            <ExclamationTriangleIcon className="h-8 w-8 text-warning"/>
-                                        )}
-                                        <div>
-                                            <p className="font-semibold">{document.name}</p>
-                                            <p className="text-sm text-base-content/50">
-                                                {(document.size / 1024).toFixed(2)} KB
+                        <AnimatePresence mode="wait">
+                            {!document ? (
+                                <motion.div
+                                    key="upload"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="cursor-pointer group"
+                                >
+                                    <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 transition-all
+                                                  group-hover:border-primary/50 group-hover:bg-primary/5">
+                                        <div className="flex flex-col items-center">
+                                            <CloudArrowUpIcon className="h-20 w-20 text-slate-300 group-hover:text-primary/70 transition-colors" />
+                                            <h3 className="text-xl font-semibold mt-4 text-slate-700">
+                                                Drop your document here
+                                            </h3>
+                                            <p className="text-slate-500 mt-2 text-center">
+                                                or click to browse<br />
+                                                Supported formats: PDF, JPEG, PNG, DOCX
                                             </p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={triggerFileInput}
-                                        className="btn btn-ghost btn-sm"
-                                    >
-                                        Cambia
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="document"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="space-y-4"
+                                >
+                                    <div className="bg-slate-50 rounded-xl p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center space-x-4">
+                                                {isUploading ? (
+                                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                                                ) : isCertified ? (
+                                                    <ShieldCheckIcon className="h-8 w-8 text-success" />
+                                                ) : (
+                                                    <ExclamationTriangleIcon className="h-8 w-8 text-warning" />
+                                                )}
+                                                <div>
+                                                    <p className="font-medium text-slate-700">{document.name}</p>
+                                                    <p className="text-sm text-slate-500">
+                                                        {(document.size / 1024).toFixed(2)} KB
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className="btn btn-outline btn-primary btn-sm"
+                                                disabled={isUploading}
+                                            >
+                                                Change
+                                            </motion.button>
+                                        </div>
+                                    </div>
+
+                                    {isCertified && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="bg-success/10 text-success rounded-xl p-4 flex items-center gap-3"
+                                        >
+                                            <ShieldCheckIcon className="h-5 w-5" />
+                                            <span>Document successfully certified on blockchain</span>
+                                        </motion.div>
+                                    )}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
-                </div>
+                </motion.div>
             </div>
-        </main>
+        </motion.div>
     );
 };
 
