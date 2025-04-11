@@ -5,6 +5,7 @@ import {useDocumentVerification} from "../hook/blockchain/useDocumentVerificatio
 import {useDocumentCertification} from "../hook/blockchain/useDocumentCertification.ts";
 import {calculateDocumentHash} from "../utils/hashGenerator.ts";
 import { toast } from 'react-hot-toast';
+import {useMetamask} from "../hook/useMetamask.ts";
 
 interface DocumentCardProps {
     document: Document;
@@ -15,6 +16,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     const { data: isCertified, isLoading: isVerifying } = useDocumentVerification(docHash || '');
     const { mutateAsync: certifyDocument, isPending } = useDocumentCertification();
     const [isHovered, setIsHovered] = useState(false);
+    const {signer} = useMetamask();
 
     useEffect(() => {
         const computeHash = async () => {
@@ -34,8 +36,12 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         if (!docHash) return;
 
         try {
+            if(!signer){
+                console.error("Signer not setted");
+                return;
+            }
             await toast.promise(
-                certifyDocument(document),
+                certifyDocument({document, signer}),
                 {
                     loading: 'Certificazione in corso...',
                     success: 'Documento certificato con successo!',

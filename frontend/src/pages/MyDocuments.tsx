@@ -1,10 +1,13 @@
+'use client'
+
 import {useNavigate} from 'react-router-dom';
 import {DocumentTextIcon} from '@heroicons/react/24/outline';
 import {useGetAllDocumentsGivenAddressWallet} from "../hook/backend/useGetAllDocumentsGivenAddressWallet.ts";
-import {signer} from "../../config/config.ts";
+import {useMetamask} from "../hook/useMetamask.ts";
 
 const MyDocuments = () => {
-    const {data: documents, isLoading, isError} = useGetAllDocumentsGivenAddressWallet(signer.address);
+    const {signer} = useMetamask();
+    const {data: documents, isLoading, isError} = useGetAllDocumentsGivenAddressWallet(signer!.address);
     const navigate = useNavigate();
 
     if (isLoading) {

@@ -1,13 +1,16 @@
+'use client'
+
 import React, {useRef, useState} from 'react';
 import {DocumentArrowUpIcon, DocumentCheckIcon, ExclamationTriangleIcon} from '@heroicons/react/24/solid';
 import {useUploadDocument} from "../hook/backend/useUploadDocument.ts";
-import {signer} from "../../config/config.ts";
+import {useMetamask} from "../hook/useMetamask.ts";
 
 const DocumentUploader: React.FC = () => {
     const [document, setDocument] = useState<File | null>(null);
     const [isCertified, setIsCertified] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const {mutateAsync: uploadDocument} = useUploadDocument();
+    const {signer} = useMetamask();
 
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -24,7 +27,7 @@ const DocumentUploader: React.FC = () => {
             setIsCertified(false);
             await uploadDocument({
                 title: file.name,
-                ownerWallet: signer.address,
+                ownerWallet: signer!.address,
             });
         } else {
             alert('Formato documento non supportato');
