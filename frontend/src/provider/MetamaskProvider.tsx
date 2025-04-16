@@ -1,7 +1,7 @@
 'use client'
 import {MetamaskContext} from "../context/MetamaskContext.tsx";
 import React, {useCallback, useEffect, useState} from "react";
-import {ethers, JsonRpcSigner} from "ethers";
+import {BigNumberish, ethers, JsonRpcSigner} from "ethers";
 import {MetaMaskInpageProvider} from "@metamask/providers";
 
 
@@ -14,6 +14,29 @@ declare global {
 export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [signer, setSigner] = useState<JsonRpcSigner | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
+    const [balance, setBalance] = useState<string>();
+    const [network, setNetwork] = useState<string>();
+    const [chainId, setChainId] = useState<BigNumberish>();
+
+    const updateNetworkInfo = useCallback(async (provider: ethers.BrowserProvider) => {
+        try {
+            const network = await provider.getNetwork();
+            setNetwork(network.name);
+            setChainId(network.chainId);
+        } catch (error) {
+            console.error("Error getting network:", error);
+        }
+    }, []);
+
+    const updateBalance = useCallback(async (address: string) => {
+        try {
+            const provider = new ethers.BrowserProvider(window.ethereum!);
+            const balance = await provider.getBalance(address);
+            setBalance(ethers.formatEther(balance));
+        } catch (error) {
+            console.error("Error getting balance:", error);
+        }
+    }, []);
 
     useEffect(() => {
         if (!window.ethereum || !window.ethereum.isMetaMask) {
@@ -21,7 +44,7 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
             return;
         }
 
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        let provider = new ethers.BrowserProvider(window.ethereum);
 
         const checkConnection = async () => {
             try {
@@ -29,6 +52,7 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
                 if (accounts.length > 0) {
                     const currentSigner = await provider.getSigner();
                     setSigner(currentSigner);
+                    await updateBalance(currentSigner.address);
                 }
             } catch (error) {
                 console.error("Error checking connection:", error);
@@ -41,13 +65,22 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
             if (accounts.length > 0) {
                 const newSigner = await provider.getSigner();
                 setSigner(newSigner);
+                await updateBalance(newSigner.address);
             } else {
                 setSigner(undefined);
             }
         };
 
-        const handleChainChanged = () => {
-            window.location.reload();
+        const handleChainChanged = async () => {
+            try {
+                provider = new ethers.BrowserProvider(window.ethereum!);
+                await updateNetworkInfo(provider);
+                if (signer?.address) {
+                    await updateBalance(signer.address);
+                }
+            } catch (error) {
+                console.error("Error handling chain change:", error);
+            }
         };
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -61,7 +94,7 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
             window.ethereum!.removeListener('accountsChanged', handleAccountsChanged);
             window.ethereum!.removeListener('chainChanged', handleChainChanged);
         };
-    }, [])
+    }, [signer?.address, updateBalance, updateNetworkInfo])
 
     const connectWallet = useCallback(async () => {
         if (window.ethereum?.isMetaMask) {
@@ -78,6 +111,9 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
         signer,
         isLoading,
         isConnected: !!signer,
+        balance,
+        network,
+        chainId,
     }
 
     return (

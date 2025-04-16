@@ -1,11 +1,14 @@
-import {JsonRpcSigner} from "ethers";
+import {BigNumberish, JsonRpcSigner} from "ethers";
 import {createContext} from "react";
 
 type MetamaskContextType = {
-    connectWithMetamask: () => Promise<void>,
-    signer: JsonRpcSigner | undefined,
-    isLoading: boolean,
-    isConnected: boolean,
-}
+    connectWithMetamask: () => Promise<void>;
+    signer?: JsonRpcSigner;
+    isLoading: boolean;
+    isConnected: boolean;
+    balance?: string;
+    network?: string;
+    chainId?: BigNumberish;
+};
 
 export const MetamaskContext = createContext<MetamaskContextType | undefined>(undefined);

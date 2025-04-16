@@ -11,6 +11,7 @@ import Footer from "./components/common/Footer.tsx";
 import Header from "./components/common/Header.tsx";
 import {Toaster} from "react-hot-toast";
 import Dashboard from "./pages/Dashboard.tsx";
+import Profile from "./pages/Profile.tsx";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                             <Route path="/uploadDocument" element={<DocumentUploader />} />
                             <Route path="/myDocuments" element={<MyDocuments />} />
                             <Route path="/allDocuments" element={<AllDocuments />} />
+                            <Route path="/profile" element={<Profile />} />
                         </Routes>
                     </main>
                 </div>

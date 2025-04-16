@@ -2,6 +2,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useMetamask} from "../../hook/useMetamask.ts";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import {ArrowUpTrayIcon, DocumentIcon, FolderIcon} from "@heroicons/react/16/solid";
+import {UserCircleIcon} from "@heroicons/react/24/outline";
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Sidebar = () => {
         {path: '/uploadDocument', label: 'Upload Document', icon: <ArrowUpTrayIcon className="w-5 h-5" />},
         {path: '/myDocuments', label: 'My Documents', icon: <FolderIcon className="w-5 h-5" /> },
         { path: '/allDocuments', label: 'All Documents', icon: <DocumentIcon className="w-5 h-5" /> },
+        { path: '/profile', label: 'Profile', icon: <UserCircleIcon className="w-5 h-5" /> },
     ];
 
     return (
