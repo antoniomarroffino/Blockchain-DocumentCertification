@@ -6,6 +6,7 @@ import {useDocumentCertification} from "../hook/blockchain/useDocumentCertificat
 import {calculateDocumentHash} from "../utils/hashGenerator.ts";
 import { toast } from 'react-hot-toast';
 import {useMetamask} from "../hook/useMetamask.ts";
+import {ExclamationTriangleIcon} from "@heroicons/react/16/solid";
 
 interface DocumentCardProps {
     document: Document;
@@ -15,7 +16,6 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     const [docHash, setDocHash] = useState<string | null>(null);
     const { data: isCertified, isLoading: isVerifying } = useDocumentVerification(docHash || '');
     const { mutateAsync: certifyDocument, isPending } = useDocumentCertification();
-    const [isHovered, setIsHovered] = useState(false);
     const {signer} = useMetamask();
 
     useEffect(() => {
@@ -40,16 +40,14 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                 console.error("Signer not setted");
                 return;
             }
-            /*await toast.promise(
+            await toast.promise(
                 certifyDocument({document, signer}),
                 {
                     loading: 'Certificazione in corso...',
                     success: 'Documento certificato con successo!',
                     error: (err: Error) => `Errore nella certificazione: ${err.message}`
                 }
-            );*/
-
-            await certifyDocument({document, signer});
+            );
         } catch (error) {
             console.error('Certification error:', error);
         }
@@ -57,13 +55,13 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
 
     if (isVerifying || !docHash) {
         return (
-            <div className="card bg-base-100 shadow-xl">
+            <div className="card bg-base-100 shadow-xl animate-pulse">
                 <div className="card-body">
                     <div className="flex items-center space-x-4">
-                        <div className="skeleton h-8 w-8 rounded-full"></div>
+                        <div className="rounded-full bg-base-300 h-8 w-8"></div>
                         <div className="space-y-2 flex-1">
-                            <div className="skeleton h-4 w-32"></div>
-                            <div className="skeleton h-3 w-24"></div>
+                            <div className="h-4 bg-base-300 rounded w-3/4"></div>
+                            <div className="h-3 bg-base-300 rounded w-1/2"></div>
                         </div>
                     </div>
                 </div>
@@ -74,13 +72,15 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     return (
         <div
             className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow relative"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
-            {isCertified && (
+            {isCertified ? (
                 <div className="absolute top-2 right-2">
                     <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
                     <CheckBadgeIcon className="h-6 w-6 text-green-600 relative" />
+                </div>
+            ) : (
+                <div className="absolute top-2 right-2 animate-bounce">
+                    <ExclamationTriangleIcon className="h-6 w-6 text-warning/80" />
                 </div>
             )}
 
@@ -88,25 +88,33 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                 <div className="flex items-start mb-4">
                     <DocumentTextIcon className="h-8 w-8 text-blue-600 mr-4" />
                     <div className="flex-1">
-                        <h2 className="card-title text-gray-800">{document.title}</h2>
+                        <h2 className="card-title text-base-content">{document.title}</h2>
                         <div className="flex items-center justify-between mt-1">
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-base-content/70">
                                 {new Date(document.uploadTimestamp!).toLocaleDateString()}
                             </p>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                isCertified ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                            }`}>
-                {isCertified ? 'Certificato' : 'Non Certificato'}
-              </span>
+                            <span className={`badge gap-2 ${isCertified ? 'badge-success' : 'badge-warning animate-text-pulse'}`}>
+                                {isCertified ? (
+                                    <>
+                                        <CheckBadgeIcon className="h-4 w-4" />
+                                        Certificato
+                                    </>
+                                ) : (
+                                    <>
+                                        <ExclamationTriangleIcon className="h-4 w-4" />
+                                        Non Certificato
+                                    </>
+                                )}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                {isHovered && !isCertified && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-xl">
+                {!isCertified && (
+                    <div className={`mt-4 transition-opacity `}>
                         <button
                             onClick={handleCertification}
-                            className="btn btn-primary gap-2 animate-pulse"
+                            className="btn btn-block btn-primary gap-2"
                             disabled={isPending}
                         >
                             {isPending ? (
@@ -117,22 +125,31 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                             ) : (
                                 <>
                                     <CheckBadgeIcon className="h-5 w-5" />
-                                    Certifica Documento
+                                    Certifica Ora
                                 </>
                             )}
                         </button>
                     </div>
                 )}
 
+
                 {isCertified && (
-                    <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                        <div className="flex items-center text-sm text-green-700">
+                    <div className="mt-4 p-3 bg-success/10 rounded-lg border border-success/20">
+                        <div className="flex items-center text-sm text-success">
                             <CheckBadgeIcon className="h-4 w-4 mr-2" />
-                            <span>Hash documento: {docHash.slice(0, 12)}...{docHash.slice(-12)}</span>
+                            <span className="font-mono break-all">
+                                {docHash.slice(0, 12)}...{docHash.slice(-12)}
+                            </span>
                         </div>
                     </div>
                 )}
             </div>
+
+            {isPending && (
+                <div className="absolute inset-0 bg-base-100/50 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                    <span className="loading loading-infinity loading-lg text-primary"></span>
+                </div>
+            )}
         </div>
     );
 };

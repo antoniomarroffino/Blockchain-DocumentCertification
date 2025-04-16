@@ -11,6 +11,6 @@ export const useDocumentVerification = (docHash: string) => {
             return documentCertificationContractNoTX.isDocumentCertified(docHash);
         },
         enabled: !!docHash,
-        staleTime: Infinity,
+        staleTime: 1000 * 60 * 5,
     })
 }

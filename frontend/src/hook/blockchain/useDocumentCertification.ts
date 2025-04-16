@@ -8,7 +8,7 @@ import {contractAddress} from "../../../config/config.ts";
 export const useDocumentCertification = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<void, Error, {document: Document, signer: JsonRpcSigner}>({
+    return useMutation<string | undefined, Error, {document: Document, signer: JsonRpcSigner}>({
         mutationFn: async ({ document, signer })=> {
             if(!signer){
                 console.log("signer not found");
@@ -18,9 +18,19 @@ export const useDocumentCertification = () => {
             const documentCertificationContractForTX = DocumentCertification__factory.connect(contractAddress, signer);
             const tx = await documentCertificationContractForTX.certifyDocument(docHash);
             await tx.wait();
+
+            return docHash;
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['documents'] });
+        onSuccess: (docHash, parameters) => {
+            queryClient.invalidateQueries({
+                queryKey: ['documents']
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['certification', docHash]
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['documents', parameters.signer?.address]
+            });
         }
     })
 }
