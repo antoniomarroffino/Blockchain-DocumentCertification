@@ -46,7 +46,7 @@ const MyDocumentsTable = ({signer} : MyDocumentsTableProps) => {
                 </thead>
                 <tbody>
                 {documents?.map((doc) => (
-                    <MyDocumentRow document={doc}/>
+                    <MyDocumentRow key={doc.id} document={doc}/>
                 ))}
                 </tbody>
             </table>

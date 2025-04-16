@@ -7,7 +7,7 @@ import {UserCircleIcon} from "@heroicons/react/24/outline";
 const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {isConnected} = useMetamask();
+    const {isConnected, network} = useMetamask();
 
     const menuItems = [
         {path: '/', label: 'Dashboard', icon: <HomeIcon className="w-5 h-5"/>},
@@ -41,7 +41,7 @@ const Sidebar = () => {
                     <div className="text-sm font-medium">Network Status</div>
                     <div className="flex items-center gap-2 text-sm">
                         <div className="badge badge-success badge-xs"></div>
-                        <span>Ethereum Mainnet</span>
+                        <span>{network}</span>
                     </div>
                 </div>
             )}

@@ -40,14 +40,16 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                 console.error("Signer not setted");
                 return;
             }
-            await toast.promise(
+            /*await toast.promise(
                 certifyDocument({document, signer}),
                 {
                     loading: 'Certificazione in corso...',
                     success: 'Documento certificato con successo!',
                     error: (err: Error) => `Errore nella certificazione: ${err.message}`
                 }
-            );
+            );*/
+
+            await certifyDocument({document, signer});
         } catch (error) {
             console.error('Certification error:', error);
         }
@@ -94,7 +96,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 isCertified ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                             }`}>
-                {isCertified ? 'Certificato' : 'In attesa'}
+                {isCertified ? 'Certificato' : 'Non Certificato'}
               </span>
                         </div>
                     </div>

@@ -15,12 +15,11 @@ export const useDocumentCertification = () => {
                 return;
             }
             const docHash = await calculateDocumentHash(document);
-            console.log(docHash);
             const documentCertificationContractForTX = DocumentCertification__factory.connect(contractAddress, signer);
             const tx = await documentCertificationContractForTX.certifyDocument(docHash);
             await tx.wait();
         },
-        onSuccess: async () => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['documents'] });
         }
     })
