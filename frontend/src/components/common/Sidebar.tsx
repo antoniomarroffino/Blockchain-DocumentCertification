@@ -1,69 +1,50 @@
-import React from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useMetamask} from "../../hook/useMetamask.ts";
+import { HomeIcon } from "@heroicons/react/24/solid";
+import {ArrowUpTrayIcon, DocumentIcon, FolderIcon} from "@heroicons/react/16/solid";
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const {isConnected} = useMetamask();
 
-    return (<div className="w-64 bg-blue-600 text-white p-4 space-y-2 border-r-4 border-blue-700 shadow-lg relative">
-        <div className="text-xl font-bold mb-6 text-center">
-            Certificazioni
-        </div>
-        <ul className="space-y-2">
-            <li>
-                <a onClick={() => navigate('/uploadDocument')}
-                   className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
-                    <i className="mr-2 fas fa-file-upload group-hover:text-white"></i>
-                    <span className="group-hover:text-white">Carica Documento</span>
-                </a>
-            </li>
-            <li>
-                <a onClick={() => navigate('/myDocuments')}
-                   className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
-                    <i className="mr-2 fas fa-home group-hover:text-white"></i>
-                    <span className="group-hover:text-white">Miei Documenti</span>
-                </a>
-            </li>
-            <li>
-                <a onClick={() => navigate('/allDocuments')}
-                   className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
-                    <i className="mr-2 fas fa-file-upload group-hover:text-white"></i>
-                    <span className="group-hover:text-white">Certifica Documento</span>
-                </a>
-            </li>
-            <li>
-                <a className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
-                    <i className="mr-2 fas fa-history group-hover:text-white"></i>
-                    <span className="group-hover:text-white">Storico Certificazioni</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" className="block py-2 px-4 hover:bg-blue-700 rounded-md transition-colors group">
-                    <i className="mr-2 fas fa-cog group-hover:text-white"></i>
-                    <span className="group-hover:text-white">Impostazioni</span>
-                </a>
-            </li>
-        </ul>
+    const menuItems = [
+        {path: '/', label: 'Dashboard', icon: <HomeIcon className="w-5 h-5"/>},
+        {path: '/uploadDocument', label: 'Upload Document', icon: <ArrowUpTrayIcon className="w-5 h-5" />},
+        {path: '/myDocuments', label: 'My Documents', icon: <FolderIcon className="w-5 h-5" /> },
+        { path: '/allDocuments', label: 'All Documents', icon: <DocumentIcon className="w-5 h-5" /> },
+    ];
 
-        {/* Footer Sidebar */}
-        <div className="absolute bottom-0 left-0 w-full p-4 bg-blue-700 border-t border-blue-800">
-            <div className="flex items-center space-x-2">
-                <div className="avatar">
-                    <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img
-                            src="/placeholder-avatar.jpg"
-                            alt="User"
-                            className="object-cover"
-                        />
+    return (
+        <div className="w-64 min-h-screen bg-base-100 border-r border-base-300 flex flex-col">
+            <nav className="flex-1 px-3 py-4">
+                <div className="space-y-1">
+                    {menuItems.map((item) => (
+                        <button
+                            key={item.path}
+                            onClick={() => navigate(item.path)}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all cursor-pointer
+                ${location.pathname === item.path
+                                ? 'bg-primary/10 text-primary font-semibold'
+                                : 'hover:bg-base-200 text-base-content/80'}`}
+                        >
+                            {item.icon}
+                            <span className="text-sm">{item.label}</span>
+                        </button>
+                    ))}
+                </div>
+            </nav>
+            {isConnected && (
+                <div className="p-4 border-t border-base-300">
+                    <div className="text-sm font-medium">Network Status</div>
+                    <div className="flex items-center gap-2 text-sm">
+                        <div className="badge badge-success badge-xs"></div>
+                        <span>Ethereum Mainnet</span>
                     </div>
                 </div>
-                <div>
-                    <p className="text-sm font-semibold">Nome Utente</p>
-                    <p className="text-xs opacity-75">Admin</p>
-                </div>
-            </div>
+            )}
         </div>
-    </div>
     );
-}
+};
 
 export default Sidebar;

@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 import {ethers} from "ethers";
 
 export const calculateDocumentHash = async (document: Document) => {
-    let baseString = document.title! + document.ownerWallet + document.uploadTimestamp;
+    let baseString = document.title! + document.ownerWallet;
 
     if (document.content) {
         const buffer = await document.content.arrayBuffer();

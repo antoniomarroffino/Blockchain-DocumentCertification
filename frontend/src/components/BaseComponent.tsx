@@ -1,13 +1,8 @@
-import React, { ReactNode } from 'react';
-import DocumentUploader from './DocumentUploader';
+import DocumentUploader from '../pages/DocumentUploader.tsx';
 import Sidebar from "./common/Sidebar.tsx";
 import Footer from "./common/Footer.tsx";
 
-interface BaseComponentProps {
-    children?: ReactNode;
-}
-
-const BaseComponent: React.FC<BaseComponentProps> = () => {
+const BaseComponent = () => {
     return (
         <div className="flex min-h-screen">
             {/* Sidebar Blu Fissa con bordo */}

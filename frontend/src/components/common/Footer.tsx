@@ -1,13 +1,16 @@
-import React from "react";
-
-const Footer: React.FC = () => {
+const Footer = () => {
     return (
-        <footer className="bg-white shadow-md p-4 text-center">
-            <p className="text-sm text-gray-600">
-                © 2023 Document Certification Platform. Tutti i diritti riservati.
-            </p>
+        <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+            <div>
+                <p>© 2024 CertifyChain - All rights reserved</p>
+                <div className="flex gap-4 mt-2">
+                    <a className="link link-hover">Terms</a>
+                    <a className="link link-hover">Privacy</a>
+                    <a className="link link-hover">Documentation</a>
+                </div>
+            </div>
         </footer>
     );
-}
+};
 
 export default Footer;
