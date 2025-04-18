@@ -4,9 +4,6 @@ pragma solidity ^0.8.10;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 contract DocumentCertification is Initializable {
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
     function initialize() public initializer {}
 
     struct Certification {
