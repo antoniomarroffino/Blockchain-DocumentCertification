@@ -1,0 +1,117 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xddB42F1B5162df879dFFfFf7cd575d3F358061E6",
+      "txHash": "0x143da6b78b6f3cd4b79bb03796af77a7043373ee4af7b3c8a7d7d295daa6eab4",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "ea954f9c4c7b2a65b254c328069769925ad2d86a5d3a93ee612487df44d452c9": {
+      "address": "0xc54C214c66cBac0A645631540C9D22974C853219",
+      "txHash": "0x456b3144f7520393ed798da343f1c5af7be6781da5dc7a50a67f9de7d8e243a3",
+      "layout": {
+        "solcVersion": "0.8.28",
+        "storage": [
+          {
+            "label": "documentCertifications",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_bytes32,t_struct(Certification)292_storage)",
+            "contract": "DocumentCertification",
+            "src": "contracts\\DocumentCertification.sol:25"
+          }
+        ],
+        "types": {
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)7_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(Certification)292_storage)": {
+            "label": "mapping(bytes32 => struct DocumentCertification.Certification)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Certification)292_storage": {
+            "label": "struct DocumentCertification.Certification",
+            "members": [
+              {
+                "label": "hash",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "certifier",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

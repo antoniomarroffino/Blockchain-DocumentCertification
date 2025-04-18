@@ -1,6 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config";
+import "@openzeppelin/hardhat-upgrades";
 import "@nomicfoundation/hardhat-toolbox";
 
+require('@openzeppelin/hardhat-upgrades');
 require("dotenv").config();
 
 const config: HardhatUserConfig = {

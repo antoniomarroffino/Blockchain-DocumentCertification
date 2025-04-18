@@ -1,15 +1,24 @@
-import { ethers } from 'hardhat';
-import {DocumentCertification__factory, SimpleContract__factory} from "../typechain-types";
+import {ethers, upgrades} from "hardhat";
+import {DocumentCertification__factory} from "../typechain-types";
 
 
 const deploy = async () =>{
+    const [deployer] = await ethers.getSigners();
+    console.log("Deploying contracts with the account:", deployer.address);
 
-    const signer = (await ethers.getSigners())[0];
+    console.log("Deploying upgradeable proxy...");
+    const factory = new DocumentCertification__factory(deployer);
 
-    const newDocumentCertificationDeployTx = await new DocumentCertification__factory(signer).deploy();
+    const proxy = await upgrades.deployProxy(factory, []);
+    await proxy.waitForDeployment();
 
-    console.log(`Document Certification deployed at ${await newDocumentCertificationDeployTx.getAddress()}`);
 
+    console.log("Contract deployed at address:", await proxy.getAddress());
 }
 
-deploy();
+deploy()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });

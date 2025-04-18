@@ -1,8 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
-contract DocumentCertification {
-    constructor(){}
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
+contract DocumentCertification is Initializable {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() initializer {}
+
+    function initialize() public initializer {}
 
     struct Certification {
         bytes32 hash;
