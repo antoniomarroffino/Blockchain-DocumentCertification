@@ -13,15 +13,17 @@ public class DocumentDTO {
     private String title;
     private String ownerWallet;
     private Instant uploadTimestamp;
+    private String hash;
 
     public DocumentDTO() {
     }
 
-    public DocumentDTO(Long id, String title, String ownerWallet, Instant uploadTimestamp) {
+    public DocumentDTO(Long id, String title, String ownerWallet, Instant uploadTimestamp, String hash) {
         this.id = id;
         this.title = title;
         this.ownerWallet = ownerWallet;
         this.uploadTimestamp = uploadTimestamp;
+        this.hash = hash;
     }
 
     public Long getId() {
@@ -54,5 +56,13 @@ public class DocumentDTO {
 
     public void setUploadTimestamp(Instant uploadTimestamp) {
         this.uploadTimestamp = uploadTimestamp;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

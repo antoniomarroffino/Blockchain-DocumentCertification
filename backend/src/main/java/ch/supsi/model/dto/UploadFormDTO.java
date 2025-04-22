@@ -15,6 +15,9 @@ public class UploadFormDTO {
     @FormParam("ownerWallet")
     private String ownerWallet;
 
+    @FormParam("hash")
+    private String hash;
+
     @FormParam("file")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     private InputStream file;
@@ -22,9 +25,10 @@ public class UploadFormDTO {
     public UploadFormDTO() {
     }
 
-    public UploadFormDTO(String title, String ownerWallet, InputStream file) {
+    public UploadFormDTO(String title, String ownerWallet, String hash, InputStream file) {
         this.title = title;
         this.ownerWallet = ownerWallet;
+        this.hash = hash;
         this.file = file;
     }
 
@@ -42,6 +46,14 @@ public class UploadFormDTO {
 
     public void setOwnerWallet(String ownerWallet) {
         this.ownerWallet = ownerWallet;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public InputStream getFile() {

@@ -1,7 +1,6 @@
 import {DocumentTextIcon} from "@heroicons/react/24/outline";
 import {DocumentDTO} from "@dti-isin/backend-api-client";
-import {useEffect, useState} from "react";
-import {calculateDocumentHash} from "../../utils/hashGenerator.ts";
+import {useState} from "react";
 import FilePreview from "./FilePreview.tsx";
 import {useGetFileContentByDocumentId} from "../../hook/backend/useGetFileContentByDocumentId.ts";
 import CertificationBadge from "../CertificationBadge.tsx";
@@ -11,24 +10,8 @@ interface MyDocumentRowProps {
 }
 
 const MyDocumentRow = ({document}: MyDocumentRowProps) => {
-    const [docHash, setDocHash] = useState<string | undefined>(undefined);
     const [showPreview, setShowPreview] = useState(false);
-    const {data: documentContent, isLoading: isLoadingDocumentContent} = useGetFileContentByDocumentId(document.id!);
-
-
-    useEffect(() => {
-        const computeHash = async () => {
-            if (!documentContent) return;
-            try {
-                const hash = await calculateDocumentHash({document, documentContent});
-                setDocHash(hash);
-            } catch (error) {
-                console.error('Error computing document hash:', error);
-            }
-        };
-
-        computeHash();
-    }, [document, documentContent]);
+    const {data: documentContent} = useGetFileContentByDocumentId(document.id!);
 
     return (
         <>
@@ -48,14 +31,7 @@ const MyDocumentRow = ({document}: MyDocumentRowProps) => {
                     {new Date(document.uploadTimestamp!).toLocaleDateString()}
                 </td>
                 <td>
-                    {isLoadingDocumentContent || !docHash ? (
-                        <div className="badge gap-2 opacity-50">
-                            <div className="h-4 w-4 rounded-full bg-base-300 animate-pulse"/>
-                            Loading content
-                        </div>
-                    ) : (
-                        <CertificationBadge docHash={docHash}/>
-                    )}
+                    <CertificationBadge docHash={document.hash!}/>
                 </td>
                 <td>
                     <button
@@ -69,7 +45,7 @@ const MyDocumentRow = ({document}: MyDocumentRowProps) => {
 
             {showPreview && documentContent && (
                 <FilePreview
-                    file={documentContent as File}
+                    file={documentContent}
                     onClose={() => setShowPreview(false)}
                 />
             )}

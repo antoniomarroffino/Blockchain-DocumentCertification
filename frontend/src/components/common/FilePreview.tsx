@@ -12,7 +12,7 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
 
     useEffect(() => {
         const reader = new FileReader()
-
+        console.log(file.type);
         if (file.type.startsWith('image/')) {
             reader.readAsDataURL(file)
             reader.onload = () => setPreviewContent(reader.result as string)

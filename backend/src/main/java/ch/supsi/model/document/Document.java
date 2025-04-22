@@ -13,17 +13,19 @@ public class Document {
     private Instant uploadTimestamp;
     @Lob
     @Column(name = "content", columnDefinition = "LONGBLOB")
-    public byte[] content;
+    private byte[] content;
+    private String hash;
 
     public Document() {
     }
 
-    public Document(Long id, String title, String ownerWallet, Instant uploadTimestamp,  byte[] content) {
+    public Document(Long id, String title, String ownerWallet, Instant uploadTimestamp,  byte[] content, String hash) {
         this.id = id;
         this.title = title;
         this.ownerWallet = ownerWallet;
         this.uploadTimestamp = uploadTimestamp;
         this.content = content;
+        this.hash = hash;
     }
 
     public void setId(Long id) {
@@ -64,5 +66,13 @@ public class Document {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

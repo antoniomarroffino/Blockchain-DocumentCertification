@@ -1,6 +1,5 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {DocumentDTO} from "@dti-isin/backend-api-client"
-import {calculateDocumentHash} from "../../utils/hashGenerator.ts";
 import {JsonRpcSigner} from "ethers";
 import {DocumentCertification__factory} from "../../typechain-types";
 import {contractAddress} from "../../../config/config.ts";
@@ -8,19 +7,17 @@ import {contractAddress} from "../../../config/config.ts";
 export const useDocumentCertification = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<string | undefined, Error, {document: DocumentDTO, documentContent: Blob, signer: JsonRpcSigner}>({
-        mutationFn: async ({ document, documentContent, signer })=> {
-            if(!signer){
-                console.log("signer not found");
+    return useMutation<string | undefined, Error, {document: DocumentDTO,  signer: JsonRpcSigner}>({
+        mutationFn: async ({ document,  signer })=> {
+            if(!signer || !document.hash){
+                console.log("signer or document hash undefined");
                 return;
             }
-            const docHash = await calculateDocumentHash({document, documentContent});
-            console.log("Certify with this docHash: " + docHash);
             const documentCertificationContractForTX = DocumentCertification__factory.connect(contractAddress, signer);
-            const tx = await documentCertificationContractForTX.certifyDocument(docHash);
+            const tx = await documentCertificationContractForTX.certifyDocument(document.hash);
             await tx.wait();
 
-            return docHash;
+            return document.hash;
         },
         onSuccess: (docHash, parameters) => {
             queryClient.invalidateQueries({

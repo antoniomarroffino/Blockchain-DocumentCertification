@@ -30,6 +30,7 @@ public class DocumentService implements IDocumentService {
         document.setOwnerWallet(uploadFormDTO.getOwnerWallet());
         document.setUploadTimestamp(Instant.now());
         document.setContent(uploadFormDTO.getFile().readAllBytes());
+        document.setHash(uploadFormDTO.getHash());
         this.documentRepository.persist(document);
         return this.documentMapper.toDTO(document);
     }

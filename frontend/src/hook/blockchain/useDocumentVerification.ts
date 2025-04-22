@@ -8,7 +8,6 @@ export const useDocumentVerification = (docHash: string) => {
         queryFn: async () => {
             if(!documentCertificationContractNoTX || !docHash)
                 throw new Error("Document Certification contract not initialized!");
-            console.log("Hash dentro all'hook: " + docHash);
             return documentCertificationContractNoTX.isDocumentCertified(docHash);
         },
         enabled: !!docHash,

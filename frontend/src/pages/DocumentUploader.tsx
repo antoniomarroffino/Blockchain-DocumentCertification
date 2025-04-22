@@ -12,7 +12,7 @@ const DocumentUploader = () => {
     const {isConnected, signer} = useMetamask();
     const [document, setDocument] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
-    const {mutateAsync: uploadDocument} = useUploadDocument();
+    const {mutateAsync: uploadDocument, isPending: isUploadingDocument} = useUploadDocument();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [showPreview, setShowPreview] = useState(false)
 
@@ -90,6 +90,15 @@ const DocumentUploader = () => {
                         <p className="mb-6">Please connect your wallet to start certifying documents</p>
                     </div>
                 </div>
+            </div>
+        );
+    }
+
+    if (isUploadingDocument) {
+        return (
+            <div className="flex flex-col items-center justify-center h-64 space-y-4">
+                <span className="loading loading-infinity loading-lg text-primary"></span>
+                <p className="text-gray-500">Uploading document...</p>
             </div>
         );
     }

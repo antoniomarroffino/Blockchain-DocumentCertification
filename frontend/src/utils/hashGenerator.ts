@@ -1,14 +1,14 @@
-import {DocumentDTO} from "@dti-isin/backend-api-client"
 import CryptoJS from "crypto-js";
 import {ethers} from "ethers";
 
 export interface CalculateDocumentHashPayload {
-    document: DocumentDTO,
+    title: string,
+    ownerWallet: string,
     documentContent: Blob,
 }
 
-export const calculateDocumentHash = async ({document, documentContent} : CalculateDocumentHashPayload) => {
-    let baseString = document.title! + document.ownerWallet;
+export const calculateDocumentHash = async ({title, ownerWallet, documentContent} : CalculateDocumentHashPayload) => {
+    let baseString = title + ownerWallet;
 
     if (documentContent) {
         const buffer = await documentContent.arrayBuffer();

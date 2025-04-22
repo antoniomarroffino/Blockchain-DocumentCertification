@@ -15,6 +15,7 @@ public class DocumentMapper implements IBaseMapper<Document, DocumentDTO> {
         dto.setTitle(entity.getTitle());
         dto.setOwnerWallet(entity.getOwnerWallet());
         dto.setUploadTimestamp(entity.getUploadTimestamp());
+        dto.setHash(entity.getHash());
 
         return dto;
     }
@@ -29,6 +30,7 @@ public class DocumentMapper implements IBaseMapper<Document, DocumentDTO> {
         document.setTitle(dto.getTitle());
         document.setOwnerWallet(dto.getOwnerWallet());
         document.setUploadTimestamp(dto.getUploadTimestamp());
+        document.setHash(dto.getHash());
 
         return document;
     }
