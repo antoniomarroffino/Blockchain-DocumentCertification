@@ -1,30 +1,29 @@
 import { DocumentTextIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 import {DocumentDTO} from "@dti-isin/backend-api-client"
-import {useDocumentVerification} from "../hook/blockchain/useDocumentVerification.ts";
 import {useDocumentCertification} from "../hook/blockchain/useDocumentCertification.ts";
 import {calculateDocumentHash} from "../utils/hashGenerator.ts";
 import { toast } from 'react-hot-toast';
 import {useMetamask} from "../hook/useMetamask.ts";
-import {ExclamationTriangleIcon} from "@heroicons/react/16/solid";
 import {useGetFileContentByDocumentId} from "../hook/backend/useGetFileContentByDocumentId.ts";
+import CertificationBadge from "./CertificationBadge.tsx";
 
 interface DocumentCardProps {
     document: DocumentDTO;
 }
 
 const DocumentCard = ({ document }: DocumentCardProps) => {
-    const [docHash, setDocHash] = useState<string | null>(null);
-    const { data: isCertified, isLoading: isVerifying } = useDocumentVerification(docHash || '');
+    const [docHash, setDocHash] = useState<string | undefined>(undefined);
     const { mutateAsync: certifyDocument, isPending } = useDocumentCertification();
-    const {data: documentContent, isLoading: isLoadingDocumentContent} = useGetFileContentByDocumentId(document.id!);
-    const {signer} = useMetamask();
+    const { data: documentContent, isLoading: isLoadingDocumentContent } = useGetFileContentByDocumentId(document.id!);
+    const { signer } = useMetamask();
+    const [isCertified, setIsCertified] = useState<boolean>(false);
 
     useEffect(() => {
         const computeHash = async () => {
             if (!documentContent) return;
             try {
-                const hash = await calculateDocumentHash({document, documentContent});
+                const hash = await calculateDocumentHash({ document, documentContent });
                 setDocHash(hash);
             } catch (error) {
                 console.error('Error computing document hash:', error);
@@ -36,19 +35,11 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     }, [document, documentContent]);
 
     const handleCertification = async () => {
-        if (!docHash) return;
+        if (!docHash || !signer || !documentContent) return;
 
         try {
-            if(!signer){
-                console.error("Signer not setted");
-                return;
-            }
-
-            if(!documentContent){
-                return;
-            }
             await toast.promise(
-                certifyDocument({document, documentContent, signer}),
+                certifyDocument({ document, documentContent, signer }),
                 {
                     loading: 'Certificazione in corso...',
                     success: 'Documento certificato con successo!',
@@ -60,7 +51,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         }
     };
 
-    if (isVerifying || !docHash) {
+    if (isLoadingDocumentContent || !docHash) {
         return (
             <div className="card bg-base-100 shadow-xl animate-pulse">
                 <div className="card-body">
@@ -77,20 +68,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     }
 
     return (
-        <div
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow relative"
-        >
-            {isCertified ? (
-                <div className="absolute top-2 right-2">
-                    <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
-                    <CheckBadgeIcon className="h-6 w-6 text-green-600 relative" />
-                </div>
-            ) : (
-                <div className="absolute top-2 right-2 animate-bounce">
-                    <ExclamationTriangleIcon className="h-6 w-6 text-warning/80" />
-                </div>
-            )}
-
+        <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow relative">
             <div className="card-body">
                 <div className="flex items-start mb-4">
                     <DocumentTextIcon className="h-8 w-8 text-blue-600 mr-4" />
@@ -100,25 +78,13 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                             <p className="text-sm text-base-content/70">
                                 {new Date(document.uploadTimestamp!).toLocaleDateString()}
                             </p>
-                            <span className={`badge gap-2 ${isCertified ? 'badge-success' : 'badge-warning animate-text-pulse'}`}>
-                                {isCertified ? (
-                                    <>
-                                        <CheckBadgeIcon className="h-4 w-4" />
-                                        Certificato
-                                    </>
-                                ) : (
-                                    <>
-                                        <ExclamationTriangleIcon className="h-4 w-4" />
-                                        Non Certificato
-                                    </>
-                                )}
-                            </span>
+                            <CertificationBadge docHash={docHash} setIsCertified={setIsCertified} />
                         </div>
                     </div>
                 </div>
 
                 {!isCertified && (
-                    <div className={`mt-4 transition-opacity `}>
+                    <div className="mt-4">
                         <button
                             onClick={handleCertification}
                             className="btn btn-block btn-primary gap-2"
@@ -139,24 +105,12 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                     </div>
                 )}
 
-
-                {isCertified && (
-                    <div className="mt-4 p-3 bg-success/10 rounded-lg border border-success/20">
-                        <div className="flex items-center text-sm text-success">
-                            <CheckBadgeIcon className="h-4 w-4 mr-2" />
-                            <span className="font-mono break-all">
-                                {docHash.slice(0, 12)}...{docHash.slice(-12)}
-                            </span>
-                        </div>
+                {isPending && (
+                    <div className="absolute inset-0 bg-base-100/50 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                        <span className="loading loading-infinity loading-lg text-primary"></span>
                     </div>
                 )}
             </div>
-
-            {isPending && (
-                <div className="absolute inset-0 bg-base-100/50 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                    <span className="loading loading-infinity loading-lg text-primary"></span>
-                </div>
-            )}
         </div>
     );
 };

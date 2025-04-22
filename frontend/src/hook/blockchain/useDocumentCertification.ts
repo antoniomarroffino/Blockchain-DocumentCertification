@@ -15,7 +15,7 @@ export const useDocumentCertification = () => {
                 return;
             }
             const docHash = await calculateDocumentHash({document, documentContent});
-            console.log(docHash);
+            console.log("Certify with this docHash: " + docHash);
             const documentCertificationContractForTX = DocumentCertification__factory.connect(contractAddress, signer);
             const tx = await documentCertificationContractForTX.certifyDocument(docHash);
             await tx.wait();
