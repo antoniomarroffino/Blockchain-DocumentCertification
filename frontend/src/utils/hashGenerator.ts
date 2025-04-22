@@ -1,12 +1,17 @@
-import {Document} from "@dti-isin/backend-api-client"
+import {DocumentDTO} from "@dti-isin/backend-api-client"
 import CryptoJS from "crypto-js";
 import {ethers} from "ethers";
 
-export const calculateDocumentHash = async (document: Document) => {
+export interface CalculateDocumentHashPayload {
+    document: DocumentDTO,
+    documentContent: Blob,
+}
+
+export const calculateDocumentHash = async ({document, documentContent} : CalculateDocumentHashPayload) => {
     let baseString = document.title! + document.ownerWallet;
 
-    if (document.content) {
-        const buffer = await document.content.arrayBuffer();
+    if (documentContent) {
+        const buffer = await documentContent.arrayBuffer();
         const fileWordArray = CryptoJS.lib.WordArray.create(buffer);
         const fileHex = fileWordArray.toString();
         baseString += fileHex;

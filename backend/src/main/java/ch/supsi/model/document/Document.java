@@ -12,6 +12,7 @@ public class Document {
     private String ownerWallet;
     private Instant uploadTimestamp;
     @Lob
+    @Column(name = "content", columnDefinition = "LONGBLOB")
     public byte[] content;
 
     public Document() {
@@ -23,6 +24,10 @@ public class Document {
         this.ownerWallet = ownerWallet;
         this.uploadTimestamp = uploadTimestamp;
         this.content = content;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

@@ -1,24 +1,28 @@
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { Document } from "@dti-isin/backend-api-client";
+import { DocumentDTO } from "@dti-isin/backend-api-client";
 import { useState, useEffect } from "react";
 import { useDocumentVerification } from "../../hook/blockchain/useDocumentVerification.ts";
 import { calculateDocumentHash } from "../../utils/hashGenerator.ts";
 import FilePreview from "./FilePreview.tsx";
+import {useGetFileContentByDocumentId} from "../../hook/backend/useGetFileContentByDocumentId.ts";
 
 interface MyDocumentRowProps {
-    document: Document;
+    document: DocumentDTO;
 }
 
 const MyDocumentRow = ({ document }: MyDocumentRowProps) => {
     const [docHash, setDocHash] = useState<string | null>(null);
     const [showPreview, setShowPreview] = useState(false);
+    const {data: documentContent, isLoading: isLoadingDocumentContent} = useGetFileContentByDocumentId(document.id!);
     const { data: isCertified, isLoading: isVerifying } = useDocumentVerification(docHash || '');
+
 
     useEffect(() => {
         const computeHash = async () => {
+            if (!documentContent) return;
             try {
-                const hash = await calculateDocumentHash(document);
+                const hash = await calculateDocumentHash({document, documentContent});
                 setDocHash(hash);
             } catch (error) {
                 console.error('Error computing document hash:', error);
@@ -26,7 +30,7 @@ const MyDocumentRow = ({ document }: MyDocumentRowProps) => {
         };
 
         computeHash();
-    }, [document]);
+    }, [document, documentContent]);
 
     const StatusBadge = () => {
         if (isVerifying) {
@@ -81,9 +85,9 @@ const MyDocumentRow = ({ document }: MyDocumentRowProps) => {
                 </td>
             </tr>
 
-            {showPreview && document.content && (
+            {showPreview && documentContent && (
                 <FilePreview
-                    file={document.content}
+                    file={documentContent as File}
                     onClose={() => setShowPreview(false)}
                 />
             )}

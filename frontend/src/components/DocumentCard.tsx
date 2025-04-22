@@ -1,27 +1,30 @@
 import { DocumentTextIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
-import {Document} from "@dti-isin/backend-api-client"
+import {DocumentDTO} from "@dti-isin/backend-api-client"
 import {useDocumentVerification} from "../hook/blockchain/useDocumentVerification.ts";
 import {useDocumentCertification} from "../hook/blockchain/useDocumentCertification.ts";
 import {calculateDocumentHash} from "../utils/hashGenerator.ts";
 import { toast } from 'react-hot-toast';
 import {useMetamask} from "../hook/useMetamask.ts";
 import {ExclamationTriangleIcon} from "@heroicons/react/16/solid";
+import {useGetFileContentByDocumentId} from "../hook/backend/useGetFileContentByDocumentId.ts";
 
 interface DocumentCardProps {
-    document: Document;
+    document: DocumentDTO;
 }
 
 const DocumentCard = ({ document }: DocumentCardProps) => {
     const [docHash, setDocHash] = useState<string | null>(null);
     const { data: isCertified, isLoading: isVerifying } = useDocumentVerification(docHash || '');
     const { mutateAsync: certifyDocument, isPending } = useDocumentCertification();
+    const {data: documentContent, isLoading: isLoadingDocumentContent} = useGetFileContentByDocumentId(document.id!);
     const {signer} = useMetamask();
 
     useEffect(() => {
         const computeHash = async () => {
+            if (!documentContent) return;
             try {
-                const hash = await calculateDocumentHash(document);
+                const hash = await calculateDocumentHash({document, documentContent});
                 setDocHash(hash);
             } catch (error) {
                 console.error('Error computing document hash:', error);
@@ -30,7 +33,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
         };
 
         computeHash();
-    }, [document]);
+    }, [document, documentContent]);
 
     const handleCertification = async () => {
         if (!docHash) return;
@@ -40,8 +43,12 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                 console.error("Signer not setted");
                 return;
             }
+
+            if(!documentContent){
+                return;
+            }
             await toast.promise(
-                certifyDocument({document, signer}),
+                certifyDocument({document, documentContent, signer}),
                 {
                     loading: 'Certificazione in corso...',
                     success: 'Documento certificato con successo!',

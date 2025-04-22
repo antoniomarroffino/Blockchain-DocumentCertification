@@ -38,6 +38,7 @@ const DocumentUploader = () => {
             await uploadDocument({
                 title: document.name,
                 ownerWallet: signer.address,
+                file: document
             });
             toast.success('Documento caricato con successo!');
             setDocument(null);

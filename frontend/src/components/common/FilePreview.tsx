@@ -3,7 +3,7 @@ import { DocumentTextIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react'
 
 type FilePreviewProps = {
-    file: File
+    file: Blob
     onClose: () => void
 }
 
@@ -59,7 +59,6 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
                 </div>
 
                 <div className="mt-4 text-sm text-gray-500">
-                    <p>Nome file: {file.name}</p>
                     <p>Dimensione: {(file.size / 1024).toFixed(2)} KB</p>
                 </div>
             </div>

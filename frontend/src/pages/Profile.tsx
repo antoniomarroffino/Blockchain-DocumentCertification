@@ -1,4 +1,3 @@
-// Profile.tsx
 'use client'
 import {useMetamask} from "../hook/useMetamask.ts";
 import {
