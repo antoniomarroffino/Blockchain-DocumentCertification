@@ -1,102 +1,103 @@
-import {useMetamask} from "../../hook/useMetamask.ts";
-import {UserCircleIcon, WalletIcon} from "@heroicons/react/24/outline";
-import {CheckBadgeIcon} from "@heroicons/react/24/solid";
-import {useNavigate} from "react-router-dom";
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMetamask } from '../../hook/useMetamask.ts';
+import {
+    WalletIcon,
+    ChevronDownIcon,
+    DocumentDuplicateIcon,
+    IdentificationIcon,
+} from '@heroicons/react/24/outline';
+import { CheckBadgeIcon } from '@heroicons/react/24/solid';
+import toast from 'react-hot-toast';
 
-const Header = () => {
+export default function Header() {
     const navigate = useNavigate();
-    const {
-        network,
-        isConnected,
-        signer,
-        connectWithMetamask
-    } = useMetamask();
-    const shortAddress = signer?.address
-        ? `${signer.address.slice(0, 6)}...${signer.address.slice(-4)}`
-        : "";
+    const { network, isConnected, signer, connectWithMetamask } = useMetamask();
+    const [open, setOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const fullAddress = signer?.address || '';
+
+    const handleConnect = async () => {
+        try {
+            await connectWithMetamask();
+            toast.success('Wallet connected!');
+        } catch {
+            toast.error('Could not connect wallet');
+        }
+    };
+
+    const copyAddress = () => {
+        navigator.clipboard.writeText(fullAddress);
+        toast('Address copied', { icon: '📋' });
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     return (
-        <div className="navbar bg-base-100 border-b border-base-200 px-6">
-            <div className="flex-1">
-                <h1 className="text-xl font-bold flex items-center gap-2">
-                    <CheckBadgeIcon className="w-6 h-6 text-primary"/>
-                    <span className="hidden sm:inline">CertifyChain</span>
-                </h1>
+        <header className="bg-base-100 border-b border-base-200 px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+                <CheckBadgeIcon className="w-8 h-8 text-primary" />
+                <h1 className="text-2xl font-extrabold tracking-tight">CertifyChain</h1>
             </div>
 
-            <div className="flex-none gap-4">
-                <div className="dropdown dropdown-end">
-                    <label
-                        tabIndex={0}
-                        className="btn btn-ghost flex items-center gap-2 hover:bg-base-200 transition-all"
-                    >
-                        {isConnected ? (
-                            <>
-                                <div className="avatar placeholder">
-                                    <UserCircleIcon className="w-8 h-8"/>
-                                </div>
-                                <div className="hidden md:flex flex-col items-start">
-                                    <span className="text-sm font-medium">{shortAddress}</span>
-                                    <span className="text-xs text-success flex items-center gap-1">
-                    <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                    Connected
-                  </span>
-                                </div>
-                            </>
-                        ) : (
-                            <button
-                                onClick={connectWithMetamask}
-                                className="btn btn-primary gap-2"
-                            >
-                                <WalletIcon className="w-5 h-5"/>
-                                Connect Wallet
-                            </button>
-                        )}
-                    </label>
+            <div className="flex items-center" ref={dropdownRef}>
+                {isConnected ? (
+                    <div className="relative">
+                        <button
+                            onClick={() => setOpen(o => !o)}
+                            className="flex items-center space-x-2 bg-white border border-base-200 px-4 py-2 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer"
+                        >
+                            <WalletIcon className="w-6 h-6 text-primary" />
+                            <span className="font-medium text-sm truncate max-w-[10rem]">{fullAddress}</span>
+                            <ChevronDownIcon className={`w-5 h-5 text-gray-500 transform transition-transform ${open ? 'rotate-180' : ''}`} />
+                        </button>
 
-                    <ul
-                        tabIndex={0}
-                        className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-64"
-                    >
-                        {isConnected ? (
-                            <>
-                                <li className="menu-title">
-                                    <span>Wallet Connected</span>
-                                </li>
-                                <li>
-                                    <div className="flex flex-col px-4 py-2 cursor-auto">
-                                        <div className="text-sm font-medium truncate">{shortAddress}</div>
-                                        <div className="text-xs text-gray-500 mt-1">
-                                            Network: {network || '-'}
+                        {open && (
+                            <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl ring-1 ring-black ring-opacity-5 z-20">
+                                <div className="p-4 space-y-4">
+                                    <div className="flex items-start space-x-3">
+                                        <WalletIcon className="w-10 h-10 text-primary" />
+                                        <div className="flex-1">
+                                            <p className="text-sm font-semibold text-gray-800 break-all">{fullAddress}</p>
+                                            <p className="text-xs text-gray-500 mt-1">Network: {network || '-'}</p>
                                         </div>
+                                        <button
+                                            onClick={copyAddress}
+                                            className="p-1 text-gray-500 hover:text-primary transition cursor-pointer"
+                                        >
+                                            <DocumentDuplicateIcon className="w-5 h-5" />
+                                        </button>
                                     </div>
-                                </li>
-                                <li>
+                                    <div className="border-t border-base-200" />
                                     <button
-                                        onClick={() => navigate('/profile')}
-                                        className="flex items-center gap-2"
+                                        onClick={() => { navigate('/profile'); setOpen(false); }}
+                                        className="w-full flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition cursor-pointer"
                                     >
-                                        <UserCircleIcon className="w-4 h-4"/>
-                                        Profile
+                                        <IdentificationIcon className="w-5 h-5" />
+                                        <span className="text-sm font-medium">View Profile</span>
                                     </button>
-                                </li>
-                            </>
-                        ) : (
-                            <li>
-                                <button
-                                    onClick={connectWithMetamask}
-                                    className="btn btn-primary btn-sm w-full gap-2"
-                                >
-                                    <WalletIcon className="w-4 h-4"/>
-                                    Connect Wallet
-                                </button>
-                            </li>
+                                </div>
+                            </div>
                         )}
-                    </ul>
-                </div>
+                    </div>
+                ) : (
+                    <button
+                        onClick={handleConnect}
+                        className="flex items-center space-x-2 bg-primary text-white px-5 py-2 rounded-full shadow-lg hover:shadow-xl transform active:scale-95 transition"
+                    >
+                        <WalletIcon className="w-6 h-6" />
+                        <span className="font-semibold">Connect Wallet</span>
+                    </button>
+                )}
             </div>
-        </div>
+        </header>
     );
-};
-
-export default Header;
+}

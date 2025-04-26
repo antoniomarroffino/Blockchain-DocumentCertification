@@ -36,9 +36,7 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public byte[] getContentBytesByDocumentId(Long id) {
-        System.out.println("ei" + id + " size: " + this.documentRepository.count());
         Document document = this.documentRepository.findById(id);
-        System.out.println("ie" + id);
         if(document == null)
             return null;
         return document.getContent();
