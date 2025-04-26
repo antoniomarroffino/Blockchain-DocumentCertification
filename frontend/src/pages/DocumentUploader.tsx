@@ -104,9 +104,9 @@ const DocumentUploader = () => {
     }
 
     return (
-        <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-                <h2 className="card-title text-2xl mb-6">Certify New Document</h2>
+        <div className="card bg-base-100 shadow-sm md:shadow-xl">
+            <div className="card-body p-4 md:p-6">
+                <h2 className="card-title text-xl md:text-2xl mb-4 md:mb-6">Certify New Document</h2>
                 <div
                     className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
                         isDragging ? 'border-primary bg-primary/10' : 'border-base-300'
@@ -167,20 +167,20 @@ const DocumentUploader = () => {
                                     className="btn btn-ghost"
                                     onClick={() => setShowPreview(true)}
                                 >
-                                    Anteprima
+                                    Preview
                                 </button>
                                 <button
                                     className="btn btn-ghost text-error"
                                     onClick={handleCancelUpload}
                                 >
-                                    Annulla
+                                    Cancel
                                 </button>
                             </div>
                             <button
                                 className="btn btn-primary"
                                 onClick={handleConfirmUpload}
                             >
-                                Conferma Caricamento
+                                Confirm Load
                             </button>
                         </div>
                     </div>

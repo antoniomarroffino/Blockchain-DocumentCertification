@@ -53,6 +53,7 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
                     const currentSigner = await provider.getSigner();
                     setSigner(currentSigner);
                     await updateBalance(currentSigner.address);
+                    await updateNetworkInfo(provider);
                 }
             } catch (error) {
                 console.error("Error checking connection:", error);

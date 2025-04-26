@@ -19,9 +19,10 @@ function App() {
         <MetamaskProvider>
             <div className="min-h-screen flex flex-col">
                 <Header />
-                <div className="flex flex-1">
-                    <Sidebar />
-                    <main className="flex-1 p-8 bg-base-200">
+                <div className="drawer lg:drawer-open">
+                    <input id="sidebar-drawer" type="checkbox" className="drawer-toggle" />
+                    <div className="drawer-content flex flex-col">
+                        <main className="flex-1 p-4 md:p-8 bg-base-200">
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/uploadDocument" element={<DocumentUploader />} />
@@ -29,7 +30,12 @@ function App() {
                             <Route path="/allDocuments" element={<AllDocuments />} />
                             <Route path="/profile" element={<Profile />} />
                         </Routes>
-                    </main>
+                        </main>
+                    </div>
+                    <div className="drawer-side z-50">
+                        <label htmlFor="sidebar-drawer" className="drawer-overlay"></label>
+                        <Sidebar />
+                    </div>
                 </div>
                 <Footer />
             </div>
