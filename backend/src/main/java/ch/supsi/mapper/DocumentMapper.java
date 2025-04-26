@@ -1,6 +1,6 @@
 package ch.supsi.mapper;
 
-import ch.supsi.model.document.Document;
+import ch.supsi.model.api.Document;
 import ch.supsi.model.dto.DocumentDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 

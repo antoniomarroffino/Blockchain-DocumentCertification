@@ -1,6 +1,6 @@
 package ch.supsi.repository;
 
-import ch.supsi.model.document.Document;
+import ch.supsi.model.api.Document;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

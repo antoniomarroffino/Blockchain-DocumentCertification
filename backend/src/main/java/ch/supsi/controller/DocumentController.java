@@ -1,6 +1,5 @@
 package ch.supsi.controller;
 
-import ch.supsi.model.document.Document;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 import ch.supsi.service.IDocumentService;

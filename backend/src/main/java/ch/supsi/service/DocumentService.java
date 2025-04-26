@@ -1,7 +1,7 @@
 package ch.supsi.service;
 
 import ch.supsi.mapper.DocumentMapper;
-import ch.supsi.model.document.Document;
+import ch.supsi.model.api.Document;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 import ch.supsi.repository.DocumentRepository;
@@ -10,7 +10,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.Instant;
 import java.util.List;
 
@@ -37,7 +36,9 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public byte[] getContentBytesByDocumentId(Long id) {
+        System.out.println("ei" + id + " size: " + this.documentRepository.count());
         Document document = this.documentRepository.findById(id);
+        System.out.println("ie" + id);
         if(document == null)
             return null;
         return document.getContent();
