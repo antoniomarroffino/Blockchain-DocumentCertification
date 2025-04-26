@@ -3,6 +3,7 @@ import "@openzeppelin/hardhat-upgrades";
 import "@nomicfoundation/hardhat-toolbox";
 
 require('@openzeppelin/hardhat-upgrades');
+require("solidity-coverage");
 require("dotenv").config();
 
 const config: HardhatUserConfig = {
