@@ -19,7 +19,7 @@ const CertificationBadge = ({ docHash, setIsCertified }: CertificationBadgeProps
         return (
             <div className="badge gap-2 opacity-50">
                 <div className="h-4 w-4 rounded-full bg-base-300 animate-pulse" />
-                Verifica...
+                Verify...
             </div>
         );
     }
@@ -29,12 +29,12 @@ const CertificationBadge = ({ docHash, setIsCertified }: CertificationBadgeProps
       {isCertified ? (
           <>
               <CheckBadgeIcon className="h-4 w-4" />
-              Certificato
+              Certified
           </>
       ) : (
           <>
               <ExclamationTriangleIcon className="h-4 w-4" />
-              Non Certificato
+              Not certified
           </>
       )}
     </span>

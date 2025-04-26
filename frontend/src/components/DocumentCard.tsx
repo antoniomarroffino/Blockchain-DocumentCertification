@@ -22,9 +22,9 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
             await toast.promise(
                 certifyDocument({ document, signer }),
                 {
-                    loading: 'Certificazione in corso...',
-                    success: 'Documento certificato con successo!',
-                    error: (err: Error) => `Errore nella certificazione: ${err.message}`
+                    loading: 'Certifying...',
+                    success: 'Document successfully certified!',
+                    error: (err: Error) => `Certification error: ${err.message}`
                 }
             );
         } catch (error) {
@@ -58,12 +58,12 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                             {isPending ? (
                                 <>
                                     <span className="loading loading-spinner loading-sm"></span>
-                                    Certificando...
+                                    Certifying...
                                 </>
                             ) : (
                                 <>
                                     <CheckBadgeIcon className="h-5 w-5" />
-                                    Certifica Ora
+                                    Certify Now
                                 </>
                             )}
                         </button>

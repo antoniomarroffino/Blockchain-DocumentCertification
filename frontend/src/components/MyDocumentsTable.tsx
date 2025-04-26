@@ -13,7 +13,7 @@ const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
         return (
             <div className="flex flex-col items-center justify-center h-64 space-y-4">
                 <span className="loading loading-infinity loading-lg text-primary"></span>
-                <p className="text-gray-500">Caricamento documenti...</p>
+                <p className="text-gray-500">Loading documents...</p>
             </div>
         );
     }
@@ -31,8 +31,8 @@ const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
                           d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
-                    <h3 className="font-bold">Errore nel caricamento!</h3>
-                    <div className="text-xs">Riprova più tardi</div>
+                    <h3 className="font-bold">Error on loading!</h3>
+                    <div className="text-xs">Retry later</div>
                 </div>
             </div>
         );
@@ -44,10 +44,10 @@ const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
                 <table className="table">
                     <thead className="bg-base-200">
                     <tr>
-                        <th className="w-1/2">Documento</th>
-                        <th>Data</th>
-                        <th>Stato</th>
-                        <th>Azioni</th>
+                        <th className="w-1/2">Document</th>
+                        <th>Date</th>
+                        <th>State</th>
+                        <th>Acions</th>
                     </tr>
                     </thead>
                     <tbody>

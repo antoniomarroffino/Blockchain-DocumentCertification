@@ -38,7 +38,7 @@ const MyDocumentRow = ({document}: MyDocumentRowProps) => {
                         onClick={() => setShowPreview(true)}
                         className="btn btn-ghost btn-sm"
                     >
-                        Anteprima
+                        Preview
                     </button>
                 </td>
             </tr>
