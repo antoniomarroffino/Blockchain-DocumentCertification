@@ -1,7 +1,7 @@
 'use client'
 
 import {useNavigate} from 'react-router-dom';
-import {useMetamask} from "../hook/useMetamask.ts";
+import {useMetamask} from "../hook/metamask/useMetamask.ts";
 import {LockClosedIcon, PlusIcon} from "@heroicons/react/16/solid";
 import MyDocumentsTable from "../components/MyDocumentsTable.tsx";
 

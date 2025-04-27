@@ -1,5 +1,5 @@
 import {useContext} from "react";
-import {MetamaskContext} from "../context/MetamaskContext.tsx";
+import {MetamaskContext} from "../../context/MetamaskContext.tsx";
 
 export const useMetamask = () => {
     const context = useContext(MetamaskContext);

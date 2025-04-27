@@ -1,5 +1,5 @@
 'use client'
-import {useMetamask} from "../hook/useMetamask.ts";
+import {useMetamask} from "../hook/metamask/useMetamask.ts";
 import {
     ArrowTopRightOnSquareIcon,
     CurrencyDollarIcon,

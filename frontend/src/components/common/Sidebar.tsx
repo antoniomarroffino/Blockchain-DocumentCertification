@@ -1,5 +1,5 @@
 import {useLocation, useNavigate} from "react-router-dom";
-import {useMetamask} from "../../hook/useMetamask.ts";
+import {useMetamask} from "../../hook/metamask/useMetamask.ts";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import {ArrowUpTrayIcon, DocumentIcon, FolderIcon} from "@heroicons/react/16/solid";
 import {UserCircleIcon} from "@heroicons/react/24/outline";

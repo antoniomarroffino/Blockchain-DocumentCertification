@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {DocumentDTO} from "@dti-isin/backend-api-client"
 import {useDocumentCertification} from "../hook/blockchain/useDocumentCertification.ts";
 import { toast } from 'react-hot-toast';
-import {useMetamask} from "../hook/useMetamask.ts";
+import {useMetamask} from "../hook/metamask/useMetamask.ts";
 import CertificationBadge from "./CertificationBadge.tsx";
 
 interface DocumentCardProps {

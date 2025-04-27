@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMetamask } from '../../hook/useMetamask.ts';
+import { useMetamask } from '../../hook/metamask/useMetamask.ts';
 import {
     WalletIcon,
     ChevronDownIcon,

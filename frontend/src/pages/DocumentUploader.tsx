@@ -2,7 +2,7 @@
 import {useCallback, useRef, useState} from 'react';
 import {DocumentArrowUpIcon} from '@heroicons/react/24/solid';
 import {useUploadDocument} from "../hook/backend/useUploadDocument.ts";
-import {useMetamask} from "../hook/useMetamask.ts";
+import {useMetamask} from "../hook/metamask/useMetamask.ts";
 import {DocumentTextIcon} from "@heroicons/react/24/outline";
 import {LockClosedIcon, XMarkIcon} from "@heroicons/react/16/solid";
 import {toast} from 'react-hot-toast';
