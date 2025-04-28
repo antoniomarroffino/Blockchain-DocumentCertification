@@ -21,16 +21,14 @@ module.exports = {
         require('daisyui')
     ],
     daisyui: {
-        themes: [
-            {
-                mytheme: {
-                    primary: "#570DF8",
-                    secondary: "#F000B8",
-                    accent: "#37CDBE",
-                    neutral: "#3D4451",
-                    "base-100": "#FFFFFF",
-                },
-            },
-        ],
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#2E7D32',
+                    secondary: '#9CCC65',
+                    accent: '#FFD700',
+                }
+            }
+        }
     },
 }

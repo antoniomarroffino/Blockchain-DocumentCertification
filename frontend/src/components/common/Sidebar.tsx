@@ -8,7 +8,7 @@ import {
     FaHistory,
     FaCog,
     FaChevronRight,
-    FaCubes
+    FaCubes, FaHome
 } from "react-icons/fa";
 
 const Sidebar: React.FC = () => {
@@ -16,6 +16,11 @@ const Sidebar: React.FC = () => {
     const location = useLocation();
 
     const menuItems = [
+        {
+            path: '/',
+            icon: <FaHome />,
+            label: 'Home Page',
+        },
         {
             path: '/uploadDocument',
             icon: <FaFileUpload />,
