@@ -8,10 +8,11 @@ import { toast } from 'react-hot-toast';
 
 import WalletNotConnected from "../../components/common/WalletNotConnected";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
-import FilePreview from "../../components/common/FilePreview";
-import FileDropzone from "./FileDropzone.tsx";
-import FileCard from "./FileCard.tsx";
-import ActionButtons from "./ActionButtons.tsx";
+import FilePreview from "./FilePreview";
+import FileDropzone from "./FileDropzone";
+import FileCard from "./FileCard";
+import ActionButtons from "./ActionButtons";
+import SuccessBanner from "../../components/common/SuccessBanner";
 
 const DocumentUploaderPage = () => {
     const { isConnected, signer } = useMetamask();
@@ -20,6 +21,7 @@ const DocumentUploaderPage = () => {
     const { mutateAsync: uploadDocument, isPending: isUploadingDocument } = useUploadDocument();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [showPreview, setShowPreview] = useState(false);
+    const [showSuccessBanner, setShowSuccessBanner] = useState(false);
 
     const handleFileSelection = useCallback((file: File) => {
         const allowedTypes = [
@@ -46,6 +48,10 @@ const DocumentUploaderPage = () => {
             toast.success('Document loaded successfully!');
             setDocument(null);
             if (fileInputRef.current) fileInputRef.current.value = '';
+
+            setShowSuccessBanner(true);
+            setTimeout(() => setShowSuccessBanner(false), 3000);
+
         } catch (error) {
             toast.error('Error loading document: ' + error);
         }
@@ -84,46 +90,55 @@ const DocumentUploaderPage = () => {
     }
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="card bg-neutral-800 border border-neutral-700 shadow-xl"
-        >
-            <div className="card-body p-6">
-                <h2 className="card-title text-2xl text-white mb-6">Certify New Document</h2>
+        <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="card bg-neutral-800 border border-neutral-700 shadow-xl"
+            >
+                <div className="card-body p-6">
+                    <h2 className="card-title text-2xl text-white mb-6">Certify New Document</h2>
 
-                <FileDropzone
-                    onFileSelect={handleFileSelection}
-                    isDragging={isDragging}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    fileInputRef={fileInputRef}
-                    currentFile={document}
-                />
-
-                {document && (
-                    <>
-                        <FileCard
-                            file={document}
-                            onCancel={handleCancelUpload}
-                        />
-                        <ActionButtons
-                            onPreview={() => setShowPreview(true)}
-                            onCancel={handleCancelUpload}
-                            onConfirm={handleConfirmUpload}
-                        />
-                    </>
-                )}
-
-                {showPreview && document && (
-                    <FilePreview
-                        file={document}
-                        onClose={() => setShowPreview(false)}
+                    <FileDropzone
+                        onFileSelect={handleFileSelection}
+                        isDragging={isDragging}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        fileInputRef={fileInputRef}
+                        currentFile={document}
                     />
-                )}
-            </div>
-        </motion.div>
+
+                    {document && (
+                        <>
+                            <FileCard
+                                file={document}
+                                onCancel={handleCancelUpload}
+                            />
+                            <ActionButtons
+                                onPreview={() => setShowPreview(true)}
+                                onCancel={handleCancelUpload}
+                                onConfirm={handleConfirmUpload}
+                            />
+                        </>
+                    )}
+
+                    {showPreview && document && (
+                        <FilePreview
+                            file={document}
+                            onClose={() => setShowPreview(false)}
+                        />
+                    )}
+                </div>
+            </motion.div>
+
+            {showSuccessBanner && (
+                <SuccessBanner
+                    message="Document certified successfully!"
+                    onClose={() => setShowSuccessBanner(false)}
+                />
+            )}
+        </>
     );
 };
 

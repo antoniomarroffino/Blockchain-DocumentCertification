@@ -1,7 +1,7 @@
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { DocumentDTO } from "@dti-isin/backend-api-client";
 import { useState } from "react";
-import FilePreview from "./FilePreview.tsx";
+import FilePreview from "../../pages/document-uploader/FilePreview.tsx";
 import { useGetFileContentByDocumentId } from "../../hook/backend/useGetFileContentByDocumentId.ts";
 import CertificationBadge from "../CertificationBadge.tsx";
 
