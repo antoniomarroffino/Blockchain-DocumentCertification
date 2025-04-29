@@ -2,7 +2,7 @@
 
 import './App.css'
 import {Route, Routes} from "react-router-dom";
-import DocumentUploader from "./pages/DocumentUploader.tsx";
+import DocumentUploaderPage from "./pages/document-uploader/DocumentUploaderPage.tsx";
 import AllDocuments from "./pages/AllDocuments.tsx";
 import MyDocuments from "./pages/MyDocuments.tsx";
 import {MetamaskProvider} from "./provider/MetamaskProvider.tsx";
@@ -25,7 +25,7 @@ function App() {
                         <main className="flex-1 p-4 md:p-8 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
                             <Routes>
                                 <Route path="/" element={<Dashboard />} />
-                                <Route path="/uploadDocument" element={<DocumentUploader />} />
+                                <Route path="/uploadDocument" element={<DocumentUploaderPage />} />
                                 <Route path="/myDocuments" element={<MyDocuments />} />
                                 <Route path="/allDocuments" element={<AllDocuments />} />
                                 <Route path="/profile" element={<Profile />} />
