@@ -1,10 +1,13 @@
+'use client'
+
 import { DocumentTextIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-import {DocumentDTO} from "@dti-isin/backend-api-client"
-import {useDocumentCertification} from "../hook/blockchain/useDocumentCertification.ts";
+import { DocumentDTO } from "@dti-isin/backend-api-client";
+import { useDocumentCertification } from "../hook/blockchain/useDocumentCertification";
 import { toast } from 'react-hot-toast';
-import {useMetamask} from "../hook/metamask/useMetamask.ts";
-import CertificationBadge from "../pages/my-documents/CertificationBadge.tsx";
+import { useMetamask } from "../hook/metamask/useMetamask";
+import CertificationBadge from "../pages/my-documents/CertificationBadge";
+import { motion } from 'framer-motion';
 
 interface DocumentCardProps {
     document: DocumentDTO;
@@ -33,14 +36,17 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
     };
 
     return (
-        <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow relative">
-            <div className="card-body">
+        <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="card bg-neutral-800 border border-neutral-700 shadow-xl hover:shadow-yellow-500/20 transition-all relative"
+        >
+            <div className="card-body p-6">
                 <div className="flex items-start mb-4">
-                    <DocumentTextIcon className="h-8 w-8 text-blue-600 mr-4" />
+                    <DocumentTextIcon className="h-8 w-8 text-yellow-400 mr-4" />
                     <div className="flex-1">
-                        <h2 className="card-title text-base-content">{document.title}</h2>
+                        <h2 className="card-title text-white">{document.title}</h2>
                         <div className="flex items-center justify-between mt-1">
-                            <p className="text-sm text-base-content/70">
+                            <p className="text-sm text-neutral-400">
                                 {new Date(document.uploadTimestamp!).toLocaleDateString()}
                             </p>
                             <CertificationBadge docHash={document.hash!} setIsCertified={setIsCertified} />
@@ -49,34 +55,39 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                 </div>
 
                 {!isCertified && (
-                    <div className="mt-4">
-                        <button
-                            onClick={handleCertification}
-                            className="btn btn-block btn-primary gap-2"
-                            disabled={isPending}
-                        >
-                            {isPending ? (
-                                <>
-                                    <span className="loading loading-spinner loading-sm"></span>
-                                    Certifying...
-                                </>
-                            ) : (
-                                <>
-                                    <CheckBadgeIcon className="h-5 w-5" />
-                                    Certify Now
-                                </>
-                            )}
-                        </button>
-                    </div>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleCertification}
+                        disabled={isPending}
+                        className="btn bg-yellow-400 text-neutral-900 font-bold rounded-full gap-2 w-full hover:bg-yellow-300 transition"
+                    >
+                        {isPending ? (
+                            <>
+                                <span className="loading loading-spinner loading-sm"></span>
+                                Certifying...
+                            </>
+                        ) : (
+                            <>
+                                <CheckBadgeIcon className="h-5 w-5" />
+                                Certify Now
+                            </>
+                        )}
+                    </motion.button>
                 )}
 
                 {isPending && (
-                    <div className="absolute inset-0 bg-base-100/50 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                        <span className="loading loading-infinity loading-lg text-primary"></span>
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-neutral-900/80 backdrop-blur-md rounded-xl flex items-center justify-center z-20"
+                    >
+                        <span className="loading loading-infinity loading-lg text-yellow-400"></span>
+                    </motion.div>
                 )}
             </div>
-        </div>
+        </motion.div>
     );
 };
 
