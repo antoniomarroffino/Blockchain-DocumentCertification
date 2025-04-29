@@ -12,7 +12,7 @@ const Sidebar = () => {
     const { isConnected, network } = useMetamask();
 
     const menuItems = [
-        { path: '/', label: 'Dashboard', icon: <HomeIcon className="w-5 h-5" /> },
+        { path: '/', label: 'DashboardPage', icon: <HomeIcon className="w-5 h-5" /> },
         { path: '/uploadDocument', label: 'Upload Document', icon: <ArrowUpTrayIcon className="w-5 h-5" /> },
         { path: '/myDocuments', label: 'My Documents', icon: <FolderIcon className="w-5 h-5" /> },
         { path: '/allDocuments', label: 'All Documents', icon: <DocumentIcon className="w-5 h-5" /> },

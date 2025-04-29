@@ -27,10 +27,9 @@ const features = [
     }
 ];
 
-const Dashboard = () => {
+const DashboardPage = () => {
     return (
         <div className="flex flex-col gap-8 p-4 md:p-8">
-            {/* Hero Section */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -57,7 +56,6 @@ const Dashboard = () => {
                 </motion.div>
             </motion.div>
 
-            {/* Features Section */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -84,4 +82,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;

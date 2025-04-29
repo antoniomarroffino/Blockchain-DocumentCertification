@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {useGetAllDocuments} from "../../hook/backend/useGetAllDocuments.ts";
 import LoadingOverlay from "../../components/common/LoadingOverlay.tsx";
 import ErrorBanner from "../../components/common/ErrorBanner.tsx";
-import DocumentCard from "../../components/DocumentCard.tsx";
+import DocumentCard from "../../components/common/DocumentCard.tsx";
 
 const AllDocumentsPage = () => {
     const { data: documents, isLoading, isError } = useGetAllDocuments();

@@ -19,7 +19,7 @@ vi.mock("../CertificationBadge", () => ({
   default: vi.fn(() => <div data-testid="badge" />),
 }));
 
-import DocumentCard from "../DocumentCard";
+import DocumentCard from "../common/DocumentCard.tsx";
 import { useMetamask } from "../../hook/metamask/useMetamask";
 import { useDocumentCertification } from "../../hook/blockchain/useDocumentCertification";
 import { toast } from "react-hot-toast";

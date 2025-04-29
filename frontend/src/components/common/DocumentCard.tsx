@@ -2,11 +2,11 @@
 
 import { DocumentTextIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-import { DocumentDTO } from "@dti-isin/backend-api-client";
-import { useDocumentCertification } from "../hook/blockchain/useDocumentCertification";
+import { DocumentDTO } from "backend/target/backend-api-client/index.ts";
+import { useDocumentCertification } from "../../hook/blockchain/useDocumentCertification.ts";
 import { toast } from 'react-hot-toast';
-import { useMetamask } from "../hook/metamask/useMetamask";
-import CertificationBadge from "../pages/my-documents/CertificationBadge";
+import { useMetamask } from "../../hook/metamask/useMetamask.ts";
+import CertificationBadge from "../../pages/my-documents/CertificationBadge.tsx";
 import { motion } from 'framer-motion';
 
 interface DocumentCardProps {

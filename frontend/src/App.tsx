@@ -10,7 +10,7 @@ import Sidebar from "./components/common/Sidebar.tsx";
 import Footer from "./components/common/Footer.tsx";
 import Header from "./components/common/Header.tsx";
 import {Toaster} from "react-hot-toast";
-import Dashboard from "./pages/Dashboard.tsx";
+import DashboardPage from "./pages/dashboard/DashboardPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
 
 
@@ -24,7 +24,7 @@ function App() {
                     <div className="drawer-content flex flex-col">
                         <main className="flex-1 p-4 md:p-8 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
                             <Routes>
-                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/" element={<DashboardPage />} />
                                 <Route path="/uploadDocument" element={<DocumentUploaderPage />} />
                                 <Route path="/myDocuments" element={<MyDocumentsPage />} />
                                 <Route path="/allDocuments" element={<AllDocumentsPage />} />
