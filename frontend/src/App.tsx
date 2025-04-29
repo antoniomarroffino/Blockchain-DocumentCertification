@@ -17,19 +17,19 @@ import Profile from "./pages/Profile.tsx";
 function App() {
     return (
         <MetamaskProvider>
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col bg-neutral-900">
                 <Header />
                 <div className="drawer lg:drawer-open">
                     <input id="sidebar-drawer" type="checkbox" className="drawer-toggle" />
                     <div className="drawer-content flex flex-col">
-                        <main className="flex-1 p-4 md:p-8 bg-base-200">
-                        <Routes>
-                            <Route path="/" element={<Dashboard />} />
-                            <Route path="/uploadDocument" element={<DocumentUploader />} />
-                            <Route path="/myDocuments" element={<MyDocuments />} />
-                            <Route path="/allDocuments" element={<AllDocuments />} />
-                            <Route path="/profile" element={<Profile />} />
-                        </Routes>
+                        <main className="flex-1 p-4 md:p-8 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
+                            <Routes>
+                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/uploadDocument" element={<DocumentUploader />} />
+                                <Route path="/myDocuments" element={<MyDocuments />} />
+                                <Route path="/allDocuments" element={<AllDocuments />} />
+                                <Route path="/profile" element={<Profile />} />
+                            </Routes>
                         </main>
                     </div>
                     <div className="drawer-side z-50">
@@ -44,4 +44,4 @@ function App() {
     );
 }
 
-export default App
+export default App;
