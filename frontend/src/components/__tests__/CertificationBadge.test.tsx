@@ -1,11 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, Mock } from "vitest";
+import '@testing-library/jest-dom';
+
 
 vi.mock("../../hook/blockchain/useDocumentVerification", () => ({
   useDocumentVerification: vi.fn(),
 }));
 
-import CertificationBadge from "../CertificationBadge";
+import CertificationBadge from "../../pages/my-documents/CertificationBadge.tsx";
 import { useDocumentVerification } from "../../hook/blockchain/useDocumentVerification";
 
 describe("CertificationBadge", () => {

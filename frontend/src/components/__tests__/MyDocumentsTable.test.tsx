@@ -13,7 +13,7 @@ vi.mock("../common/MyDocumentRow", () => ({
   )),
 }));
 
-import MyDocumentsTable from "../MyDocumentsTable";
+import MyDocumentsTable from "../../pages/my-documents/MyDocumentsTable.tsx";
 import { useGetAllDocumentsGivenAddressWallet } from "../../hook/backend/useGetAllDocumentsGivenAddressWallet";
 
 describe("MyDocumentsTable", () => {

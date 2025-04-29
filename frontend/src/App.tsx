@@ -4,7 +4,7 @@ import './App.css'
 import {Route, Routes} from "react-router-dom";
 import DocumentUploaderPage from "./pages/document-uploader/DocumentUploaderPage.tsx";
 import AllDocuments from "./pages/AllDocuments.tsx";
-import MyDocuments from "./pages/MyDocuments.tsx";
+import MyDocuments from "./pages/my-documents/MyDocuments.tsx";
 import {MetamaskProvider} from "./provider/MetamaskProvider.tsx";
 import Sidebar from "./components/common/Sidebar.tsx";
 import Footer from "./components/common/Footer.tsx";
