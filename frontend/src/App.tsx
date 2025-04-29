@@ -3,15 +3,15 @@
 import './App.css'
 import {Route, Routes} from "react-router-dom";
 import DocumentUploaderPage from "./pages/document-uploader/DocumentUploaderPage.tsx";
-import AllDocuments from "./pages/all-documents/AllDocuments.tsx";
-import MyDocuments from "./pages/my-documents/MyDocuments.tsx";
+import AllDocumentsPage from "./pages/all-documents/AllDocumentsPage.tsx";
+import MyDocumentsPage from "./pages/my-documents/MyDocumentsPage.tsx";
 import {MetamaskProvider} from "./provider/MetamaskProvider.tsx";
 import Sidebar from "./components/common/Sidebar.tsx";
 import Footer from "./components/common/Footer.tsx";
 import Header from "./components/common/Header.tsx";
 import {Toaster} from "react-hot-toast";
 import Dashboard from "./pages/Dashboard.tsx";
-import Profile from "./pages/Profile.tsx";
+import ProfilePage from "./pages/profile/ProfilePage.tsx";
 
 
 function App() {
@@ -26,9 +26,9 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<Dashboard />} />
                                 <Route path="/uploadDocument" element={<DocumentUploaderPage />} />
-                                <Route path="/myDocuments" element={<MyDocuments />} />
-                                <Route path="/allDocuments" element={<AllDocuments />} />
-                                <Route path="/profile" element={<Profile />} />
+                                <Route path="/myDocuments" element={<MyDocumentsPage />} />
+                                <Route path="/allDocuments" element={<AllDocumentsPage />} />
+                                <Route path="/profile" element={<ProfilePage />} />
                             </Routes>
                         </main>
                     </div>

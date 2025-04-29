@@ -7,7 +7,7 @@ import LoadingOverlay from "../../components/common/LoadingOverlay.tsx";
 import ErrorBanner from "../../components/common/ErrorBanner.tsx";
 import DocumentCard from "../../components/DocumentCard.tsx";
 
-const AllDocuments = () => {
+const AllDocumentsPage = () => {
     const { data: documents, isLoading, isError } = useGetAllDocuments();
 
     if (isLoading) {
@@ -49,4 +49,4 @@ const AllDocuments = () => {
     );
 };
 
-export default AllDocuments;
+export default AllDocumentsPage;

@@ -8,7 +8,7 @@ import WalletNotConnected from "../../components/common/WalletNotConnected.tsx";
 import MyDocumentsTable from "./MyDocumentsTable.tsx";
 import { PlusIcon } from "@heroicons/react/16/solid";
 
-const MyDocuments = () => {
+const MyDocumentsPage = () => {
     const { signer, isConnected } = useMetamask();
     const navigate = useNavigate();
 
@@ -41,4 +41,4 @@ const MyDocuments = () => {
     );
 };
 
-export default MyDocuments;
+export default MyDocumentsPage;
