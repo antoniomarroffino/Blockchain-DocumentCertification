@@ -29,8 +29,9 @@ export interface DocumentCertificationInterface extends Interface {
       | "certifyDocument"
       | "getCertifiedDocumentsByAddress"
       | "getCertifierOf"
+      | "getDocumentHistoryFlat"
+      | "getLastCertification"
       | "initialize"
-      | "isCertifiedBy"
       | "isDocumentCertified"
   ): FunctionFragment;
 
@@ -51,12 +52,16 @@ export interface DocumentCertificationInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values?: undefined
+    functionFragment: "getDocumentHistoryFlat",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "isCertifiedBy",
-    values: [AddressLike, BytesLike]
+    functionFragment: "getLastCertification",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "isDocumentCertified",
@@ -75,11 +80,15 @@ export interface DocumentCertificationInterface extends Interface {
     functionFragment: "getCertifierOf",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "isCertifiedBy",
+    functionFragment: "getDocumentHistoryFlat",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getLastCertification",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isDocumentCertified",
     data: BytesLike
@@ -168,13 +177,31 @@ export interface DocumentCertification extends BaseContract {
 
   getCertifierOf: TypedContractMethod<[_docHash: BytesLike], [string], "view">;
 
-  initialize: TypedContractMethod<[], [void], "nonpayable">;
-
-  isCertifiedBy: TypedContractMethod<
-    [_certifier: AddressLike, _docHash: BytesLike],
-    [boolean],
+  getDocumentHistoryFlat: TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string[], bigint[], string[]] & {
+        certifiers: string[];
+        timestamps: bigint[];
+        hashes: string[];
+      }
+    ],
     "view"
   >;
+
+  getLastCertification: TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string, string, bigint] & {
+        hash: string;
+        certifier: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+
+  initialize: TypedContractMethod<[], [void], "nonpayable">;
 
   isDocumentCertified: TypedContractMethod<
     [_docHash: BytesLike],
@@ -196,15 +223,34 @@ export interface DocumentCertification extends BaseContract {
     nameOrSignature: "getCertifierOf"
   ): TypedContractMethod<[_docHash: BytesLike], [string], "view">;
   getFunction(
-    nameOrSignature: "initialize"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "isCertifiedBy"
+    nameOrSignature: "getDocumentHistoryFlat"
   ): TypedContractMethod<
-    [_certifier: AddressLike, _docHash: BytesLike],
-    [boolean],
+    [_docHash: BytesLike],
+    [
+      [string[], bigint[], string[]] & {
+        certifiers: string[];
+        timestamps: bigint[];
+        hashes: string[];
+      }
+    ],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "getLastCertification"
+  ): TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string, string, bigint] & {
+        hash: string;
+        certifier: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "isDocumentCertified"
   ): TypedContractMethod<[_docHash: BytesLike], [boolean], "view">;

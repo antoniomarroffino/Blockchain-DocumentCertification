@@ -1,7 +1,10 @@
 'use client';
 
-import { DocumentTextIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import {
+    DocumentTextIcon,
+    CheckBadgeIcon,
+    ClipboardDocumentCheckIcon
+} from '@heroicons/react/24/outline';
 import { DocumentDTO } from "@dti-isin/backend-api-client";
 import { useDocumentCertification } from "../../hook/blockchain/useDocumentCertification.ts";
 import { toast } from 'react-hot-toast';
@@ -9,6 +12,8 @@ import { useMetamask } from "../../hook/metamask/useMetamask.ts";
 import CertificationBadge from "../../pages/my-documents/CertificationBadge.tsx";
 import { motion } from 'framer-motion';
 import { formatAddress } from '../../utils/formatAddress.ts';
+import { Link } from "react-router-dom";
+import { useDocumentHistory } from '../../hook/blockchain/useDocumentHistory.ts';
 
 interface DocumentCardProps {
     document: DocumentDTO;
@@ -18,7 +23,8 @@ interface DocumentCardProps {
 const DocumentCard = ({ document, certifier }: DocumentCardProps) => {
     const { mutateAsync: certifyDocument, isPending } = useDocumentCertification();
     const { signer } = useMetamask();
-    const [isCertified, setIsCertified] = useState<boolean>(false);
+
+    const { data: history = [], isLoading: isLoadingHistory } = useDocumentHistory(document.hash);
 
     const handleCertification = async () => {
         if (!signer) return;
@@ -51,7 +57,7 @@ const DocumentCard = ({ document, certifier }: DocumentCardProps) => {
                             <p className="text-sm text-neutral-400">
                                 {new Date(document.uploadTimestamp!).toLocaleDateString()}
                             </p>
-                            <CertificationBadge docHash={document.hash!} setIsCertified={setIsCertified} />
+                            <CertificationBadge docHash={document.hash!} />
                         </div>
                     </div>
                 </div>
@@ -62,27 +68,34 @@ const DocumentCard = ({ document, certifier }: DocumentCardProps) => {
                     </p>
                 )}
 
-                {!isCertified && (
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleCertification}
-                        disabled={isPending}
-                        className="btn bg-yellow-400 text-neutral-900 font-bold rounded-full gap-2 w-full hover:bg-yellow-300 transition"
-                    >
-                        {isPending ? (
-                            <>
-                                <span className="loading loading-spinner loading-sm"></span>
-                                Certifying...
-                            </>
-                        ) : (
-                            <>
-                                <CheckBadgeIcon className="h-5 w-5" />
-                                Certify Now
-                            </>
-                        )}
-                    </motion.button>
+                {!isLoadingHistory && history.length > 0 && (
+                    <div className="flex items-center text-xs text-yellow-400 mt-2 gap-2">
+                        <ClipboardDocumentCheckIcon className="h-4 w-4" />
+                        <span>
+                            Total certifications: <span className="font-bold">{history.length}</span>
+                        </span>
+                    </div>
                 )}
+
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleCertification}
+                    disabled={isPending}
+                    className="btn bg-yellow-400 text-neutral-900 font-bold rounded-full gap-2 w-full hover:bg-yellow-300 transition mt-4"
+                >
+                    {isPending ? (
+                        <>
+                            <span className="loading loading-spinner loading-sm"></span>
+                            Certifying...
+                        </>
+                    ) : (
+                        <>
+                            <CheckBadgeIcon className="h-5 w-5" />
+                            {history.length === 0 ? 'Certify Now' : 'Certify Again'}
+                        </>
+                    )}
+                </motion.button>
 
                 {isPending && (
                     <motion.div
@@ -93,6 +106,16 @@ const DocumentCard = ({ document, certifier }: DocumentCardProps) => {
                     >
                         <span className="loading loading-infinity loading-lg text-yellow-400"></span>
                     </motion.div>
+                )}
+
+                {document.hash && (
+                    <div className="mt-3">
+                        <Link to={`/document-details/${document.hash}`}>
+                            <button className="btn btn-sm btn-outline w-full text-white border-yellow-400 hover:bg-yellow-400 hover:text-black transition">
+                                View Certification History
+                            </button>
+                        </Link>
+                    </div>
                 )}
             </div>
         </motion.div>

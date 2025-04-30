@@ -14,7 +14,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class DocumentService implements IDocumentService {
@@ -33,50 +35,49 @@ public class DocumentService implements IDocumentService {
         document.setUploadTimestamp(Instant.now());
         document.setContent(uploadFormDTO.getFile().readAllBytes());
         document.setHash(uploadFormDTO.getHash());
-        this.documentRepository.persist(document);
-        return this.documentMapper.toDTO(document);
+
+        documentRepository.persist(document);
+        return documentMapper.toDTO(document);
     }
 
     @Override
     public byte[] getContentBytesByDocumentId(Long id) {
-        Document document = this.documentRepository.findById(id);
-        if(document == null)
-            return null;
-        return document.getContent();
+        return Optional.ofNullable(documentRepository.findById(id))
+                .map(Document::getContent)
+                .orElse(null);
     }
 
     @Override
     public List<DocumentDTO> getAllDocuments() {
-        return this.documentRepository
-                .listAll()
+        return Optional.ofNullable(documentRepository.listAll())
+                .orElse(Collections.emptyList())
                 .stream()
-                .map(this.documentMapper::toDTO)
+                .map(documentMapper::toDTO)
                 .toList();
     }
 
     @Override
     public List<DocumentDTO> getDocumentsByOwner(String ownerWallet) {
-        return this.documentRepository
-                .findByOwner(ownerWallet)
+        return Optional.ofNullable(documentRepository.findByOwner(ownerWallet))
+                .orElse(Collections.emptyList())
                 .stream()
-                .map(this.documentMapper::toDTO)
+                .map(documentMapper::toDTO)
                 .toList();
     }
 
     @Override
     public MimeTypeWithContent getDocumentContentWithType(Long id) {
-        Document doc = documentRepository.findById(id);
-        if (doc == null || doc.getContent() == null) {
-            return null;
-        }
-
-        String mimeType = detectMimeType(doc.getContent());
-        return new MimeTypeWithContent(mimeType, doc.getContent());
+        return Optional.ofNullable(documentRepository.findById(id))
+                .filter(doc -> doc.getContent() != null)
+                .map(doc -> new MimeTypeWithContent(detectMimeType(doc.getContent()), doc.getContent()))
+                .orElse(null);
     }
 
     private String detectMimeType(byte[] data) {
         try {
-            return URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(data));
+            return Optional.ofNullable(
+                    URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(data))
+            ).orElse("application/octet-stream");
         } catch (IOException e) {
             return "application/octet-stream";
         }

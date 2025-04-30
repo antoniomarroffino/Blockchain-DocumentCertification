@@ -13,6 +13,7 @@ import {Toaster} from "react-hot-toast";
 import DashboardPage from "./pages/dashboard/DashboardPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
 import MyCertifiedDocumentsPage from "./pages/my-certified-documents/MyCertifiedDocumentsPage.tsx";
+import DocumentDetailsPage from "./pages/document-details/DocumentDetailsPage.tsx";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                                 <Route path="/myCertifiedDocuments" element={<MyCertifiedDocumentsPage />} />
                                 <Route path="/allDocuments" element={<AllDocumentsPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
+                                <Route path="/document-details/:hash" element={<DocumentDetailsPage />} />
                             </Routes>
                         </main>
                     </div>

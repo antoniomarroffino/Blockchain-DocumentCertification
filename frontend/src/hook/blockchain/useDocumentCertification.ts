@@ -33,6 +33,8 @@ export const useDocumentCertification = () => {
             queryClient.invalidateQueries({ queryKey: ["documents"] });
             queryClient.invalidateQueries({ queryKey: ["certification", docHash] });
             queryClient.invalidateQueries({ queryKey: ["documents", signer.address] });
+            queryClient.invalidateQueries({ queryKey: ["document-history", document.hash] });
+
         }
     });
 }

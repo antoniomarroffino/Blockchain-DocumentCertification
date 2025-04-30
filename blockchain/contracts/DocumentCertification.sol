@@ -12,17 +12,12 @@ contract DocumentCertification is Initializable {
         uint256 timestamp;
     }
 
-    modifier isDocumentAlreadyCertified(bytes32 _docHash) {
-        require(documentCertifications[_docHash].timestamp == 0, "Document already certified");
-        _;
-    }
-
     event DocumentCertified(bytes32 _docHash, address certifier);
 
-    mapping(bytes32 => Certification) private documentCertifications;
+    mapping(bytes32 => Certification[]) private documentHistory;
     mapping(address => bytes32[]) private certificationsByAddress;
 
-    function certifyDocument(bytes32 _docHash) public isDocumentAlreadyCertified(_docHash) {
+    function certifyDocument(bytes32 _docHash) public {
         require(_docHash != bytes32(0), "Invalid hash");
 
         Certification memory certification = Certification({
@@ -31,23 +26,52 @@ contract DocumentCertification is Initializable {
             timestamp: block.timestamp
         });
 
-        documentCertifications[_docHash] = certification;
+        documentHistory[_docHash].push(certification);
         certificationsByAddress[msg.sender].push(_docHash);
 
         emit DocumentCertified(_docHash, msg.sender);
     }
 
     function isDocumentCertified(bytes32 _docHash) public view returns (bool) {
-        return documentCertifications[_docHash].timestamp != 0;
-    }
-
-    function isCertifiedBy(address _certifier, bytes32 _docHash) public view returns(bool) {
-        Certification memory certification = documentCertifications[_docHash];
-        return certification.certifier == _certifier;
+        return documentHistory[_docHash].length > 0;
     }
 
     function getCertifierOf(bytes32 _docHash) public view returns (address) {
-        return documentCertifications[_docHash].certifier;
+        uint256 len = documentHistory[_docHash].length;
+        require(len > 0, "Not certified");
+        return documentHistory[_docHash][len - 1].certifier;
+    }
+
+    function getLastCertification(bytes32 _docHash) public view returns (
+        bytes32 hash,
+        address certifier,
+        uint256 timestamp
+    ) {
+        uint256 len = documentHistory[_docHash].length;
+        require(len > 0, "No certifications");
+        Certification memory cert = documentHistory[_docHash][len - 1];
+        return (cert.hash, cert.certifier, cert.timestamp);
+    }
+
+    function getDocumentHistoryFlat(bytes32 _docHash) public view returns (
+        address[] memory certifiers,
+        uint256[] memory timestamps,
+        bytes32[] memory hashes
+    ) {
+        Certification[] storage history = documentHistory[_docHash];
+        uint256 len = history.length;
+
+        certifiers = new address[](len);
+        timestamps = new uint256[](len);
+        hashes = new bytes32[](len);
+
+        for (uint256 i = 0; i < len; i++) {
+            certifiers[i] = history[i].certifier;
+            timestamps[i] = history[i].timestamp;
+            hashes[i] = history[i].hash;
+        }
+
+        return (certifiers, timestamps, hashes);
     }
 
     function getCertifiedDocumentsByAddress(address _certifier) public view returns (bytes32[] memory) {
