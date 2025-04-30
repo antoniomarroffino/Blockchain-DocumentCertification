@@ -1,5 +1,6 @@
 package ch.supsi.controller;
 
+import ch.supsi.model.api.MimeTypeWithContent;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 import ch.supsi.service.IDocumentService;
@@ -57,11 +58,15 @@ public class DocumentController {
             )
     )
     public Response downloadContent(@PathParam("id") Long id) {
-        byte[] content = this.documentService.getContentBytesByDocumentId(id);
-        if (content == null) {
+        MimeTypeWithContent result = documentService.getDocumentContentWithType(id);
+        if (result == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(content).build();
+
+        return Response
+                .ok(result.getContent())
+                .type(result.getMimeType())
+                .build();
     }
 
     @GET

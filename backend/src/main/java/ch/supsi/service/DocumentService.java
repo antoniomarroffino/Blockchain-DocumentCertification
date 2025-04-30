@@ -2,6 +2,7 @@ package ch.supsi.service;
 
 import ch.supsi.mapper.DocumentMapper;
 import ch.supsi.model.api.Document;
+import ch.supsi.model.api.MimeTypeWithContent;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 import ch.supsi.repository.DocumentRepository;
@@ -9,7 +10,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.time.Instant;
 import java.util.List;
 
@@ -58,5 +61,24 @@ public class DocumentService implements IDocumentService {
                 .stream()
                 .map(this.documentMapper::toDTO)
                 .toList();
+    }
+
+    @Override
+    public MimeTypeWithContent getDocumentContentWithType(Long id) {
+        Document doc = documentRepository.findById(id);
+        if (doc == null || doc.getContent() == null) {
+            return null;
+        }
+
+        String mimeType = detectMimeType(doc.getContent());
+        return new MimeTypeWithContent(mimeType, doc.getContent());
+    }
+
+    private String detectMimeType(byte[] data) {
+        try {
+            return URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(data));
+        } catch (IOException e) {
+            return "application/octet-stream";
+        }
     }
 }

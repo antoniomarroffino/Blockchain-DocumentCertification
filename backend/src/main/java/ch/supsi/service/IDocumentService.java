@@ -1,5 +1,6 @@
 package ch.supsi.service;
 
+import ch.supsi.model.api.MimeTypeWithContent;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 
@@ -11,4 +12,5 @@ public interface IDocumentService {
     byte[] getContentBytesByDocumentId(Long id);
     List<DocumentDTO> getAllDocuments();
     List<DocumentDTO> getDocumentsByOwner(String ownerWallet);
+    MimeTypeWithContent getDocumentContentWithType(Long id);
 }
