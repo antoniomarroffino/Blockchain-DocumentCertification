@@ -15,7 +15,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.List;
 
 @Path("/documents")
@@ -59,15 +61,27 @@ public class DocumentController {
     )
     public Response downloadContent(@PathParam("id") Long id) {
         MimeTypeWithContent result = documentService.getDocumentContentWithType(id);
-        if (result == null) {
+        if (result == null || result.getContent() == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        String mimeType = result.getMimeType();
+        if (mimeType == null || mimeType.isBlank()) {
+            // fallback: prova a rilevarlo dai byte
+            try {
+                mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(result.getContent()));
+            } catch (IOException e) {
+                // loggalo se vuoi
+                mimeType = "application/octet-stream";
+            }
         }
 
         return Response
                 .ok(result.getContent())
-                .type(result.getMimeType())
+                .type(mimeType != null ? mimeType : "application/octet-stream")
                 .build();
     }
+
 
     @GET
     @Operation(summary = "Get all documents")

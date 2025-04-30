@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type FilePreviewProps = {
-    file: Blob
+    file: Blob & { name?: string }
     onClose: () => void
 }
 
@@ -14,10 +14,19 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
 
     useEffect(() => {
         const reader = new FileReader()
-        if (file.type.startsWith('image/')) {
+
+        const isImage =
+            file.type.startsWith('image/') ||
+            file.name?.match(/\.(png|jpg|jpeg|gif|webp)$/i)
+
+        const isPdf =
+            file.type === 'application/pdf' ||
+            file.name?.toLowerCase().endsWith('.pdf')
+
+        if (isImage) {
             reader.readAsDataURL(file)
             reader.onload = () => setPreviewContent(reader.result as string)
-        } else if (file.type === 'application/pdf') {
+        } else if (isPdf) {
             reader.readAsArrayBuffer(file)
             reader.onload = () => {
                 const blob = new Blob([reader.result!], { type: 'application/pdf' })
@@ -29,7 +38,7 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
     return (
         <AnimatePresence>
             <motion.div
-                className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
+                className="absolute inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -52,25 +61,27 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
                     </div>
 
                     <div className="max-h-[70vh] overflow-auto rounded-lg bg-neutral-900 border border-neutral-700 p-4">
-                        {file.type.startsWith('image/') ? (
+                        {previewContent && file.type.startsWith('image/') ? (
                             <img
                                 src={previewContent}
                                 alt="Preview"
                                 className="mx-auto max-h-[60vh] object-contain"
                             />
-                        ) : file.type === 'application/pdf' ? (
+                        ) : previewContent && file.type === 'application/pdf' ? (
                             <iframe
                                 src={previewContent}
                                 className="w-full h-[600px] rounded"
                                 title="PDF preview"
                             />
-                        ) : (
+                        ) : previewContent ? (
                             <div className="text-center p-8">
                                 <DocumentTextIcon className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
                                 <p className="text-neutral-400">
                                     Preview not available for this file format.
                                 </p>
                             </div>
+                        ) : (
+                            <p className="text-neutral-400 text-center">Loading preview...</p>
                         )}
                     </div>
 

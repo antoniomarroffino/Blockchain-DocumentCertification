@@ -23,7 +23,6 @@ const MyDocumentRow = ({ document, onPreview }: MyDocumentRowProps) => {
             <DocumentTextIcon className="w-6 h-6 text-yellow-400" />
             <div>
               <div className="font-bold text-white">{document.title}</div>
-              <div className="text-sm text-neutral-400">ID: {document.id}</div>
             </div>
           </div>
         </td>

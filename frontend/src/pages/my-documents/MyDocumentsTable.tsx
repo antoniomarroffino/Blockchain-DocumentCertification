@@ -28,7 +28,7 @@ const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
     if (isError) return <ErrorBanner message="Error loading documents. Please retry later." />;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 relative">
             {/* ✅ Desktop */}
             <div className="hidden md:block">
                 <table className="table w-full border border-neutral-700 rounded-lg overflow-hidden">
@@ -55,9 +55,8 @@ const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
                 ))}
             </div>
 
-            {/* ✅ Preview modale globale */}
             {selectedDocument && selectedBlob && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+                <div className="absolute inset-0 z-50">
                     <FilePreview file={selectedBlob} onClose={handleClosePreview} />
                 </div>
             )}
