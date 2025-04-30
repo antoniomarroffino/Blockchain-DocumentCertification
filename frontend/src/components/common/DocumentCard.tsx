@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { DocumentTextIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
@@ -8,12 +8,14 @@ import { toast } from 'react-hot-toast';
 import { useMetamask } from "../../hook/metamask/useMetamask.ts";
 import CertificationBadge from "../../pages/my-documents/CertificationBadge.tsx";
 import { motion } from 'framer-motion';
+import { formatAddress } from '../../utils/formatAddress.ts';
 
 interface DocumentCardProps {
     document: DocumentDTO;
+    certifier?: string;
 }
 
-const DocumentCard = ({ document }: DocumentCardProps) => {
+const DocumentCard = ({ document, certifier }: DocumentCardProps) => {
     const { mutateAsync: certifyDocument, isPending } = useDocumentCertification();
     const { signer } = useMetamask();
     const [isCertified, setIsCertified] = useState<boolean>(false);
@@ -53,6 +55,12 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
                         </div>
                     </div>
                 </div>
+
+                {certifier && (
+                    <p className="text-xs text-neutral-400 mt-2">
+                        Certified by: <span className="font-mono">{formatAddress(certifier)}</span>
+                    </p>
+                )}
 
                 {!isCertified && (
                     <motion.button

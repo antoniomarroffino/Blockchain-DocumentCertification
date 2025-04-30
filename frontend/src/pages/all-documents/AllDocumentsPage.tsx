@@ -1,16 +1,18 @@
 'use client';
 
-import { useState } from "react";
+import {useState } from "react";
 import { motion } from "framer-motion";
 import { useGetAllDocuments } from "../../hook/backend/useGetAllDocuments";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import ErrorBanner from "../../components/common/ErrorBanner";
 import DocumentCard from "../../components/common/DocumentCard";
-import DocumentSearchBar from "../my-certified-documents/DocumentSearchBar.tsx";
+import DocumentSearchBar from "../my-certified-documents/DocumentSearchBar";
+import {useDocumentCertifiersMap} from "../../hook/blockchain/useDocumentCertifiersMap.ts";
 
 const AllDocumentsPage = () => {
     const { data: documents, isLoading, isError } = useGetAllDocuments();
     const [searchTerm, setSearchTerm] = useState("");
+    const { data: certifiersMap = {} } = useDocumentCertifiersMap(documents);
 
     const filteredDocs = documents?.filter((doc) =>
         doc.title?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -31,10 +33,7 @@ const AllDocumentsPage = () => {
                 </div>
 
                 <div className="mb-6">
-                    <DocumentSearchBar
-                        searchTerm={searchTerm}
-                        onChange={setSearchTerm}
-                    />
+                    <DocumentSearchBar searchTerm={searchTerm} onChange={setSearchTerm} />
                 </div>
 
                 {filteredDocs?.length === 0 ? (
@@ -48,7 +47,10 @@ const AllDocumentsPage = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.4, delay: index * 0.05 }}
                             >
-                                <DocumentCard document={doc} />
+                                <DocumentCard
+                                    document={doc}
+                                    certifier={certifiersMap[doc.id!]}
+                                />
                             </motion.div>
                         ))}
                     </div>

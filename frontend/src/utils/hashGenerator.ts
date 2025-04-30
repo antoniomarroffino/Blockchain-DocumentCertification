@@ -1,21 +1,19 @@
-import CryptoJS from "crypto-js";
-import {ethers} from "ethers";
+import {keccak256, toUtf8Bytes} from "ethers";
 
 export interface CalculateDocumentHashPayload {
-    title: string,
-    ownerWallet: string,
-    documentContent: Blob,
+    title: string;
+    ownerWallet: string;
+    documentContent: Blob;
 }
 
-export const calculateDocumentHash = async ({title, ownerWallet, documentContent} : CalculateDocumentHashPayload) => {
-    let baseString = title + ownerWallet;
+export const calculateDocumentHash = async ({ title, ownerWallet, documentContent }: CalculateDocumentHashPayload) => {
+    const buffer = await documentContent.arrayBuffer();
+    const uint8Array = new Uint8Array(buffer);
 
-    if (documentContent) {
-        const buffer = await documentContent.arrayBuffer();
-        const fileWordArray = CryptoJS.lib.WordArray.create(buffer);
-        const fileHex = fileWordArray.toString();
-        baseString += fileHex;
-    }
-    const hash = CryptoJS.SHA256(baseString).toString();
-    return ethers.hexlify(ethers.toUtf8Bytes(hash)).substring(0, 66);
+    const fileHex = Array.from(uint8Array)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+
+    const baseString = title + ownerWallet + fileHex;
+    return keccak256(toUtf8Bytes(baseString));
 };

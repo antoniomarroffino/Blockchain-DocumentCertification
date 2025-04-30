@@ -20,17 +20,20 @@ contract DocumentCertification is Initializable {
     event DocumentCertified(bytes32 _docHash, address certifier);
 
     mapping(bytes32 => Certification) private documentCertifications;
+    mapping(address => bytes32[]) private certificationsByAddress;
 
-    function certifyDocument(bytes32 _docHash) public isDocumentAlreadyCertified(_docHash){
+    function certifyDocument(bytes32 _docHash) public isDocumentAlreadyCertified(_docHash) {
         require(_docHash != bytes32(0), "Invalid hash");
-        Certification memory certification = Certification(
-            {
-                hash: _docHash,
-                certifier: msg.sender,
-                timestamp: block.timestamp
-            });
+
+        Certification memory certification = Certification({
+            hash: _docHash,
+            certifier: msg.sender,
+            timestamp: block.timestamp
+        });
 
         documentCertifications[_docHash] = certification;
+        certificationsByAddress[msg.sender].push(_docHash);
+
         emit DocumentCertified(_docHash, msg.sender);
     }
 
@@ -41,5 +44,13 @@ contract DocumentCertification is Initializable {
     function isCertifiedBy(address _certifier, bytes32 _docHash) public view returns(bool) {
         Certification memory certification = documentCertifications[_docHash];
         return certification.certifier == _certifier;
+    }
+
+    function getCertifierOf(bytes32 _docHash) public view returns (address) {
+        return documentCertifications[_docHash].certifier;
+    }
+
+    function getCertifiedDocumentsByAddress(address _certifier) public view returns (bytes32[] memory) {
+        return certificationsByAddress[_certifier];
     }
 }

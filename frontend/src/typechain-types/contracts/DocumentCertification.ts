@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -20,18 +21,38 @@ import type {
   TypedLogDescription,
   TypedListener,
   TypedContractMethod,
-} from "./common";
+} from "../common";
 
 export interface DocumentCertificationInterface extends Interface {
   getFunction(
-    nameOrSignature: "certifyDocument" | "isCertifiedBy" | "isDocumentCertified"
+    nameOrSignature:
+      | "certifyDocument"
+      | "getCertifiedDocumentsByAddress"
+      | "getCertifierOf"
+      | "initialize"
+      | "isCertifiedBy"
+      | "isDocumentCertified"
   ): FunctionFragment;
 
-  getEvent(nameOrSignatureOrTopic: "DocumentCertified"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "DocumentCertified" | "Initialized"
+  ): EventFragment;
 
   encodeFunctionData(
     functionFragment: "certifyDocument",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCertifiedDocumentsByAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCertifierOf",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "isCertifiedBy",
@@ -46,6 +67,15 @@ export interface DocumentCertificationInterface extends Interface {
     functionFragment: "certifyDocument",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCertifiedDocumentsByAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCertifierOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isCertifiedBy",
     data: BytesLike
@@ -62,6 +92,18 @@ export namespace DocumentCertifiedEvent {
   export interface OutputObject {
     _docHash: string;
     certifier: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace InitializedEvent {
+  export type InputTuple = [version: BigNumberish];
+  export type OutputTuple = [version: bigint];
+  export interface OutputObject {
+    version: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -118,6 +160,16 @@ export interface DocumentCertification extends BaseContract {
     "nonpayable"
   >;
 
+  getCertifiedDocumentsByAddress: TypedContractMethod<
+    [_certifier: AddressLike],
+    [string[]],
+    "view"
+  >;
+
+  getCertifierOf: TypedContractMethod<[_docHash: BytesLike], [string], "view">;
+
+  initialize: TypedContractMethod<[], [void], "nonpayable">;
+
   isCertifiedBy: TypedContractMethod<
     [_certifier: AddressLike, _docHash: BytesLike],
     [boolean],
@@ -138,6 +190,15 @@ export interface DocumentCertification extends BaseContract {
     nameOrSignature: "certifyDocument"
   ): TypedContractMethod<[_docHash: BytesLike], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "getCertifiedDocumentsByAddress"
+  ): TypedContractMethod<[_certifier: AddressLike], [string[]], "view">;
+  getFunction(
+    nameOrSignature: "getCertifierOf"
+  ): TypedContractMethod<[_docHash: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "isCertifiedBy"
   ): TypedContractMethod<
     [_certifier: AddressLike, _docHash: BytesLike],
@@ -155,6 +216,13 @@ export interface DocumentCertification extends BaseContract {
     DocumentCertifiedEvent.OutputTuple,
     DocumentCertifiedEvent.OutputObject
   >;
+  getEvent(
+    key: "Initialized"
+  ): TypedContractEvent<
+    InitializedEvent.InputTuple,
+    InitializedEvent.OutputTuple,
+    InitializedEvent.OutputObject
+  >;
 
   filters: {
     "DocumentCertified(bytes32,address)": TypedContractEvent<
@@ -166,6 +234,17 @@ export interface DocumentCertification extends BaseContract {
       DocumentCertifiedEvent.InputTuple,
       DocumentCertifiedEvent.OutputTuple,
       DocumentCertifiedEvent.OutputObject
+    >;
+
+    "Initialized(uint64)": TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+    Initialized: TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
     >;
   };
 }
