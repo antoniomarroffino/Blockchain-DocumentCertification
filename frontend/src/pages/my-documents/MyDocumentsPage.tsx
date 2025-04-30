@@ -7,10 +7,13 @@ import { motion } from 'framer-motion';
 import WalletNotConnected from "../../components/common/WalletNotConnected.tsx";
 import MyDocumentsTable from "./MyDocumentsTable.tsx";
 import { PlusIcon } from "@heroicons/react/16/solid";
+import { useState } from "react";
+import DocumentSearchBar from "../my-certified-documents/DocumentSearchBar.tsx";
 
 const MyDocumentsPage = () => {
     const { signer, isConnected } = useMetamask();
     const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState("");
 
     if (!isConnected) {
         return <WalletNotConnected />;
@@ -35,7 +38,11 @@ const MyDocumentsPage = () => {
                     </motion.button>
                 </div>
 
-                <MyDocumentsTable signer={signer!} />
+                <div className="mb-6">
+                    <DocumentSearchBar searchTerm={searchTerm} onChange={setSearchTerm} />
+                </div>
+
+                <MyDocumentsTable signer={signer!} searchTerm={searchTerm} />
             </div>
         </motion.div>
     );

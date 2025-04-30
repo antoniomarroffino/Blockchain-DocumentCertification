@@ -21,9 +21,9 @@ const Sidebar = () => {
     ];
 
     return (
-        <div className="w-64 min-h-screen bg-neutral-900 border-r border-neutral-700 flex flex-col">
-            <nav className="flex-1 px-3 py-6">
-                <div className="space-y-2">
+        <div className="h-[calc(100vh-65px)] w-64 bg-neutral-900 border-r border-neutral-700 flex flex-col justify-between">
+            <nav className="px-3 py-4 overflow-y-auto">
+                <div className="flex flex-col gap-1.5">
                     {menuItems.map((item) => {
                         const isActive = location.pathname === item.path;
                         return (
@@ -33,7 +33,7 @@ const Sidebar = () => {
                                 key={item.path}
                                 onClick={() => navigate(item.path)}
                                 className={`w-full flex items-center gap-4 px-5 py-3 rounded-xl font-semibold transition-all
-                                ${isActive
+                        ${isActive
                                     ? 'bg-gradient-to-r from-yellow-400/20 to-green-400/20 text-yellow-300 shadow-lg'
                                     : 'hover:bg-neutral-800 text-neutral-400 hover:text-yellow-400'}`}
                             >
@@ -60,6 +60,8 @@ const Sidebar = () => {
                 </motion.div>
             )}
         </div>
+
+
     );
 };
 

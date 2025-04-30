@@ -13,26 +13,30 @@ import { DocumentDTO } from "@dti-isin/backend-api-client";
 
 interface MyDocumentsTableProps {
     signer: JsonRpcSigner;
+    searchTerm?: string;
 }
 
-const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
-    const { data: documents, isLoading, isError } = useGetAllDocumentsGivenAddressWallet(signer.address);
+const MyDocumentsTable = ({ signer, searchTerm = "" }: MyDocumentsTableProps) => {
+    const {data: documents, isLoading, isError} = useGetAllDocumentsGivenAddressWallet(signer.address);
     const [selectedDocument, setSelectedDocument] = useState<DocumentDTO | null>(null);
-    const { data: selectedBlob } = useGetFileContentByDocumentId(selectedDocument?.id ?? -1);
+    const {data: selectedBlob} = useGetFileContentByDocumentId(selectedDocument?.id ?? -1);
 
     const handleClosePreview = () => {
         setSelectedDocument(null);
     };
 
-    if (isLoading) return <LoadingOverlay message="Loading documents..." />;
-    if (isError) return <ErrorBanner message="Error loading documents. Please retry later." />;
+    const filteredDocs = documents?.filter(doc =>
+        doc.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (isLoading) return <LoadingOverlay message="Loading documents..."/>;
+    if (isError) return <ErrorBanner message="Error loading documents. Please retry later."/>;
 
     return (
-        <div className="space-y-4 relative">
-            {/* ✅ Desktop */}
-            <div className="hidden md:block">
+        <div className="space-y-4 relative grow min-h-0">
+            <div className="hidden md:block flex-1 min-h-0 overflow-y-auto pr-1">
                 <table className="table w-full border border-neutral-700 rounded-lg overflow-hidden">
-                    <thead className="bg-neutral-800 text-neutral-400">
+                    <thead className="bg-neutral-800 text-neutral-400 sticky top-0 z-10">
                     <tr>
                         <th className="w-1/2 p-4">Document</th>
                         <th className="p-4">Date</th>
@@ -41,23 +45,22 @@ const MyDocumentsTable = ({ signer }: MyDocumentsTableProps) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {documents?.map((doc) => (
-                        <MyDocumentRow key={doc.id} document={doc} onPreview={() => setSelectedDocument(doc)} />
+                    {filteredDocs?.map((doc) => (
+                        <MyDocumentRow key={doc.id} document={doc} onPreview={() => setSelectedDocument(doc)}/>
                     ))}
                     </tbody>
                 </table>
             </div>
 
-            {/* ✅ Mobile */}
             <div className="md:hidden space-y-4">
-                {documents?.map((doc) => (
-                    <MyDocumentCard key={doc.id} document={doc} onPreview={() => setSelectedDocument(doc)} />
+                {filteredDocs?.map((doc) => (
+                    <MyDocumentCard key={doc.id} document={doc} onPreview={() => setSelectedDocument(doc)}/>
                 ))}
             </div>
 
             {selectedDocument && selectedBlob && (
-                <div className="absolute inset-0 z-50">
-                    <FilePreview file={selectedBlob} onClose={handleClosePreview} />
+                <div className="absolute top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-black/60">
+                    <FilePreview file={selectedBlob} onClose={handleClosePreview}/>
                 </div>
             )}
         </div>
