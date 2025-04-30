@@ -1,22 +1,27 @@
 'use client';
 
-import {useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGetAllDocuments } from "../../hook/backend/useGetAllDocuments";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import ErrorBanner from "../../components/common/ErrorBanner";
 import DocumentCard from "../../components/common/DocumentCard";
 import DocumentSearchBar from "../my-certified-documents/DocumentSearchBar";
-import {useDocumentCertifiersMap} from "../../hook/blockchain/useDocumentCertifiersMap.ts";
+import { useDocumentCertifiersMap } from "../../hook/blockchain/useDocumentCertifiersMap.ts";
+import { DocumentDTO } from "@dti-isin/backend-api-client";
 
 const AllDocumentsPage = () => {
     const { data: documents, isLoading, isError } = useGetAllDocuments();
     const [searchTerm, setSearchTerm] = useState("");
+    const [certifierSearchTerm, setCertifierSearchTerm] = useState("");
     const { data: certifiersMap = {} } = useDocumentCertifiersMap(documents);
 
-    const filteredDocs = documents?.filter((doc) =>
-        doc.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredDocs = documents?.filter((doc: DocumentDTO) => {
+        const titleMatch = doc.title?.toLowerCase().includes(searchTerm.toLowerCase());
+        const certifier = certifiersMap[doc.id!]?.toLowerCase() || "";
+        const certifierMatch = certifier.includes(certifierSearchTerm.toLowerCase());
+        return titleMatch && certifierMatch;
+    });
 
     if (isLoading) return <LoadingOverlay message="Loading documents..." />;
     if (isError) return <ErrorBanner message="Error loading documents." />;
@@ -30,6 +35,16 @@ const AllDocumentsPage = () => {
             <div className="card-body p-6">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="card-title text-2xl text-white">All Documents</h2>
+                </div>
+
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Search by certifier address (0x...)"
+                        value={certifierSearchTerm}
+                        onChange={(e) => setCertifierSearchTerm(e.target.value)}
+                        className="input input-bordered w-full bg-neutral-700 text-white placeholder:text-neutral-400"
+                    />
                 </div>
 
                 <div className="mb-6">
