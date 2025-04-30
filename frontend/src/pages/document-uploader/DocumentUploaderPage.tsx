@@ -99,6 +99,15 @@ const DocumentUploaderPage = () => {
                 <div className="card-body p-6">
                     <h2 className="card-title text-2xl text-white mb-6">Certify New Document</h2>
 
+                    {showSuccessBanner && (
+                        <div className="flex justify-center mb-6">
+                            <SuccessBanner
+                                message="Document certified successfully!"
+                                onClose={() => setShowSuccessBanner(false)}
+                            />
+                        </div>
+                    )}
+
                     <FileDropzone
                         onFileSelect={handleFileSelection}
                         isDragging={isDragging}
@@ -107,6 +116,7 @@ const DocumentUploaderPage = () => {
                         onDrop={handleDrop}
                         fileInputRef={fileInputRef}
                         currentFile={document}
+                        disabled={!!document}
                     />
 
                     {document && (
@@ -131,13 +141,6 @@ const DocumentUploaderPage = () => {
                     )}
                 </div>
             </motion.div>
-
-            {showSuccessBanner && (
-                <SuccessBanner
-                    message="Document certified successfully!"
-                    onClose={() => setShowSuccessBanner(false)}
-                />
-            )}
         </>
     );
 };
