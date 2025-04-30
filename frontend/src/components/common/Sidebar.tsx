@@ -3,7 +3,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMetamask } from "../../hook/metamask/useMetamask";
 import { motion } from "framer-motion";
-import { HomeIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import {CheckBadgeIcon, HomeIcon, UserCircleIcon} from "@heroicons/react/24/solid";
 import { ArrowUpTrayIcon, DocumentIcon, FolderIcon } from "@heroicons/react/16/solid";
 
 const Sidebar = () => {
@@ -15,6 +15,7 @@ const Sidebar = () => {
         { path: '/', label: 'DashboardPage', icon: <HomeIcon className="w-5 h-5" /> },
         { path: '/uploadDocument', label: 'Upload Document', icon: <ArrowUpTrayIcon className="w-5 h-5" /> },
         { path: '/myDocuments', label: 'My Documents', icon: <FolderIcon className="w-5 h-5" /> },
+        { path: '/myCertifiedDocuments', label: 'Certified Docs', icon: <CheckBadgeIcon className="w-5 h-5" /> },
         { path: '/allDocuments', label: 'All Documents', icon: <DocumentIcon className="w-5 h-5" /> },
         { path: '/profile', label: 'ProfilePage', icon: <UserCircleIcon className="w-5 h-5" /> },
     ];

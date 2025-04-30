@@ -6,7 +6,7 @@ import CertificationBadge from "./CertificationBadge";
 
 interface Props {
     document: DocumentDTO;
-    onPreview: () => void;
+    onPreview?: () => void;
 }
 
 const MyDocumentCard = ({ document, onPreview }: Props) => {

@@ -12,6 +12,7 @@ import Header from "./components/common/Header.tsx";
 import {Toaster} from "react-hot-toast";
 import DashboardPage from "./pages/dashboard/DashboardPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
+import MyCertifiedDocumentsPage from "./pages/my-certified-documents/MyCertifiedDocumentsPage.tsx";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                                 <Route path="/" element={<DashboardPage />} />
                                 <Route path="/uploadDocument" element={<DocumentUploaderPage />} />
                                 <Route path="/myDocuments" element={<MyDocumentsPage />} />
+                                <Route path="/myCertifiedDocuments" element={<MyCertifiedDocumentsPage />} />
                                 <Route path="/allDocuments" element={<AllDocumentsPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
                             </Routes>
