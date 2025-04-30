@@ -2,22 +2,29 @@
 pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-contract DocumentCertification is Initializable {
-    function initialize() public initializer {}
-
+contract DocumentCertification is Initializable, AccessControlUpgradeable {
     struct Certification {
         bytes32 hash;
         address certifier;
         uint256 timestamp;
     }
 
+    bytes32 public constant CERTIFIER_ROLE = keccak256("CERTIFIER_ROLE");
+
     event DocumentCertified(bytes32 _docHash, address certifier);
 
     mapping(bytes32 => Certification[]) private documentHistory;
     mapping(address => bytes32[]) private certificationsByAddress;
 
-    function certifyDocument(bytes32 _docHash) public {
+    function initialize() public initializer {
+        __AccessControl_init();
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(CERTIFIER_ROLE, msg.sender);
+    }
+
+    function certifyDocument(bytes32 _docHash) public onlyRole(CERTIFIER_ROLE) {
         require(_docHash != bytes32(0), "Invalid hash");
 
         Certification memory certification = Certification({
