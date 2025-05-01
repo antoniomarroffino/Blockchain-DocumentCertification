@@ -13,6 +13,7 @@ import {useBatchDocumentCertification} from "../../hook/blockchain/useBatchDocum
 import {useMetamask} from "../../hook/metamask/useMetamask";
 import toast from "react-hot-toast";
 import CertifierGuard from "./CertifierGuard.tsx";
+import {InformationCircleIcon} from "@heroicons/react/16/solid";
 
 const AllDocumentsPage = () => {
     const {data: documents, isLoading, isError} = useGetAllDocuments();
@@ -68,8 +69,19 @@ const AllDocumentsPage = () => {
             className="card bg-neutral-800 border border-neutral-700 shadow-xl"
         >
             <div className="card-body p-6">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-2">
                     <h2 className="card-title text-2xl text-white">All Documents</h2>
+
+                    <CertifierGuard>
+                        <div className="bg-yellow-100/10 border border-yellow-400 rounded-lg p-3 flex items-center gap-2 max-w-full md:max-w-lg md:ml-auto">
+                            <InformationCircleIcon className="w-5 h-5 text-yellow-400 shrink-0" />
+                            <p className="text-sm text-yellow-300 leading-snug">
+                                You can select multiple documents using the checkboxes and certify them all at once.
+                            </p>
+                        </div>
+                    </CertifierGuard>
+
+
                 </div>
 
                 <div className="mb-4">
