@@ -30,6 +30,10 @@ cd fanto-marrofino
 cd backend
 # Clean and package before development
 mvn clean package
+cd .\target\backend-api-client
+npm i 
+npm link 
+cd ..\..
 ```
 
 #### Frontend
@@ -38,7 +42,7 @@ mvn clean package
 cd frontend
 npm install
 # Link backend API client package
-npm link @dti-isin/backend-api-client
+npm link
 ```
 
 #### Smart Contract
