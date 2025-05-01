@@ -11,7 +11,7 @@ interface CertificationBadgeProps {
 }
 
 const CertificationBadge = ({docHash, setIsCertified}: CertificationBadgeProps) => {
-    const {data: isCertified, isLoading: isVerifying} = useDocumentVerification(docHash || '');
+    const {data: isCertified, isLoading: isVerifying} = useDocumentVerification(docHash || '')
 
     useEffect(() => {
         if (setIsCertified && isCertified !== undefined) {

@@ -4,21 +4,12 @@ import {useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useMetamask} from '../../hook/metamask/useMetamask';
 import {AnimatePresence, motion} from 'framer-motion';
-import {
-    BellIcon,
-    ChevronDownIcon,
-    DocumentDuplicateIcon,
-    IdentificationIcon,
-    WalletIcon,
-} from '@heroicons/react/24/outline';
+import {ChevronDownIcon, DocumentDuplicateIcon, IdentificationIcon, WalletIcon,} from '@heroicons/react/24/outline';
 import {CheckBadgeIcon} from '@heroicons/react/24/solid';
 import toast from 'react-hot-toast';
 import {formatAddress} from '../../utils/formatAddress.ts';
 import {useUserRole} from '../../hook/blockchain/useUserRole';
-import NotificationPanel from './NotificationPanel.tsx';
-import {DocumentDTO} from "@dti-isin/backend-api-client";
-import {useGetAllDocumentsGivenAddressWallet} from "../../hook/backend/useGetAllDocumentsGivenAddressWallet.ts";
-import {useNotificationsForMyDocs} from "../../hook/blockchain/useNotifications.ts";
+import NotificationButton from "./NotificationButton.tsx";
 
 export default function Header() {
     const navigate = useNavigate();
@@ -26,16 +17,8 @@ export default function Header() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const {role, isLoading} = useUserRole();
-    const [showNotifications, setShowNotifications] = useState(false);
 
     const address = signer?.address || '';
-    const {data: myDocs} = useGetAllDocumentsGivenAddressWallet(address);
-    const myHashes = myDocs
-        ? myDocs
-            .map((doc: DocumentDTO) => doc.hash)
-            .filter((hash): hash is string => typeof hash === 'string')
-        : [];
-    const {notifications} = useNotificationsForMyDocs(myHashes);
 
     const handleConnect = async () => {
         try {
@@ -58,7 +41,6 @@ export default function Header() {
                 !dropdownRef.current.contains(event.target as Node)
             ) {
                 setOpen(false);
-                setShowNotifications(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -92,80 +74,68 @@ export default function Header() {
             </motion.div>
 
             <div className="flex items-center space-x-4" ref={dropdownRef}>
-                <div className="relative">
-                    <button
-                        onClick={() => setShowNotifications(prev => !prev)}
-                        className="p-2 rounded-full hover:bg-neutral-700 transition relative"
-                    >
-                        <BellIcon className="w-6 h-6 text-yellow-400"/>
-
-                    </button>
-                    <AnimatePresence>
-                        {showNotifications && (
-                            <NotificationPanel notifications={notifications}/>
-                        )}
-                    </AnimatePresence>
-                </div>
-
                 {isConnected ? (
-                    <div className="relative">
-                        <motion.button
-                            whileHover={{scale: 1.05}}
-                            onClick={() => setOpen(o => !o)}
-                            className="flex items-center space-x-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 px-4 py-2 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
-                        >
-                            <WalletIcon className="w-6 h-6 text-yellow-400"/>
-                            <span className="font-medium text-sm text-white">
+                    <>
+                        <NotificationButton address={address} />
+                        <div className="relative">
+                            <motion.button
+                                whileHover={{scale: 1.05}}
+                                onClick={() => setOpen(o => !o)}
+                                className="flex items-center space-x-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 px-4 py-2 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
+                            >
+                                <WalletIcon className="w-6 h-6 text-yellow-400"/>
+                                <span className="font-medium text-sm text-white">
                                 {formatAddress(address)}
                             </span>
-                            <ChevronDownIcon
-                                className={`w-5 h-5 text-yellow-400 transform transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
-                            />
-                        </motion.button>
+                                <ChevronDownIcon
+                                    className={`w-5 h-5 text-yellow-400 transform transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+                                />
+                            </motion.button>
 
-                        <AnimatePresence>
-                            {open && (
-                                <motion.div
-                                    initial={{opacity: 0, y: -10}}
-                                    animate={{opacity: 1, y: 0}}
-                                    exit={{opacity: 0, y: -10}}
-                                    transition={{duration: 0.3}}
-                                    className="absolute right-0 mt-2 w-80 bg-neutral-800 rounded-2xl shadow-2xl ring-1 ring-yellow-400 ring-opacity-30 z-30"
-                                >
-                                    <div className="p-4 space-y-4 text-white">
-                                        <div className="flex items-start space-x-3">
-                                            <WalletIcon className="w-10 h-10 text-yellow-400"/>
-                                            <div className="flex-1">
-                                                <p className="text-sm font-semibold break-all max-w-full text-white">
-                                                    {address}
-                                                </p>
-                                                <p className="text-xs text-gray-400 mt-1">
-                                                    Network: {network || '-'}
-                                                </p>
+                            <AnimatePresence>
+                                {open && (
+                                    <motion.div
+                                        initial={{opacity: 0, y: -10}}
+                                        animate={{opacity: 1, y: 0}}
+                                        exit={{opacity: 0, y: -10}}
+                                        transition={{duration: 0.3}}
+                                        className="absolute right-0 mt-2 w-80 bg-neutral-800 rounded-2xl shadow-2xl ring-1 ring-yellow-400 ring-opacity-30 z-30"
+                                    >
+                                        <div className="p-4 space-y-4 text-white">
+                                            <div className="flex items-start space-x-3">
+                                                <WalletIcon className="w-10 h-10 text-yellow-400"/>
+                                                <div className="flex-1">
+                                                    <p className="text-sm font-semibold break-all max-w-full text-white">
+                                                        {address}
+                                                    </p>
+                                                    <p className="text-xs text-gray-400 mt-1">
+                                                        Network: {network || '-'}
+                                                    </p>
+                                                </div>
+                                                <button
+                                                    onClick={copyAddress}
+                                                    className="p-1 text-gray-400 hover:text-yellow-400 transition"
+                                                >
+                                                    <DocumentDuplicateIcon className="w-5 h-5"/>
+                                                </button>
                                             </div>
+                                            <div className="border-t border-neutral-700"/>
                                             <button
-                                                onClick={copyAddress}
-                                                className="p-1 text-gray-400 hover:text-yellow-400 transition"
+                                                onClick={() => {
+                                                    navigate('/profile');
+                                                    setOpen(false);
+                                                }}
+                                                className="w-full flex items-center space-x-2 px-4 py-2 bg-yellow-400 text-neutral-900 rounded-lg hover:bg-yellow-300 transition font-semibold"
                                             >
-                                                <DocumentDuplicateIcon className="w-5 h-5"/>
+                                                <IdentificationIcon className="w-5 h-5"/>
+                                                <span className="text-sm">View Profile</span>
                                             </button>
                                         </div>
-                                        <div className="border-t border-neutral-700"/>
-                                        <button
-                                            onClick={() => {
-                                                navigate('/profile');
-                                                setOpen(false);
-                                            }}
-                                            className="w-full flex items-center space-x-2 px-4 py-2 bg-yellow-400 text-neutral-900 rounded-lg hover:bg-yellow-300 transition font-semibold"
-                                        >
-                                            <IdentificationIcon className="w-5 h-5"/>
-                                            <span className="text-sm">View Profile</span>
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </>
                 ) : (
                     <motion.button
                         whileHover={{scale: 1.05}}

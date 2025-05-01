@@ -33,7 +33,7 @@ const Sidebar = () => {
                             whileTap={{scale: 0.98}}
                             key={item.path}
                             onClick={() => navigate(item.path)}
-                            className={`w-full flex items-center gap-4 px-5 py-3 rounded-xl font-semibold transition-all
+                            className={`w-full flex items-center gap-4 px-5 py-3 rounded-xl font-semibold transition-all cursor-pointer
                                 ${isActive(item.path)
                                 ? 'bg-gradient-to-r from-yellow-400/20 to-green-400/20 text-yellow-300 shadow-lg'
                                 : 'hover:bg-neutral-800 text-neutral-400 hover:text-yellow-400'}`}
@@ -48,7 +48,7 @@ const Sidebar = () => {
                             whileHover={{scale: 1.03}}
                             whileTap={{scale: 0.98}}
                             onClick={() => navigate('/myCertifiedDocuments')}
-                            className={`w-full flex items-center gap-4 px-5 py-3 rounded-xl font-semibold transition-all
+                            className={`w-full flex items-center gap-4 px-5 py-3 rounded-xl font-semibold transition-all cursor-pointer
                                 ${isActive('/myCertifiedDocuments')
                                 ? 'bg-gradient-to-r from-yellow-400/20 to-green-400/20 text-yellow-300 shadow-lg'
                                 : 'hover:bg-neutral-800 text-neutral-400 hover:text-yellow-400'}`}

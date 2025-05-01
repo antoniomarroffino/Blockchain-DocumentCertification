@@ -10,6 +10,7 @@ export const useNotificationsForMyDocs = (myDocumentHashes: string[]) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        console.log("useNotificationForMyDocs");
         const fetch = async () => {
             if (!signer || myDocumentHashes.length === 0) return;
 
