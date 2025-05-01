@@ -63,17 +63,16 @@ export default function Header() {
                     </h1>
                 </div>
 
-                {!isLoading && role === "Admin" && (
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => navigate('/admin')}
+                {role === "Admin" && !isLoading && (
+                    <button
+                        onClick={() => navigate("/admin")}
                         className="btn btn-sm bg-yellow-400 text-neutral-900 font-semibold rounded-full px-4 py-1 hover:bg-yellow-300 transition"
                     >
                         Admin Dashboard
-                    </motion.button>
+                    </button>
                 )}
             </motion.div>
+
 
             <div className="flex items-center relative" ref={dropdownRef}>
                 {isConnected ? (
