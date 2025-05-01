@@ -1,48 +1,48 @@
 'use client';
 
 import { useMetamask } from "../../hook/metamask/useMetamask";
-import { useGetAllDocumentsGivenAddressWallet } from "../../hook/backend/useGetAllDocumentsGivenAddressWallet";
-import { DocumentDTO } from "@dti-isin/backend-api-client";
+import { useGetAllDocuments } from "../../hook/backend/useGetAllDocuments";
+import { documentCertificationContractNoTX } from "../../../config/config";
 import { useEffect, useState } from "react";
+import { DocumentDTO } from "@dti-isin/backend-api-client";
 import { motion } from "framer-motion";
-import DocumentCard from "../../components/common/DocumentCard";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import ErrorBanner from "../../components/common/ErrorBanner";
 import WalletNotConnected from "../../components/common/WalletNotConnected";
-import { documentCertificationContractNoTX } from "../../../config/config";
-import DocumentSearchBar from "./DocumentSearchBar.tsx";
+import DocumentCard from "../../components/common/DocumentCard";
+import DocumentSearchBar from "./DocumentSearchBar";
+import { toast } from "react-hot-toast";
 
 const MyCertifiedDocumentsPage = () => {
     const { signer, isConnected } = useMetamask();
-    const [certifiedDocs, setCertifiedDocs] = useState<DocumentDTO[]>([]);
+    const { data: allDocs, isLoading, isError } = useGetAllDocuments();
     const [searchTerm, setSearchTerm] = useState("");
-
-    const { data: docs, isLoading, isError } = useGetAllDocumentsGivenAddressWallet(
-        signer?.address ?? ""
-    );
+    const [myCertifiedDocs, setMyCertifiedDocs] = useState<DocumentDTO[]>([]);
 
     useEffect(() => {
-        const verifyDocs = async () => {
-            if (!docs || !documentCertificationContractNoTX) return;
+        const fetchCertifiedDocs = async () => {
+            if (!signer || !allDocs || !documentCertificationContractNoTX) return;
 
-            const filtered = await Promise.all(
-                docs.map(async (doc) => {
-                    const isCertified = await documentCertificationContractNoTX.isDocumentCertified(doc.hash!);
-                    return isCertified ? doc : null;
-                })
-            );
-
-            setCertifiedDocs(filtered.filter(Boolean) as DocumentDTO[]);
+            try {
+                const myAddress = await signer.getAddress();
+                const hashes = await documentCertificationContractNoTX.getCertifiedDocumentsByAddress(myAddress);
+                const hashSet = new Set(hashes.map((h) => h.toLowerCase()));
+                const matchedDocs = allDocs.filter(doc => doc.hash && hashSet.has(doc.hash.toLowerCase()));
+                setMyCertifiedDocs(matchedDocs);
+            } catch (err) {
+                console.error("Error fetching certified documents:", err);
+                toast.error("Failed to load your certified documents.");
+            }
         };
 
-        verifyDocs();
-    }, [docs]);
+        fetchCertifiedDocs();
+    }, [signer, allDocs]);
 
     if (!isConnected) return <WalletNotConnected />;
-    if (isLoading) return <LoadingOverlay message="Loading certified documents..." />;
+    if (isLoading) return <LoadingOverlay message="Loading documents..." />;
     if (isError) return <ErrorBanner message="Failed to load documents." />;
 
-    const filteredDocs = certifiedDocs.filter((doc) =>
+    const filteredDocs = myCertifiedDocs.filter((doc) =>
         doc.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -54,16 +54,13 @@ const MyCertifiedDocumentsPage = () => {
         >
             <div className="card-body p-6">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="card-title text-2xl text-white">My Certified Documents</h2>
+                    <h2 className="card-title text-2xl text-white">Certified by Me</h2>
                 </div>
 
-                <DocumentSearchBar
-                    searchTerm={searchTerm}
-                    onChange={(value) => setSearchTerm(value)}
-                />
+                <DocumentSearchBar searchTerm={searchTerm} onChange={setSearchTerm} />
 
                 {filteredDocs.length === 0 ? (
-                    <p className="text-neutral-400 mt-4">No certified documents match your search.</p>
+                    <p className="text-neutral-400 mt-4">You have not certified any documents yet.</p>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
                         {filteredDocs.map((doc) => (

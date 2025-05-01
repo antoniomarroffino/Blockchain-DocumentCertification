@@ -11,12 +11,20 @@ contract DocumentCertification is Initializable, AccessControlUpgradeable {
         uint256 timestamp;
     }
 
+    struct Revocation {
+        address revoker;
+        uint256 timestamp;
+        string reason;
+    }
+
     bytes32 public constant CERTIFIER_ROLE = keccak256("CERTIFIER_ROLE");
 
-    event DocumentCertified(bytes32 _docHash, address certifier);
+    event DocumentCertified(bytes32 indexed docHash, address certifier);
+    event CertificationRevoked(bytes32 indexed docHash, address revoker, string reason);
 
     mapping(bytes32 => Certification[]) private documentHistory;
     mapping(address => bytes32[]) private certificationsByAddress;
+    mapping(bytes32 => Revocation[]) private documentRevocations;
 
     function initialize() public initializer {
         __AccessControl_init();
@@ -40,6 +48,46 @@ contract DocumentCertification is Initializable, AccessControlUpgradeable {
 
             emit DocumentCertified(_docHash, msg.sender);
         }
+    }
+
+    function revokeCertification(bytes32 _docHash, string memory _reason) public onlyRole(CERTIFIER_ROLE) {
+        require(isDocumentCertified(_docHash), "Document not certified");
+        require(bytes(_reason).length > 0, "Reason required");
+
+        Certification[] storage history = documentHistory[_docHash];
+        bool hasCertified = false;
+
+        for (uint256 i = 0; i < history.length; i++) {
+            if (history[i].certifier == msg.sender) {
+                hasCertified = true;
+                break;
+            }
+        }
+        require(hasCertified, "You did not certify this document");
+
+        documentRevocations[_docHash].push(Revocation({
+            revoker: msg.sender,
+            timestamp: block.timestamp,
+            reason: _reason
+        }));
+
+        emit CertificationRevoked(_docHash, msg.sender, _reason);
+    }
+
+
+    function getRevocations(bytes32 _docHash) public view returns (Revocation[] memory) {
+        return documentRevocations[_docHash];
+    }
+
+    function getRevocationsByUser(bytes32 _docHash, address user) public view returns (uint256) {
+        Revocation[] storage revokes = documentRevocations[_docHash];
+        uint256 count = 0;
+        for (uint256 i = 0; i < revokes.length; i++) {
+            if (revokes[i].revoker == user) {
+                count++;
+            }
+        }
+        return count;
     }
 
     function isDocumentCertified(bytes32 _docHash) public view returns (bool) {

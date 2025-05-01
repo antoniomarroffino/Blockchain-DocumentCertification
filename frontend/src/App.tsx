@@ -16,6 +16,7 @@ import MyCertifiedDocumentsPage from "./pages/my-certified-documents/MyCertified
 import DocumentDetailsPage from "./pages/document-details/DocumentDetailsPage.tsx";
 import AdminDashboardPage from "./pages/admin-dashboard/AdminDashboardPage.tsx";
 import AdminRouteGuard from "./pages/admin-dashboard/AdminRouteGuard.tsx";
+import CertifierGuard from "./pages/all-documents/CertifierGuard.tsx";
 
 
 function App() {
@@ -31,7 +32,10 @@ function App() {
                                 <Route path="/" element={<DashboardPage />} />
                                 <Route path="/uploadDocument" element={<DocumentUploaderPage />} />
                                 <Route path="/myDocuments" element={<MyDocumentsPage />} />
-                                <Route path="/myCertifiedDocuments" element={<MyCertifiedDocumentsPage />} />
+                                <Route path="/myCertifiedDocuments" element={
+                                    <CertifierGuard>
+                                        <MyCertifiedDocumentsPage />
+                                    </CertifierGuard>} />
                                 <Route path="/allDocuments" element={<AllDocumentsPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
                                 <Route path="/document-details/:hash" element={<DocumentDetailsPage />} />

@@ -23,6 +23,20 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export declare namespace DocumentCertification {
+  export type RevocationStruct = {
+    revoker: AddressLike;
+    timestamp: BigNumberish;
+    reason: string;
+  };
+
+  export type RevocationStructOutput = [
+    revoker: string,
+    timestamp: bigint,
+    reason: string
+  ] & { revoker: string; timestamp: bigint; reason: string };
+}
+
 export interface DocumentCertificationInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -33,18 +47,22 @@ export interface DocumentCertificationInterface extends Interface {
       | "getCertifierOf"
       | "getDocumentHistoryFlat"
       | "getLastCertification"
+      | "getRevocations"
+      | "getRevocationsByUser"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
       | "initialize"
       | "isDocumentCertified"
       | "renounceRole"
+      | "revokeCertification"
       | "revokeRole"
       | "supportsInterface"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "CertificationRevoked"
       | "DocumentCertified"
       | "Initialized"
       | "RoleAdminChanged"
@@ -81,6 +99,14 @@ export interface DocumentCertificationInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "getRevocations",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRevocationsByUser",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
   ): string;
@@ -103,6 +129,10 @@ export interface DocumentCertificationInterface extends Interface {
   encodeFunctionData(
     functionFragment: "renounceRole",
     values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeCertification",
+    values: [BytesLike, string]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -142,6 +172,14 @@ export interface DocumentCertificationInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getRevocations",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRevocationsByUser",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
   ): Result;
@@ -156,6 +194,10 @@ export interface DocumentCertificationInterface extends Interface {
     functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeCertification",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
@@ -163,11 +205,29 @@ export interface DocumentCertificationInterface extends Interface {
   ): Result;
 }
 
-export namespace DocumentCertifiedEvent {
-  export type InputTuple = [_docHash: BytesLike, certifier: AddressLike];
-  export type OutputTuple = [_docHash: string, certifier: string];
+export namespace CertificationRevokedEvent {
+  export type InputTuple = [
+    docHash: BytesLike,
+    revoker: AddressLike,
+    reason: string
+  ];
+  export type OutputTuple = [docHash: string, revoker: string, reason: string];
   export interface OutputObject {
-    _docHash: string;
+    docHash: string;
+    revoker: string;
+    reason: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace DocumentCertifiedEvent {
+  export type InputTuple = [docHash: BytesLike, certifier: AddressLike];
+  export type OutputTuple = [docHash: string, certifier: string];
+  export interface OutputObject {
+    docHash: string;
     certifier: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -331,6 +391,18 @@ export interface DocumentCertification extends BaseContract {
     "view"
   >;
 
+  getRevocations: TypedContractMethod<
+    [_docHash: BytesLike],
+    [DocumentCertification.RevocationStructOutput[]],
+    "view"
+  >;
+
+  getRevocationsByUser: TypedContractMethod<
+    [_docHash: BytesLike, user: AddressLike],
+    [bigint],
+    "view"
+  >;
+
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
   grantRole: TypedContractMethod<
@@ -355,6 +427,12 @@ export interface DocumentCertification extends BaseContract {
 
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  revokeCertification: TypedContractMethod<
+    [_docHash: BytesLike, _reason: string],
     [void],
     "nonpayable"
   >;
@@ -417,6 +495,20 @@ export interface DocumentCertification extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "getRevocations"
+  ): TypedContractMethod<
+    [_docHash: BytesLike],
+    [DocumentCertification.RevocationStructOutput[]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getRevocationsByUser"
+  ): TypedContractMethod<
+    [_docHash: BytesLike, user: AddressLike],
+    [bigint],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;
   getFunction(
@@ -447,6 +539,13 @@ export interface DocumentCertification extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "revokeCertification"
+  ): TypedContractMethod<
+    [_docHash: BytesLike, _reason: string],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "revokeRole"
   ): TypedContractMethod<
     [role: BytesLike, account: AddressLike],
@@ -457,6 +556,13 @@ export interface DocumentCertification extends BaseContract {
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
 
+  getEvent(
+    key: "CertificationRevoked"
+  ): TypedContractEvent<
+    CertificationRevokedEvent.InputTuple,
+    CertificationRevokedEvent.OutputTuple,
+    CertificationRevokedEvent.OutputObject
+  >;
   getEvent(
     key: "DocumentCertified"
   ): TypedContractEvent<
@@ -494,6 +600,17 @@ export interface DocumentCertification extends BaseContract {
   >;
 
   filters: {
+    "CertificationRevoked(bytes32,address,string)": TypedContractEvent<
+      CertificationRevokedEvent.InputTuple,
+      CertificationRevokedEvent.OutputTuple,
+      CertificationRevokedEvent.OutputObject
+    >;
+    CertificationRevoked: TypedContractEvent<
+      CertificationRevokedEvent.InputTuple,
+      CertificationRevokedEvent.OutputTuple,
+      CertificationRevokedEvent.OutputObject
+    >;
+
     "DocumentCertified(bytes32,address)": TypedContractEvent<
       DocumentCertifiedEvent.InputTuple,
       DocumentCertifiedEvent.OutputTuple,
