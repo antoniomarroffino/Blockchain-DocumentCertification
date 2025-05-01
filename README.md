@@ -24,26 +24,44 @@ cd fanto-marrofino
 
 ### 2. Install dependencies
 
+#### Backend (Quarkus)
+
+```bash
+cd backend
+# Clean and package before development
+mvn clean package
+```
+
 #### Frontend
 
 ```bash
 cd frontend
 npm install
-```
-
-#### Backend
-
-```bash
-cd backend
-./mvnw install
+# Link backend API client package
+npm link @dti-isin/backend-api-client
 ```
 
 #### Smart Contract
 
 ```bash
-cd contracts
+cd blockchain/contracts
 npm install
 ```
+
+---
+
+## 🚀 Build and Link Backend API Client
+
+After building the backend, generate the NPM package for the API client and link it locally:
+
+```bash
+# From project root or /backend after mvn clean package
+cd backend/target/backend-api-client
+npm install
+npm link
+```
+
+This makes the `@dti-isin/backend-api-client` package available for linking in the frontend.
 
 ---
 
@@ -65,10 +83,10 @@ docker run --name krostchain-mysql \
 
 ---
 
-### 1. Start Hardhat Node
+### 1. Start Hardhat Node (Local Blockchain)
 
 ```bash
-cd blockchain
+cd blockchain/contracts
 npx hardhat node
 ```
 
@@ -85,8 +103,9 @@ npx hardhat run scripts/deploy.ts --network localhost
 ### 3. Start the Backend
 
 ```bash
-cd backend
-./mvnw quarkus:dev
+# Already in backend directory
+git# Quarkus dev after mvn clean package is alive
+mvn quarkus:dev
 ```
 
 ---
@@ -95,6 +114,7 @@ cd backend
 
 ```bash
 cd frontend
+npm link @dti-isin/backend-api-client
 npm run dev
 ```
 
@@ -104,80 +124,24 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🚢 Deployment Guide
 
-### 📍 Deploy on Localhost (for development)
-
-### 1. Start a local Hardhat node
-
-```bash
-cd blockchain
-npx hardhat node
-```
-
-### 2. Deploy the contract to localhost
-
-```bash
-npx hardhat run scripts/deploy.ts --network localhost
-```
-
-### 3. Copy the deployed contract address
-
-It will appear in the terminal output (e.g. `0x...`)
-
-### 4. Update the frontend config
-
-- Open: `frontend/src/config/config.ts`
-- Replace the `contractAddress` with the one from step 3
-
----
-
 ### 🌐 Deploy on Sepolia Testnet
 
-### 1. Edit `.env` inside `/contracts`
-
-Make sure it contains:
-
-```env
-PRIVATE_KEY=<your Sepolia private key>
-INFURA_API_KEY=a10fdf5acfcb4352828dc0b7a6a27b64
-ETHERSCAN_API_KEY=13S52KAKXZC6YQW3Y8X9E5ESP3WSSFZ81T
-```
-
-### 2. Deploy the contract to Sepolia
-
-```bash
-npx hardhat run scripts/deploy.ts --network sepolia
-```
-
-### 3. Update the frontend config
-
-- Open: `frontend/src/config/config.ts`
-- Replace the `contractAddress` with the new Sepolia address
-
-### 4. (Optional) Verify the contract on Etherscan
-
-```bash
-npx hardhat verify --network sepolia <contractAddress>
-```
-
----
-
-### ✨ Upgrade the Smart Contract (if needed)
-
-If you made changes to the contract and need to **upgrade the deployed proxy**, run:
-
-```bash
-npx hardhat run scripts/upgrade.ts --network sepolia
-```
-
-> 🔐 Make sure the address in `.env` (under `PROXY_ADDRESS`) is correct before running.
-
----
-
-### 🌐 Notes
-
-- The **frontend** uses `VITE_INFURA_API_KEY` (set in `frontend/.env`)
-- The `PROXY_ADDRESS` is saved in `.env` for reference but not used automatically
-- You can switch between local and Sepolia by editing `PRIVATE_KEY` and the deployment network
+1. **Configure environment** in `blockchain/contracts/.env`:
+   ```env
+   PRIVATE_KEY=<your Sepolia private key>
+   INFURA_API_KEY=<your Infura key>
+   ETHERSCAN_API_KEY=<your Etherscan key>
+   ```
+2. **Deploy**:
+   ```bash
+   cd blockchain/contracts
+   npx hardhat run scripts/deploy.ts --network sepolia
+   ```
+3. **Update frontend config** (`frontend/src/config/config.ts`) with new `contractAddress`.
+4. **(Optional) Verify on Etherscan**:
+   ```bash
+   npx hardhat verify --network sepolia <contractAddress>
+   ```
 
 ---
 
@@ -194,39 +158,15 @@ npm run test
 
 ```bash
 cd backend
-./mvnw test
+mvn test
 ```
 
 ### Smart Contracts
 
 ```bash
-cd contracts
+cd blockchain/contracts
 npx hardhat test
 ```
-
----
-
-## 📸 Screenshots
-
-### 📄 All documents page
-
-![All documents page](./screenshots/all-documents.png)
-
-### 🧾 Document details (certifications/revocations)
-
-![Document details](./screenshots/document-details.png)
-
-### 👤 Profile page
-
-![Profile page](./screenshots/my-profile.png)
-
-### 🛡️ Admin Dashboard
-
-![Admin view](./screenshots/admin-dashboard.png)
-
-### 📩 Upload document
-
-![Upload document](./screenshots/upload-document.png)
 
 ---
 
