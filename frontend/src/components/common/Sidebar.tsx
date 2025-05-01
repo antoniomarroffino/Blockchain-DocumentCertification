@@ -24,7 +24,7 @@ const Sidebar = () => {
 
     return (
         <div
-            className="h-[calc(100vh-65px)] w-64 bg-neutral-900 border-r border-neutral-700 flex flex-col justify-between">
+            className="h-screen w-64 bg-neutral-900 border-r border-neutral-700 flex flex-col justify-between">
             <nav className="px-3 py-4 overflow-y-auto">
                 <div className="flex flex-col gap-1.5">
                     {menuItems.map((item) => (

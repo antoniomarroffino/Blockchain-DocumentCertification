@@ -58,7 +58,8 @@ export default function Header() {
             >
                 <div className="flex items-center space-x-3">
                     <CheckBadgeIcon className="w-8 h-8 text-yellow-400 animate-pulse"/>
-                    <h1 className="text-3xl font-extrabold tracking-tight text-white hover:underline hover:decoration-yellow-400 transition-all duration-300">
+                    <h1 className="text-3xl font-extrabold tracking-tight text-white hover:decoration-yellow-400 transition-all duration-300 cursor-pointer"
+                        onClick={() => {navigate("/")}}>
                         KrostChain
                     </h1>
                 </div>
@@ -114,7 +115,7 @@ export default function Header() {
                                                 </div>
                                                 <button
                                                     onClick={copyAddress}
-                                                    className="p-1 text-gray-400 hover:text-yellow-400 transition"
+                                                    className="p-1 text-gray-400 hover:text-yellow-400 transition cursor-pointer"
                                                 >
                                                     <DocumentDuplicateIcon className="w-5 h-5"/>
                                                 </button>
@@ -125,7 +126,7 @@ export default function Header() {
                                                     navigate('/profile');
                                                     setOpen(false);
                                                 }}
-                                                className="w-full flex items-center space-x-2 px-4 py-2 bg-yellow-400 text-neutral-900 rounded-lg hover:bg-yellow-300 transition font-semibold"
+                                                className="w-full flex items-center space-x-2 px-4 py-2 bg-yellow-400 text-neutral-900 rounded-lg hover:bg-yellow-300 transition font-semibold cursor-pointer"
                                             >
                                                 <IdentificationIcon className="w-5 h-5"/>
                                                 <span className="text-sm">View Profile</span>
