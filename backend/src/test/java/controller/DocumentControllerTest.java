@@ -1,6 +1,7 @@
 package controller;
 
 import ch.supsi.controller.DocumentController;
+import ch.supsi.model.api.MimeTypeWithContent;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 import ch.supsi.service.IDocumentService;
@@ -64,29 +65,32 @@ public class DocumentControllerTest {
     @Test
     @DisplayName("test03DownloadContent_NotFound")
     void test03DownloadContent_NotFound() {
-        when(this.documentService.getContentBytesByDocumentId(123L)).thenReturn(null);
-
+        when(this.documentService.getDocumentContentWithType(123L)).thenReturn(null);
         Response response = this.documentController.downloadContent(123L);
-
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
         assertNull(response.getEntity());
-
-        verify(this.documentService, times(1)).getContentBytesByDocumentId(123L);
+        verify(this.documentService, times(1)).getDocumentContentWithType(123L);
     }
 
     @Test
     @DisplayName("test04DownloadContent_Success")
     void test04DownloadContent_Success() {
+        // Arrange
         byte[] content = new byte[]{1, 2, 3};
+        String mimeType = "application/pdf";
+        MimeTypeWithContent mimeTypeWithContent = new MimeTypeWithContent(mimeType, content);
 
-        when(this.documentService.getContentBytesByDocumentId(456L)).thenReturn(content);
+        when(this.documentService.getDocumentContentWithType(456L)).thenReturn(mimeTypeWithContent);
 
+        // Act
         Response response = this.documentController.downloadContent(456L);
 
+        // Assert
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertArrayEquals(content, (byte[]) response.getEntity());
+        assertEquals(mimeType, response.getMediaType().toString());
 
-        verify(this.documentService, times(1)).getContentBytesByDocumentId(456L);
+        verify(this.documentService, times(1)).getDocumentContentWithType(456L);
     }
 
     @Test
