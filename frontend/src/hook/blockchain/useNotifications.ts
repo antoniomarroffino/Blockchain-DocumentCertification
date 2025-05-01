@@ -10,9 +10,13 @@ export const useNotificationsForMyDocs = (myDocumentHashes: string[]) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetch = async () => {
-            if (!signer || myDocumentHashes.length === 0) return;
+        if (!signer || myDocumentHashes.length === 0) {
+            setNotifications([]);
+            setLoading(false);
+            return;
+        }
 
+        const fetch = async () => {
             setLoading(true);
             const contract = DocumentCertification__factory.connect(contractAddress, provider);
 

@@ -25,6 +25,8 @@ export const useRevokeCertification = () => {
         onSuccess: (_, {docHash, signer}) => {
             queryClient.invalidateQueries({queryKey: ["document-history", docHash]});
             queryClient.invalidateQueries({queryKey: ["revocations", docHash]});
+            queryClient.invalidateQueries({queryKey: ["certification", docHash]});
+            queryClient.invalidateQueries({queryKey: ["documents"]});
 
             if (signer) {
                 queryClient.invalidateQueries({

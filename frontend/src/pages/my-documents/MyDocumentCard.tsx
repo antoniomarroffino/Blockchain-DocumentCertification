@@ -6,10 +6,9 @@ import CertificationBadge from "./CertificationBadge";
 
 interface Props {
     document: DocumentDTO;
-    onPreview?: () => void;
 }
 
-const MyDocumentCard = ({document, onPreview}: Props) => {
+const MyDocumentCard = ({document}: Props) => {
     return (
         <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 shadow-sm space-y-2">
             <div className="flex items-center gap-3">
@@ -25,13 +24,6 @@ const MyDocumentCard = ({document, onPreview}: Props) => {
             </div>
 
             <CertificationBadge docHash={document.hash!}/>
-
-            <button
-                onClick={onPreview}
-                className="btn btn-sm btn-ghost text-yellow-400"
-            >
-                Preview
-            </button>
         </div>
     );
 };

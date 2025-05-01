@@ -102,7 +102,7 @@ const DocumentUploaderPage = () => {
                     {showSuccessBanner && (
                         <div className="flex justify-center mb-6">
                             <SuccessBanner
-                                message="Document certified successfully!"
+                                message="Document uploaded successfully!"
                                 onClose={() => setShowSuccessBanner(false)}
                             />
                         </div>

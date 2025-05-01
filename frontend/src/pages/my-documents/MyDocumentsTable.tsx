@@ -6,10 +6,6 @@ import MyDocumentRow from "./MyDocumentRow.tsx";
 import MyDocumentCard from "./MyDocumentCard.tsx";
 import LoadingOverlay from "../../components/common/LoadingOverlay.tsx";
 import ErrorBanner from "../../components/common/ErrorBanner.tsx";
-import FilePreview from "../document-uploader/FilePreview.tsx";
-import {useGetFileContentByDocumentId} from "../../hook/backend/useGetFileContentByDocumentId.ts";
-import {useState} from "react";
-import {DocumentDTO} from "@dti-isin/backend-api-client";
 
 interface MyDocumentsTableProps {
     signer: JsonRpcSigner;
@@ -18,12 +14,6 @@ interface MyDocumentsTableProps {
 
 const MyDocumentsTable = ({signer, searchTerm = ""}: MyDocumentsTableProps) => {
     const {data: documents, isLoading, isError} = useGetAllDocumentsGivenAddressWallet(signer.address);
-    const [selectedDocument, setSelectedDocument] = useState<DocumentDTO | null>(null);
-    const {data: selectedBlob} = useGetFileContentByDocumentId(selectedDocument?.id ?? -1);
-
-    const handleClosePreview = () => {
-        setSelectedDocument(null);
-    };
 
     const filteredDocs = documents?.filter(doc =>
         doc.title?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -41,12 +31,11 @@ const MyDocumentsTable = ({signer, searchTerm = ""}: MyDocumentsTableProps) => {
                         <th className="w-1/2 p-4">Document</th>
                         <th className="p-4">Date</th>
                         <th className="p-4">State</th>
-                        <th className="p-4">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     {filteredDocs?.map((doc) => (
-                        <MyDocumentRow key={doc.id} document={doc} onPreview={() => setSelectedDocument(doc)}/>
+                        <MyDocumentRow key={doc.id} document={doc} />
                     ))}
                     </tbody>
                 </table>
@@ -54,15 +43,9 @@ const MyDocumentsTable = ({signer, searchTerm = ""}: MyDocumentsTableProps) => {
 
             <div className="md:hidden space-y-4">
                 {filteredDocs?.map((doc) => (
-                    <MyDocumentCard key={doc.id} document={doc} onPreview={() => setSelectedDocument(doc)}/>
+                    <MyDocumentCard key={doc.id} document={doc} />
                 ))}
             </div>
-
-            {selectedDocument && selectedBlob && (
-                <div className="absolute top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-black/60">
-                    <FilePreview file={selectedBlob} onClose={handleClosePreview}/>
-                </div>
-            )}
         </div>
     );
 };

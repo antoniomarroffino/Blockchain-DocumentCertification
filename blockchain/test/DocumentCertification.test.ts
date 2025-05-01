@@ -143,11 +143,31 @@ describe("DocumentCertification", function () {
                 const hash = sampleHashes[0];
 
                 await proxy.connect(certifier).certifyDocuments([hash]);
+                await proxy.connect(certifier).certifyDocuments([hash]);
                 await proxy.connect(certifier).revokeCertification(hash, "reason1");
                 await proxy.connect(certifier).revokeCertification(hash, "reason2");
 
                 const revocationCount = await proxy.getRevocationsByUser(hash, certifier.address);
                 expect(revocationCount).to.equal(2);
+            });
+
+            it("should revert if document not certified", async function () {
+                const { proxy } = await loadFixture(deployFixture);
+                const hash = sampleHashes[0];
+                await expect(proxy.getCertifierOf(hash)).to.be.revertedWith("Not certified");
+            });
+
+            it("should return the last certifier address after certification", async function () {
+                const { proxy, certifier, other, CERTIFIER_ROLE } = await loadFixture(deployFixture);
+
+                await proxy.grantRole(CERTIFIER_ROLE, other.address);
+                const hash = sampleHashes[1];
+
+                await proxy.connect(certifier).certifyDocuments([hash]);
+
+                await proxy.connect(other).certifyDocuments([hash]);
+                const lastCertifier = await proxy.getCertifierOf(hash);
+                expect(lastCertifier).to.equal(other.address);
             });
         });
     });

@@ -1,6 +1,5 @@
 package ch.supsi.controller;
 
-import ch.supsi.model.api.MimeTypeWithContent;
 import ch.supsi.model.dto.DocumentDTO;
 import ch.supsi.model.dto.UploadFormDTO;
 import ch.supsi.service.IDocumentService;
@@ -15,9 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.util.List;
 
 @Path("/documents")
@@ -60,26 +57,12 @@ public class DocumentController {
             )
     )
     public Response downloadContent(@PathParam("id") Long id) {
-        MimeTypeWithContent result = documentService.getDocumentContentWithType(id);
-        if (result == null || result.getContent() == null) {
+        byte[] content = this.documentService.getContentBytesByDocumentId(id);
+        if (content == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        String mimeType = result.getMimeType();
-        if (mimeType == null || mimeType.isBlank()) {
-            try {
-                mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(result.getContent()));
-            } catch (IOException e) {
-                mimeType = "application/octet-stream";
-            }
-        }
-
-        return Response
-                .ok(result.getContent())
-                .type(mimeType != null ? mimeType : "application/octet-stream")
-                .build();
+        return Response.ok(content).build();
     }
-
 
     @GET
     @Operation(summary = "Get all documents")

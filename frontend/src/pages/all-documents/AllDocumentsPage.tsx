@@ -46,7 +46,7 @@ const AllDocumentsPage = () => {
                     error: (err: Error) => `Error: ${err.message}`,
                 }
             );
-            setSelected(new Set()); // Reset selection
+            setSelected(new Set());
         } catch (err) {
             console.error(err);
         }

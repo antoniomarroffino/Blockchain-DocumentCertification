@@ -2,33 +2,21 @@
 /* tslint:disable */
 /* eslint-disable */
 import type * as openzeppelin from "./@openzeppelin";
+export type { openzeppelin };
 import type * as contracts from "./contracts";
-
-export type {openzeppelin};
-
-export type {contracts};
+export type { contracts };
 export * as factories from "./factories";
-export type {AccessControlUpgradeable} from "./@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable";
-export {
-    AccessControlUpgradeable__factory
-} from "./factories/@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable__factory";
-export type {Initializable} from "./@openzeppelin/contracts-upgradeable/proxy/utils/Initializable";
-export {
-    Initializable__factory
-} from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable__factory";
-export type {ContextUpgradeable} from "./@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable";
-export {
-    ContextUpgradeable__factory
-} from "./factories/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable__factory";
-export type {ERC165Upgradeable} from "./@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable";
-export {
-    ERC165Upgradeable__factory
-} from "./factories/@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable__factory";
-export type {IAccessControl} from "./@openzeppelin/contracts/access/IAccessControl";
-export {IAccessControl__factory} from "./factories/@openzeppelin/contracts/access/IAccessControl__factory";
-export type {IERC165} from "./@openzeppelin/contracts/utils/introspection/IERC165";
-export {IERC165__factory} from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
-export type {DocumentCertification} from "./contracts/DocumentCertification";
-export {DocumentCertification__factory} from "./factories/contracts/DocumentCertification__factory";
-export type {Lock} from "./contracts/Lock";
-export {Lock__factory} from "./factories/contracts/Lock__factory";
+export type { AccessControlUpgradeable } from "./@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable";
+export { AccessControlUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable__factory";
+export type { Initializable } from "./@openzeppelin/contracts-upgradeable/proxy/utils/Initializable";
+export { Initializable__factory } from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable__factory";
+export type { ContextUpgradeable } from "./@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable";
+export { ContextUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable__factory";
+export type { ERC165Upgradeable } from "./@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable";
+export { ERC165Upgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable__factory";
+export type { IAccessControl } from "./@openzeppelin/contracts/access/IAccessControl";
+export { IAccessControl__factory } from "./factories/@openzeppelin/contracts/access/IAccessControl__factory";
+export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC165";
+export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
+export type { DocumentCertification } from "./contracts/DocumentCertification";
+export { DocumentCertification__factory } from "./factories/contracts/DocumentCertification__factory";

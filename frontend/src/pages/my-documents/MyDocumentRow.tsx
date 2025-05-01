@@ -7,10 +7,9 @@ import CertificationBadge from "./CertificationBadge.tsx";
 
 interface MyDocumentRowProps {
     document: DocumentDTO;
-    onPreview: () => void;
 }
 
-const MyDocumentRow = ({document, onPreview}: MyDocumentRowProps) => {
+const MyDocumentRow = ({document}: MyDocumentRowProps) => {
     return (
         <motion.tr
             initial={{opacity: 0, y: 10}}
@@ -31,15 +30,6 @@ const MyDocumentRow = ({document, onPreview}: MyDocumentRowProps) => {
             </td>
             <td className="p-4">
                 <CertificationBadge docHash={document.hash!}/>
-            </td>
-            <td className="p-4">
-                <motion.button
-                    whileHover={{scale: 1.05}}
-                    className="btn btn-ghost btn-sm text-yellow-400 hover:text-yellow-300"
-                    onClick={onPreview}
-                >
-                    Preview
-                </motion.button>
             </td>
         </motion.tr>
     );
