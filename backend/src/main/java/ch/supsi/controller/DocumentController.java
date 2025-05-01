@@ -67,11 +67,9 @@ public class DocumentController {
 
         String mimeType = result.getMimeType();
         if (mimeType == null || mimeType.isBlank()) {
-            // fallback: prova a rilevarlo dai byte
             try {
                 mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(result.getContent()));
             } catch (IOException e) {
-                // loggalo se vuoi
                 mimeType = "application/octet-stream";
             }
         }

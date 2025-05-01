@@ -7,7 +7,7 @@ import {useManageCertifier} from "../../hook/blockchain/useManageCertifier";
 import CertifierTable from "./CertifierTable";
 import {toast} from "react-hot-toast";
 import {ethers, } from "ethers";
-import {hasCertifierRole} from "../../utils/roles.ts";
+import {hasCertifierRole} from "../../types/roles.ts";
 import {useMetamask} from "../../hook/metamask/useMetamask.ts";
 
 const AdminDashboardPage = () => {

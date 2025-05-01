@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {DocumentCertification__factory} from "../../typechain-types";
 import {useMetamask} from "../metamask/useMetamask";
-import {ROLES} from "../../utils/roles";
+import {ROLES} from "../../types/roles.ts";
 import {contractAddress} from "../../../config/config.ts";
 
 export const useCertifierList = () => {
