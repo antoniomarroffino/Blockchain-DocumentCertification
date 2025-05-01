@@ -2,97 +2,93 @@
 /* tslint:disable */
 /* eslint-disable */
 import type {
-    BaseContract,
-    BytesLike,
-    ContractMethod,
-    ContractRunner,
-    FunctionFragment,
-    Interface,
-    Listener,
-    Result,
+  BaseContract,
+  BytesLike,
+  FunctionFragment,
+  Result,
+  Interface,
+  ContractRunner,
+  ContractMethod,
+  Listener,
 } from "ethers";
 import type {
-    TypedContractEvent,
-    TypedContractMethod,
-    TypedDeferredTopicFilter,
-    TypedEventLog,
-    TypedListener,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedListener,
+  TypedContractMethod,
 } from "../../../../common";
 
 export interface IERC165Interface extends Interface {
-    getFunction(nameOrSignature: "supportsInterface"): FunctionFragment;
+  getFunction(nameOrSignature: "supportsInterface"): FunctionFragment;
 
-    encodeFunctionData(
-        functionFragment: "supportsInterface",
-        values: [BytesLike]
-    ): string;
+  encodeFunctionData(
+    functionFragment: "supportsInterface",
+    values: [BytesLike]
+  ): string;
 
-    decodeFunctionResult(
-        functionFragment: "supportsInterface",
-        data: BytesLike
-    ): Result;
+  decodeFunctionResult(
+    functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
 }
 
 export interface IERC165 extends BaseContract {
-    interface: IERC165Interface;
-    supportsInterface: TypedContractMethod<
-        [interfaceId: BytesLike],
-        [boolean],
-        "view"
-    >;
-    filters: {};
+  connect(runner?: ContractRunner | null): IERC165;
+  waitForDeployment(): Promise<this>;
 
-    connect(runner?: ContractRunner | null): IERC165;
+  interface: IERC165Interface;
 
-    waitForDeployment(): Promise<this>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-    queryFilter<TCEvent extends TypedContractEvent>(
-        event: TCEvent,
-        fromBlockOrBlockhash?: string | number | undefined,
-        toBlock?: string | number | undefined
-    ): Promise<Array<TypedEventLog<TCEvent>>>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    queryFilter<TCEvent extends TypedContractEvent>(
-        filter: TypedDeferredTopicFilter<TCEvent>,
-        fromBlockOrBlockhash?: string | number | undefined,
-        toBlock?: string | number | undefined
-    ): Promise<Array<TypedEventLog<TCEvent>>>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    on<TCEvent extends TypedContractEvent>(
-        event: TCEvent,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    on<TCEvent extends TypedContractEvent>(
-        filter: TypedDeferredTopicFilter<TCEvent>,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
+  supportsInterface: TypedContractMethod<
+    [interfaceId: BytesLike],
+    [boolean],
+    "view"
+  >;
 
-    once<TCEvent extends TypedContractEvent>(
-        event: TCEvent,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
 
-    once<TCEvent extends TypedContractEvent>(
-        filter: TypedDeferredTopicFilter<TCEvent>,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
+  getFunction(
+    nameOrSignature: "supportsInterface"
+  ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
 
-    listeners<TCEvent extends TypedContractEvent>(
-        event: TCEvent
-    ): Promise<Array<TypedListener<TCEvent>>>;
-
-    listeners(eventName?: string): Promise<Array<Listener>>;
-
-    removeAllListeners<TCEvent extends TypedContractEvent>(
-        event?: TCEvent
-    ): Promise<this>;
-
-    getFunction<T extends ContractMethod = ContractMethod>(
-        key: string | FunctionFragment
-    ): T;
-
-    getFunction(
-        nameOrSignature: "supportsInterface"
-    ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
+  filters: {};
 }

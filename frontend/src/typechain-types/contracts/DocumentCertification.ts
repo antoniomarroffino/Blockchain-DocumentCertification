@@ -2,723 +2,668 @@
 /* tslint:disable */
 /* eslint-disable */
 import type {
-    AddressLike,
-    BaseContract,
-    BigNumberish,
-    BytesLike,
-    ContractMethod,
-    ContractRunner,
-    EventFragment,
-    FunctionFragment,
-    Interface,
-    Listener,
-    Result,
+  BaseContract,
+  BigNumberish,
+  BytesLike,
+  FunctionFragment,
+  Result,
+  Interface,
+  EventFragment,
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
 } from "ethers";
 import type {
-    TypedContractEvent,
-    TypedContractMethod,
-    TypedDeferredTopicFilter,
-    TypedEventLog,
-    TypedListener,
-    TypedLogDescription,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
+  TypedListener,
+  TypedContractMethod,
 } from "../common";
 
 export declare namespace DocumentCertification {
-    export type RevocationStruct = {
-        revoker: AddressLike;
-        timestamp: BigNumberish;
-        reason: string;
-    };
+  export type RevocationStruct = {
+    revoker: AddressLike;
+    timestamp: BigNumberish;
+    reason: string;
+  };
 
-    export type RevocationStructOutput = [
-        revoker: string,
-        timestamp: bigint,
-        reason: string
-    ] & { revoker: string; timestamp: bigint; reason: string };
+  export type RevocationStructOutput = [
+    revoker: string,
+    timestamp: bigint,
+    reason: string
+  ] & { revoker: string; timestamp: bigint; reason: string };
 }
 
 export interface DocumentCertificationInterface extends Interface {
-    getFunction(
-        nameOrSignature:
-            | "CERTIFIER_ROLE"
-            | "DEFAULT_ADMIN_ROLE"
-            | "certifyDocuments"
-            | "getCertifiedDocumentsByAddress"
-            | "getCertifierOf"
-            | "getDocumentHistoryFlat"
-            | "getLastCertification"
-            | "getRevocations"
-            | "getRevocationsByUser"
-            | "getRoleAdmin"
-            | "grantRole"
-            | "hasRole"
-            | "initialize"
-            | "isDocumentCertified"
-            | "renounceRole"
-            | "revokeCertification"
-            | "revokeRole"
-            | "supportsInterface"
-    ): FunctionFragment;
+  getFunction(
+    nameOrSignature:
+      | "CERTIFIER_ROLE"
+      | "DEFAULT_ADMIN_ROLE"
+      | "certifyDocuments"
+      | "getCertifiedDocumentsByAddress"
+      | "getCertifierOf"
+      | "getDocumentHistoryFlat"
+      | "getLastCertification"
+      | "getRevocations"
+      | "getRevocationsByUser"
+      | "getRoleAdmin"
+      | "grantRole"
+      | "hasRole"
+      | "initialize"
+      | "isDocumentCertified"
+      | "renounceRole"
+      | "revokeCertification"
+      | "revokeRole"
+      | "supportsInterface"
+  ): FunctionFragment;
 
-    getEvent(
-        nameOrSignatureOrTopic:
-            | "CertificationRevoked"
-            | "DocumentCertified"
-            | "Initialized"
-            | "RoleAdminChanged"
-            | "RoleGranted"
-            | "RoleRevoked"
-    ): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic:
+      | "CertificationRevoked"
+      | "DocumentCertified"
+      | "Initialized"
+      | "RoleAdminChanged"
+      | "RoleGranted"
+      | "RoleRevoked"
+  ): EventFragment;
 
-    encodeFunctionData(
-        functionFragment: "CERTIFIER_ROLE",
-        values?: undefined
-    ): string;
+  encodeFunctionData(
+    functionFragment: "CERTIFIER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "certifyDocuments",
+    values: [BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCertifiedDocumentsByAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCertifierOf",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDocumentHistoryFlat",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLastCertification",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRevocations",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRevocationsByUser",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRoleAdmin",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "grantRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hasRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isDocumentCertified",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeCertification",
+    values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "supportsInterface",
+    values: [BytesLike]
+  ): string;
 
-    encodeFunctionData(
-        functionFragment: "DEFAULT_ADMIN_ROLE",
-        values?: undefined
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "certifyDocuments",
-        values: [BytesLike[]]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getCertifiedDocumentsByAddress",
-        values: [AddressLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getCertifierOf",
-        values: [BytesLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getDocumentHistoryFlat",
-        values: [BytesLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getLastCertification",
-        values: [BytesLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getRevocations",
-        values: [BytesLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getRevocationsByUser",
-        values: [BytesLike, AddressLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "getRoleAdmin",
-        values: [BytesLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "grantRole",
-        values: [BytesLike, AddressLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "hasRole",
-        values: [BytesLike, AddressLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "initialize",
-        values?: undefined
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "isDocumentCertified",
-        values: [BytesLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "renounceRole",
-        values: [BytesLike, AddressLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "revokeCertification",
-        values: [BytesLike, string]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "revokeRole",
-        values: [BytesLike, AddressLike]
-    ): string;
-
-    encodeFunctionData(
-        functionFragment: "supportsInterface",
-        values: [BytesLike]
-    ): string;
-
-    decodeFunctionResult(
-        functionFragment: "CERTIFIER_ROLE",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "DEFAULT_ADMIN_ROLE",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "certifyDocuments",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getCertifiedDocumentsByAddress",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getCertifierOf",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getDocumentHistoryFlat",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getLastCertification",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getRevocations",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getRevocationsByUser",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "getRoleAdmin",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
-
-    decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
-
-    decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-
-    decodeFunctionResult(
-        functionFragment: "isDocumentCertified",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "renounceRole",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(
-        functionFragment: "revokeCertification",
-        data: BytesLike
-    ): Result;
-
-    decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
-
-    decodeFunctionResult(
-        functionFragment: "supportsInterface",
-        data: BytesLike
-    ): Result;
+  decodeFunctionResult(
+    functionFragment: "CERTIFIER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "certifyDocuments",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCertifiedDocumentsByAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCertifierOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDocumentHistoryFlat",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getLastCertification",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRevocations",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRevocationsByUser",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRoleAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "isDocumentCertified",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceRole",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeCertification",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
 }
 
 export namespace CertificationRevokedEvent {
-    export type InputTuple = [
-        docHash: BytesLike,
-        revoker: AddressLike,
-        reason: string
-    ];
-    export type OutputTuple = [docHash: string, revoker: string, reason: string];
-
-    export interface OutputObject {
-        docHash: string;
-        revoker: string;
-        reason: string;
-    }
-
-    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-    export type Filter = TypedDeferredTopicFilter<Event>;
-    export type Log = TypedEventLog<Event>;
-    export type LogDescription = TypedLogDescription<Event>;
+  export type InputTuple = [
+    docHash: BytesLike,
+    revoker: AddressLike,
+    reason: string
+  ];
+  export type OutputTuple = [docHash: string, revoker: string, reason: string];
+  export interface OutputObject {
+    docHash: string;
+    revoker: string;
+    reason: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace DocumentCertifiedEvent {
-    export type InputTuple = [docHash: BytesLike, certifier: AddressLike];
-    export type OutputTuple = [docHash: string, certifier: string];
-
-    export interface OutputObject {
-        docHash: string;
-        certifier: string;
-    }
-
-    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-    export type Filter = TypedDeferredTopicFilter<Event>;
-    export type Log = TypedEventLog<Event>;
-    export type LogDescription = TypedLogDescription<Event>;
+  export type InputTuple = [docHash: BytesLike, certifier: AddressLike];
+  export type OutputTuple = [docHash: string, certifier: string];
+  export interface OutputObject {
+    docHash: string;
+    certifier: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace InitializedEvent {
-    export type InputTuple = [version: BigNumberish];
-    export type OutputTuple = [version: bigint];
-
-    export interface OutputObject {
-        version: bigint;
-    }
-
-    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-    export type Filter = TypedDeferredTopicFilter<Event>;
-    export type Log = TypedEventLog<Event>;
-    export type LogDescription = TypedLogDescription<Event>;
+  export type InputTuple = [version: BigNumberish];
+  export type OutputTuple = [version: bigint];
+  export interface OutputObject {
+    version: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace RoleAdminChangedEvent {
-    export type InputTuple = [
-        role: BytesLike,
-        previousAdminRole: BytesLike,
-        newAdminRole: BytesLike
-    ];
-    export type OutputTuple = [
-        role: string,
-        previousAdminRole: string,
-        newAdminRole: string
-    ];
-
-    export interface OutputObject {
-        role: string;
-        previousAdminRole: string;
-        newAdminRole: string;
-    }
-
-    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-    export type Filter = TypedDeferredTopicFilter<Event>;
-    export type Log = TypedEventLog<Event>;
-    export type LogDescription = TypedLogDescription<Event>;
+  export type InputTuple = [
+    role: BytesLike,
+    previousAdminRole: BytesLike,
+    newAdminRole: BytesLike
+  ];
+  export type OutputTuple = [
+    role: string,
+    previousAdminRole: string,
+    newAdminRole: string
+  ];
+  export interface OutputObject {
+    role: string;
+    previousAdminRole: string;
+    newAdminRole: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace RoleGrantedEvent {
-    export type InputTuple = [
-        role: BytesLike,
-        account: AddressLike,
-        sender: AddressLike
-    ];
-    export type OutputTuple = [role: string, account: string, sender: string];
-
-    export interface OutputObject {
-        role: string;
-        account: string;
-        sender: string;
-    }
-
-    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-    export type Filter = TypedDeferredTopicFilter<Event>;
-    export type Log = TypedEventLog<Event>;
-    export type LogDescription = TypedLogDescription<Event>;
+  export type InputTuple = [
+    role: BytesLike,
+    account: AddressLike,
+    sender: AddressLike
+  ];
+  export type OutputTuple = [role: string, account: string, sender: string];
+  export interface OutputObject {
+    role: string;
+    account: string;
+    sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace RoleRevokedEvent {
-    export type InputTuple = [
-        role: BytesLike,
-        account: AddressLike,
-        sender: AddressLike
-    ];
-    export type OutputTuple = [role: string, account: string, sender: string];
-
-    export interface OutputObject {
-        role: string;
-        account: string;
-        sender: string;
-    }
-
-    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-    export type Filter = TypedDeferredTopicFilter<Event>;
-    export type Log = TypedEventLog<Event>;
-    export type LogDescription = TypedLogDescription<Event>;
+  export type InputTuple = [
+    role: BytesLike,
+    account: AddressLike,
+    sender: AddressLike
+  ];
+  export type OutputTuple = [role: string, account: string, sender: string];
+  export interface OutputObject {
+    role: string;
+    account: string;
+    sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface DocumentCertification extends BaseContract {
-    interface: DocumentCertificationInterface;
-    CERTIFIER_ROLE: TypedContractMethod<[], [string], "view">;
-    DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
-    certifyDocuments: TypedContractMethod<
-        [hashes: BytesLike[]],
-        [void],
-        "nonpayable"
+  connect(runner?: ContractRunner | null): DocumentCertification;
+  waitForDeployment(): Promise<this>;
+
+  interface: DocumentCertificationInterface;
+
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
+
+  CERTIFIER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
+
+  certifyDocuments: TypedContractMethod<
+    [hashes: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
+
+  getCertifiedDocumentsByAddress: TypedContractMethod<
+    [_certifier: AddressLike],
+    [string[]],
+    "view"
+  >;
+
+  getCertifierOf: TypedContractMethod<[_docHash: BytesLike], [string], "view">;
+
+  getDocumentHistoryFlat: TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string[], bigint[], string[]] & {
+        certifiers: string[];
+        timestamps: bigint[];
+        hashes: string[];
+      }
+    ],
+    "view"
+  >;
+
+  getLastCertification: TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string, string, bigint] & {
+        hash: string;
+        certifier: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+
+  getRevocations: TypedContractMethod<
+    [_docHash: BytesLike],
+    [DocumentCertification.RevocationStructOutput[]],
+    "view"
+  >;
+
+  getRevocationsByUser: TypedContractMethod<
+    [_docHash: BytesLike, user: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
+
+  grantRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  hasRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [boolean],
+    "view"
+  >;
+
+  initialize: TypedContractMethod<[], [void], "nonpayable">;
+
+  isDocumentCertified: TypedContractMethod<
+    [_docHash: BytesLike],
+    [boolean],
+    "view"
+  >;
+
+  renounceRole: TypedContractMethod<
+    [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  revokeCertification: TypedContractMethod<
+    [_docHash: BytesLike, _reason: string],
+    [void],
+    "nonpayable"
+  >;
+
+  revokeRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  supportsInterface: TypedContractMethod<
+    [interfaceId: BytesLike],
+    [boolean],
+    "view"
+  >;
+
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
+
+  getFunction(
+    nameOrSignature: "CERTIFIER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "DEFAULT_ADMIN_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "certifyDocuments"
+  ): TypedContractMethod<[hashes: BytesLike[]], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getCertifiedDocumentsByAddress"
+  ): TypedContractMethod<[_certifier: AddressLike], [string[]], "view">;
+  getFunction(
+    nameOrSignature: "getCertifierOf"
+  ): TypedContractMethod<[_docHash: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "getDocumentHistoryFlat"
+  ): TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string[], bigint[], string[]] & {
+        certifiers: string[];
+        timestamps: bigint[];
+        hashes: string[];
+      }
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getLastCertification"
+  ): TypedContractMethod<
+    [_docHash: BytesLike],
+    [
+      [string, string, bigint] & {
+        hash: string;
+        certifier: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getRevocations"
+  ): TypedContractMethod<
+    [_docHash: BytesLike],
+    [DocumentCertification.RevocationStructOutput[]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getRevocationsByUser"
+  ): TypedContractMethod<
+    [_docHash: BytesLike, user: AddressLike],
+    [bigint],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getRoleAdmin"
+  ): TypedContractMethod<[role: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "grantRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "hasRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "isDocumentCertified"
+  ): TypedContractMethod<[_docHash: BytesLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "renounceRole"
+  ): TypedContractMethod<
+    [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "revokeCertification"
+  ): TypedContractMethod<
+    [_docHash: BytesLike, _reason: string],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "revokeRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "supportsInterface"
+  ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
+
+  getEvent(
+    key: "CertificationRevoked"
+  ): TypedContractEvent<
+    CertificationRevokedEvent.InputTuple,
+    CertificationRevokedEvent.OutputTuple,
+    CertificationRevokedEvent.OutputObject
+  >;
+  getEvent(
+    key: "DocumentCertified"
+  ): TypedContractEvent<
+    DocumentCertifiedEvent.InputTuple,
+    DocumentCertifiedEvent.OutputTuple,
+    DocumentCertifiedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Initialized"
+  ): TypedContractEvent<
+    InitializedEvent.InputTuple,
+    InitializedEvent.OutputTuple,
+    InitializedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleAdminChanged"
+  ): TypedContractEvent<
+    RoleAdminChangedEvent.InputTuple,
+    RoleAdminChangedEvent.OutputTuple,
+    RoleAdminChangedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleGranted"
+  ): TypedContractEvent<
+    RoleGrantedEvent.InputTuple,
+    RoleGrantedEvent.OutputTuple,
+    RoleGrantedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleRevoked"
+  ): TypedContractEvent<
+    RoleRevokedEvent.InputTuple,
+    RoleRevokedEvent.OutputTuple,
+    RoleRevokedEvent.OutputObject
+  >;
+
+  filters: {
+    "CertificationRevoked(bytes32,address,string)": TypedContractEvent<
+      CertificationRevokedEvent.InputTuple,
+      CertificationRevokedEvent.OutputTuple,
+      CertificationRevokedEvent.OutputObject
     >;
-    getCertifiedDocumentsByAddress: TypedContractMethod<
-        [_certifier: AddressLike],
-        [string[]],
-        "view"
-    >;
-    getCertifierOf: TypedContractMethod<[_docHash: BytesLike], [string], "view">;
-    getDocumentHistoryFlat: TypedContractMethod<
-        [_docHash: BytesLike],
-        [
-                [string[], bigint[], string[]] & {
-                certifiers: string[];
-                timestamps: bigint[];
-                hashes: string[];
-            }
-        ],
-        "view"
-    >;
-    getLastCertification: TypedContractMethod<
-        [_docHash: BytesLike],
-        [
-                [string, string, bigint] & {
-                hash: string;
-                certifier: string;
-                timestamp: bigint;
-            }
-        ],
-        "view"
-    >;
-    getRevocations: TypedContractMethod<
-        [_docHash: BytesLike],
-        [DocumentCertification.RevocationStructOutput[]],
-        "view"
-    >;
-    getRevocationsByUser: TypedContractMethod<
-        [_docHash: BytesLike, user: AddressLike],
-        [bigint],
-        "view"
-    >;
-    getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
-    grantRole: TypedContractMethod<
-        [role: BytesLike, account: AddressLike],
-        [void],
-        "nonpayable"
-    >;
-    hasRole: TypedContractMethod<
-        [role: BytesLike, account: AddressLike],
-        [boolean],
-        "view"
-    >;
-    initialize: TypedContractMethod<[], [void], "nonpayable">;
-    isDocumentCertified: TypedContractMethod<
-        [_docHash: BytesLike],
-        [boolean],
-        "view"
-    >;
-    renounceRole: TypedContractMethod<
-        [role: BytesLike, callerConfirmation: AddressLike],
-        [void],
-        "nonpayable"
-    >;
-    revokeCertification: TypedContractMethod<
-        [_docHash: BytesLike, _reason: string],
-        [void],
-        "nonpayable"
-    >;
-    revokeRole: TypedContractMethod<
-        [role: BytesLike, account: AddressLike],
-        [void],
-        "nonpayable"
-    >;
-    supportsInterface: TypedContractMethod<
-        [interfaceId: BytesLike],
-        [boolean],
-        "view"
-    >;
-    filters: {
-        "CertificationRevoked(bytes32,address,string)": TypedContractEvent<
-            CertificationRevokedEvent.InputTuple,
-            CertificationRevokedEvent.OutputTuple,
-            CertificationRevokedEvent.OutputObject
-        >;
-        CertificationRevoked: TypedContractEvent<
-            CertificationRevokedEvent.InputTuple,
-            CertificationRevokedEvent.OutputTuple,
-            CertificationRevokedEvent.OutputObject
-        >;
-
-        "DocumentCertified(bytes32,address)": TypedContractEvent<
-            DocumentCertifiedEvent.InputTuple,
-            DocumentCertifiedEvent.OutputTuple,
-            DocumentCertifiedEvent.OutputObject
-        >;
-        DocumentCertified: TypedContractEvent<
-            DocumentCertifiedEvent.InputTuple,
-            DocumentCertifiedEvent.OutputTuple,
-            DocumentCertifiedEvent.OutputObject
-        >;
-
-        "Initialized(uint64)": TypedContractEvent<
-            InitializedEvent.InputTuple,
-            InitializedEvent.OutputTuple,
-            InitializedEvent.OutputObject
-        >;
-        Initialized: TypedContractEvent<
-            InitializedEvent.InputTuple,
-            InitializedEvent.OutputTuple,
-            InitializedEvent.OutputObject
-        >;
-
-        "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
-            RoleAdminChangedEvent.InputTuple,
-            RoleAdminChangedEvent.OutputTuple,
-            RoleAdminChangedEvent.OutputObject
-        >;
-        RoleAdminChanged: TypedContractEvent<
-            RoleAdminChangedEvent.InputTuple,
-            RoleAdminChangedEvent.OutputTuple,
-            RoleAdminChangedEvent.OutputObject
-        >;
-
-        "RoleGranted(bytes32,address,address)": TypedContractEvent<
-            RoleGrantedEvent.InputTuple,
-            RoleGrantedEvent.OutputTuple,
-            RoleGrantedEvent.OutputObject
-        >;
-        RoleGranted: TypedContractEvent<
-            RoleGrantedEvent.InputTuple,
-            RoleGrantedEvent.OutputTuple,
-            RoleGrantedEvent.OutputObject
-        >;
-
-        "RoleRevoked(bytes32,address,address)": TypedContractEvent<
-            RoleRevokedEvent.InputTuple,
-            RoleRevokedEvent.OutputTuple,
-            RoleRevokedEvent.OutputObject
-        >;
-        RoleRevoked: TypedContractEvent<
-            RoleRevokedEvent.InputTuple,
-            RoleRevokedEvent.OutputTuple,
-            RoleRevokedEvent.OutputObject
-        >;
-    };
-
-    connect(runner?: ContractRunner | null): DocumentCertification;
-
-    waitForDeployment(): Promise<this>;
-
-    queryFilter<TCEvent extends TypedContractEvent>(
-        event: TCEvent,
-        fromBlockOrBlockhash?: string | number | undefined,
-        toBlock?: string | number | undefined
-    ): Promise<Array<TypedEventLog<TCEvent>>>;
-
-    queryFilter<TCEvent extends TypedContractEvent>(
-        filter: TypedDeferredTopicFilter<TCEvent>,
-        fromBlockOrBlockhash?: string | number | undefined,
-        toBlock?: string | number | undefined
-    ): Promise<Array<TypedEventLog<TCEvent>>>;
-
-    on<TCEvent extends TypedContractEvent>(
-        event: TCEvent,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
-
-    on<TCEvent extends TypedContractEvent>(
-        filter: TypedDeferredTopicFilter<TCEvent>,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
-
-    once<TCEvent extends TypedContractEvent>(
-        event: TCEvent,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
-
-    once<TCEvent extends TypedContractEvent>(
-        filter: TypedDeferredTopicFilter<TCEvent>,
-        listener: TypedListener<TCEvent>
-    ): Promise<this>;
-
-    listeners<TCEvent extends TypedContractEvent>(
-        event: TCEvent
-    ): Promise<Array<TypedListener<TCEvent>>>;
-
-    listeners(eventName?: string): Promise<Array<Listener>>;
-
-    removeAllListeners<TCEvent extends TypedContractEvent>(
-        event?: TCEvent
-    ): Promise<this>;
-
-    getFunction<T extends ContractMethod = ContractMethod>(
-        key: string | FunctionFragment
-    ): T;
-
-    getFunction(
-        nameOrSignature: "CERTIFIER_ROLE"
-    ): TypedContractMethod<[], [string], "view">;
-
-    getFunction(
-        nameOrSignature: "DEFAULT_ADMIN_ROLE"
-    ): TypedContractMethod<[], [string], "view">;
-
-    getFunction(
-        nameOrSignature: "certifyDocuments"
-    ): TypedContractMethod<[hashes: BytesLike[]], [void], "nonpayable">;
-
-    getFunction(
-        nameOrSignature: "getCertifiedDocumentsByAddress"
-    ): TypedContractMethod<[_certifier: AddressLike], [string[]], "view">;
-
-    getFunction(
-        nameOrSignature: "getCertifierOf"
-    ): TypedContractMethod<[_docHash: BytesLike], [string], "view">;
-
-    getFunction(
-        nameOrSignature: "getDocumentHistoryFlat"
-    ): TypedContractMethod<
-        [_docHash: BytesLike],
-        [
-                [string[], bigint[], string[]] & {
-                certifiers: string[];
-                timestamps: bigint[];
-                hashes: string[];
-            }
-        ],
-        "view"
-    >;
-
-    getFunction(
-        nameOrSignature: "getLastCertification"
-    ): TypedContractMethod<
-        [_docHash: BytesLike],
-        [
-                [string, string, bigint] & {
-                hash: string;
-                certifier: string;
-                timestamp: bigint;
-            }
-        ],
-        "view"
-    >;
-
-    getFunction(
-        nameOrSignature: "getRevocations"
-    ): TypedContractMethod<
-        [_docHash: BytesLike],
-        [DocumentCertification.RevocationStructOutput[]],
-        "view"
-    >;
-
-    getFunction(
-        nameOrSignature: "getRevocationsByUser"
-    ): TypedContractMethod<
-        [_docHash: BytesLike, user: AddressLike],
-        [bigint],
-        "view"
-    >;
-
-    getFunction(
-        nameOrSignature: "getRoleAdmin"
-    ): TypedContractMethod<[role: BytesLike], [string], "view">;
-
-    getFunction(
-        nameOrSignature: "grantRole"
-    ): TypedContractMethod<
-        [role: BytesLike, account: AddressLike],
-        [void],
-        "nonpayable"
-    >;
-
-    getFunction(
-        nameOrSignature: "hasRole"
-    ): TypedContractMethod<
-        [role: BytesLike, account: AddressLike],
-        [boolean],
-        "view"
-    >;
-
-    getFunction(
-        nameOrSignature: "initialize"
-    ): TypedContractMethod<[], [void], "nonpayable">;
-
-    getFunction(
-        nameOrSignature: "isDocumentCertified"
-    ): TypedContractMethod<[_docHash: BytesLike], [boolean], "view">;
-
-    getFunction(
-        nameOrSignature: "renounceRole"
-    ): TypedContractMethod<
-        [role: BytesLike, callerConfirmation: AddressLike],
-        [void],
-        "nonpayable"
-    >;
-
-    getFunction(
-        nameOrSignature: "revokeCertification"
-    ): TypedContractMethod<
-        [_docHash: BytesLike, _reason: string],
-        [void],
-        "nonpayable"
+    CertificationRevoked: TypedContractEvent<
+      CertificationRevokedEvent.InputTuple,
+      CertificationRevokedEvent.OutputTuple,
+      CertificationRevokedEvent.OutputObject
     >;
 
-    getFunction(
-        nameOrSignature: "revokeRole"
-    ): TypedContractMethod<
-        [role: BytesLike, account: AddressLike],
-        [void],
-        "nonpayable"
+    "DocumentCertified(bytes32,address)": TypedContractEvent<
+      DocumentCertifiedEvent.InputTuple,
+      DocumentCertifiedEvent.OutputTuple,
+      DocumentCertifiedEvent.OutputObject
+    >;
+    DocumentCertified: TypedContractEvent<
+      DocumentCertifiedEvent.InputTuple,
+      DocumentCertifiedEvent.OutputTuple,
+      DocumentCertifiedEvent.OutputObject
     >;
 
-    getFunction(
-        nameOrSignature: "supportsInterface"
-    ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
-
-    getEvent(
-        key: "CertificationRevoked"
-    ): TypedContractEvent<
-        CertificationRevokedEvent.InputTuple,
-        CertificationRevokedEvent.OutputTuple,
-        CertificationRevokedEvent.OutputObject
+    "Initialized(uint64)": TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+    Initialized: TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
     >;
 
-    getEvent(
-        key: "DocumentCertified"
-    ): TypedContractEvent<
-        DocumentCertifiedEvent.InputTuple,
-        DocumentCertifiedEvent.OutputTuple,
-        DocumentCertifiedEvent.OutputObject
+    "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
+      RoleAdminChangedEvent.InputTuple,
+      RoleAdminChangedEvent.OutputTuple,
+      RoleAdminChangedEvent.OutputObject
+    >;
+    RoleAdminChanged: TypedContractEvent<
+      RoleAdminChangedEvent.InputTuple,
+      RoleAdminChangedEvent.OutputTuple,
+      RoleAdminChangedEvent.OutputObject
     >;
 
-    getEvent(
-        key: "Initialized"
-    ): TypedContractEvent<
-        InitializedEvent.InputTuple,
-        InitializedEvent.OutputTuple,
-        InitializedEvent.OutputObject
+    "RoleGranted(bytes32,address,address)": TypedContractEvent<
+      RoleGrantedEvent.InputTuple,
+      RoleGrantedEvent.OutputTuple,
+      RoleGrantedEvent.OutputObject
+    >;
+    RoleGranted: TypedContractEvent<
+      RoleGrantedEvent.InputTuple,
+      RoleGrantedEvent.OutputTuple,
+      RoleGrantedEvent.OutputObject
     >;
 
-    getEvent(
-        key: "RoleAdminChanged"
-    ): TypedContractEvent<
-        RoleAdminChangedEvent.InputTuple,
-        RoleAdminChangedEvent.OutputTuple,
-        RoleAdminChangedEvent.OutputObject
+    "RoleRevoked(bytes32,address,address)": TypedContractEvent<
+      RoleRevokedEvent.InputTuple,
+      RoleRevokedEvent.OutputTuple,
+      RoleRevokedEvent.OutputObject
     >;
-
-    getEvent(
-        key: "RoleGranted"
-    ): TypedContractEvent<
-        RoleGrantedEvent.InputTuple,
-        RoleGrantedEvent.OutputTuple,
-        RoleGrantedEvent.OutputObject
+    RoleRevoked: TypedContractEvent<
+      RoleRevokedEvent.InputTuple,
+      RoleRevokedEvent.OutputTuple,
+      RoleRevokedEvent.OutputObject
     >;
-
-    getEvent(
-        key: "RoleRevoked"
-    ): TypedContractEvent<
-        RoleRevokedEvent.InputTuple,
-        RoleRevokedEvent.OutputTuple,
-        RoleRevokedEvent.OutputObject
-    >;
+  };
 }

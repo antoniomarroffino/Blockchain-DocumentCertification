@@ -27,7 +27,7 @@ interface DocumentCardProps {
 
 const DocumentCard = ({document, certifier, selectable = false, selected = false, onToggle}: DocumentCardProps) => {
     const {mutateAsync: certifyDocument, isPending} = useDocumentCertification();
-    const {mutateAsync: revokeCertification} = useRevokeCertification();
+    const {mutateAsync: revokeCertification, isPending: isLoadingRevoke} = useRevokeCertification();
     const {signer} = useMetamask();
     const [showModal, setShowModal] = useState(false);
     const [reason, setReason] = useState("");
@@ -186,11 +186,13 @@ const DocumentCard = ({document, certifier, selectable = false, selected = false
 
             {/* Revoke Modal */}
             <Dialog open={showModal} onClose={() => setShowModal(false)} className="relative z-50">
+
                 <div className="fixed inset-0 bg-black/60" aria-hidden="true"/>
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <Dialog.Panel
                         className="bg-neutral-800 border border-neutral-700 p-6 rounded-xl max-w-sm w-full space-y-4">
-                        <Dialog.Title className="text-white text-lg font-bold">Revoke Certification</Dialog.Title>
+                        <Dialog.Title className="text-white text-lg font-bold">Revoke
+                            Certification</Dialog.Title>
                         <textarea
                             className="textarea textarea-bordered w-full bg-neutral-700 text-white"
                             placeholder="Reason for revocation..."
@@ -198,13 +200,14 @@ const DocumentCard = ({document, certifier, selectable = false, selected = false
                             onChange={(e) => setReason(e.target.value)}
                         />
                         <div className="flex justify-end gap-2">
-                            <button onClick={() => setShowModal(false)} className="btn btn-sm">
+                            <button onClick={() => setShowModal(false)} className="btn btn-sm"
+                                    disabled={isLoadingRevoke}>
                                 Cancel
                             </button>
                             {remainingRevokes > 0 && (
                                 <button
                                     onClick={handleRevoke}
-                                    disabled={!reason.trim()}
+                                    disabled={!reason.trim() || isLoadingRevoke}
                                     className="btn btn-sm bg-red-600 text-white hover:bg-red-500"
                                 >
                                     Confirm Revoke

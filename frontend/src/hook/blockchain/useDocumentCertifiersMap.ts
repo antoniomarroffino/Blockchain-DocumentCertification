@@ -13,13 +13,9 @@ export const useDocumentCertifiersMap = (documents?: DocumentDTO[]) => {
 
             await Promise.all(
                 documents.map(async (doc) => {
-                    try {
-                        const certifier = await documentCertificationContractNoTX.getCertifierOf(doc.hash!);
-                        if (certifier && certifier !== "0x0000000000000000000000000000000000000000") {
-                            resultMap[doc.id!] = certifier;
-                        }
-                    } catch (err) {
-                        console.error(`Error fetching certifier for doc ${doc.id}:`, err);
+                    const certifier = await documentCertificationContractNoTX.getCertifierOf(doc.hash!);
+                    if (certifier && certifier !== "0x0000000000000000000000000000000000000000") {
+                        resultMap[doc.id!] = certifier;
                     }
                 })
             );
@@ -27,7 +23,8 @@ export const useDocumentCertifiersMap = (documents?: DocumentDTO[]) => {
             return resultMap;
         },
         enabled: !!documents && documents.length > 0,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 60 * 10,
+        cacheTime: 1000 * 60 * 30,
     });
 };
 
