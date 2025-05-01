@@ -120,7 +120,8 @@ npx hardhat run scripts/deploy.ts --network localhost
 ```
 
 ### 3. Copy the deployed contract address
-   It will appear in the terminal output (e.g. `0x...`)
+
+It will appear in the terminal output (e.g. `0x...`)
 
 ### 4. Update the frontend config
 
