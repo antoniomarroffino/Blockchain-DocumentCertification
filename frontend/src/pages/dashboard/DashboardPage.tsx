@@ -37,7 +37,7 @@ const DashboardPage = () => {
                 className="bg-neutral-900 rounded-xl p-8 text-center shadow-lg"
             >
                 <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">
-                    Secure Your Documents with Blockchain
+                    Secure Your Documents with KrostChain
                 </h1>
                 <p className="text-lg md:text-2xl text-neutral-400 mb-8">
                     Certify, verify and track your important documents securely

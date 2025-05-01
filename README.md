@@ -1,4 +1,4 @@
-# 📜 Document Certification Platform on Blockchain
+# 📜 KrostChain - Document Certification Platform on Blockchain
 
 A web platform for certifying and revoking documents through smart contracts on Ethereum. It includes a dashboard, notification panel, wallet integration, role management, and audit trail.
 
