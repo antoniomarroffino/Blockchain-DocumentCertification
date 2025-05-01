@@ -10,9 +10,6 @@ export const useNotificationsForMyDocs = (myDocumentHashes: string[]) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("useNotificationForMyDocs");
-
-        // Se non ho signer o non ho hash, pulisco le notifiche
         if (!signer || myDocumentHashes.length === 0) {
             setNotifications([]);
             setLoading(false);

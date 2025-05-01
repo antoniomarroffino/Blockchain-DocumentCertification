@@ -3,7 +3,7 @@ import {documentCertificationContractNoTX} from "../../../config/config";
 
 export interface Revocation {
     revoker: string;
-    timestamp: bigint;
+    timestamp: number;
     reason: string;
 }
 
@@ -13,7 +13,14 @@ export const useDocumentRevocations = (docHash?: string) => {
         queryFn: async () => {
             if (!documentCertificationContractNoTX || !docHash)
                 throw new Error("Missing contract or hash");
-            return await documentCertificationContractNoTX.getRevocations(docHash);
+
+            const raw = await documentCertificationContractNoTX.getRevocations(docHash);
+
+            return raw.map(r => ({
+                revoker: r.revoker,
+                reason: r.reason,
+                timestamp: Number(r.timestamp),
+            }));
         },
         enabled: !!docHash,
         staleTime: 1000 * 60 * 5,

@@ -91,7 +91,7 @@ contract DocumentCertification is Initializable, AccessControlUpgradeable {
     }
 
     function isDocumentCertified(bytes32 _docHash) public view returns (bool) {
-        return documentHistory[_docHash].length > 0;
+        return documentHistory[_docHash].length > documentRevocations[_docHash].length;
     }
 
     function getCertifierOf(bytes32 _docHash) public view returns (address) {
