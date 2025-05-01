@@ -160,6 +160,18 @@ npx hardhat verify --network sepolia <contractAddress>
 
 ---
 
+### ✨ Upgrade the Smart Contract (if needed)
+
+If you made changes to the contract and need to **upgrade the deployed proxy**, run:
+
+```bash
+npx hardhat run scripts/upgrade.ts --network sepolia
+```
+
+> 🔐 Make sure the address in `.env` (under `PROXY_ADDRESS`) is correct before running.
+
+---
+
 ### 🌐 Notes
 
 - The **frontend** uses `VITE_INFURA_API_KEY` (set in `frontend/.env`)

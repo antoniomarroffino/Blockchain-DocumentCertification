@@ -38,17 +38,17 @@ const FilePreview = ({file, onClose}: FilePreviewProps) => {
     return (
         <AnimatePresence>
             <motion.div
-                className="absolute inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
+                className="absolute inset-0 z-10 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-hidden"
                 initial={{opacity: 0}}
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
                 <motion.div
-                    initial={{scale: 0.95, opacity: 0}}
-                    animate={{scale: 1, opacity: 1}}
-                    exit={{scale: 0.95, opacity: 0}}
-                    transition={{type: 'spring', damping: 20, stiffness: 200}}
-                    className="bg-neutral-800 text-white rounded-xl w-full max-w-2xl p-6 shadow-2xl"
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+                    className="bg-neutral-800 text-white rounded-xl w-full max-w-2xl max-h-full overflow-y-auto p-6 shadow-2xl"
                 >
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-bold">Document Preview</h3>

@@ -96,8 +96,8 @@ const DocumentUploaderPage = () => {
                 animate={{opacity: 1}}
                 className="card bg-neutral-800 border border-neutral-700 shadow-xl"
             >
-                <div className="card-body p-6">
-                    <h2 className="card-title text-2xl text-white mb-6">Certify New Document</h2>
+                <div className="card-body p-6 relative min-h-[80vh] overflow-hidden">
+                <h2 className="card-title text-2xl text-white mb-6">Certify New Document</h2>
 
                     {showSuccessBanner && (
                         <div className="flex justify-center mb-6">
