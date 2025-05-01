@@ -11,9 +11,15 @@ export const useNotificationsForMyDocs = (myDocumentHashes: string[]) => {
 
     useEffect(() => {
         console.log("useNotificationForMyDocs");
-        const fetch = async () => {
-            if (!signer || myDocumentHashes.length === 0) return;
 
+        // Se non ho signer o non ho hash, pulisco le notifiche
+        if (!signer || myDocumentHashes.length === 0) {
+            setNotifications([]);
+            setLoading(false);
+            return;
+        }
+
+        const fetch = async () => {
             setLoading(true);
             const contract = DocumentCertification__factory.connect(contractAddress, provider);
 
