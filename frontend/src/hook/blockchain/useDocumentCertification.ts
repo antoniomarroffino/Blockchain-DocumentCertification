@@ -14,14 +14,16 @@ export const useDocumentCertification = () => {
                 return;
             }
 
-            const documentCertificationContractForTX = DocumentCertification__factory.connect(contractAddress, signer);
-            const tx = await documentCertificationContractForTX.certifyDocument(document.hash);
+            const contract = DocumentCertification__factory.connect(contractAddress, signer);
+            const tx = await contract.certifyDocuments([document.hash]);
             await tx.wait();
 
             return document.hash;
         },
+
         onSuccess: (docHash, { document, signer }) => {
             if (!docHash || !signer) return;
+
             queryClient.setQueryData<Record<number, string>>(
                 ["certifiers-map"],
                 (oldMap = {}) => ({
@@ -34,7 +36,6 @@ export const useDocumentCertification = () => {
             queryClient.invalidateQueries({ queryKey: ["certification", docHash] });
             queryClient.invalidateQueries({ queryKey: ["documents", signer.address] });
             queryClient.invalidateQueries({ queryKey: ["document-history", document.hash] });
-
         }
     });
-}
+};

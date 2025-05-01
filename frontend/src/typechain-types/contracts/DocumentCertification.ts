@@ -28,7 +28,7 @@ export interface DocumentCertificationInterface extends Interface {
     nameOrSignature:
       | "CERTIFIER_ROLE"
       | "DEFAULT_ADMIN_ROLE"
-      | "certifyDocument"
+      | "certifyDocuments"
       | "getCertifiedDocumentsByAddress"
       | "getCertifierOf"
       | "getDocumentHistoryFlat"
@@ -61,8 +61,8 @@ export interface DocumentCertificationInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "certifyDocument",
-    values: [BytesLike]
+    functionFragment: "certifyDocuments",
+    values: [BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getCertifiedDocumentsByAddress",
@@ -122,7 +122,7 @@ export interface DocumentCertificationInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "certifyDocument",
+    functionFragment: "certifyDocuments",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -293,8 +293,8 @@ export interface DocumentCertification extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
-  certifyDocument: TypedContractMethod<
-    [_docHash: BytesLike],
+  certifyDocuments: TypedContractMethod<
+    [hashes: BytesLike[]],
     [void],
     "nonpayable"
   >;
@@ -382,8 +382,8 @@ export interface DocumentCertification extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "certifyDocument"
-  ): TypedContractMethod<[_docHash: BytesLike], [void], "nonpayable">;
+    nameOrSignature: "certifyDocuments"
+  ): TypedContractMethod<[hashes: BytesLike[]], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "getCertifiedDocumentsByAddress"
   ): TypedContractMethod<[_certifier: AddressLike], [string[]], "view">;

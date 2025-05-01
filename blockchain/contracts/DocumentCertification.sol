@@ -24,19 +24,22 @@ contract DocumentCertification is Initializable, AccessControlUpgradeable {
         _grantRole(CERTIFIER_ROLE, msg.sender);
     }
 
-    function certifyDocument(bytes32 _docHash) public onlyRole(CERTIFIER_ROLE) {
-        require(_docHash != bytes32(0), "Invalid hash");
+    function certifyDocuments(bytes32[] calldata hashes) public onlyRole(CERTIFIER_ROLE) {
+        for (uint256 i = 0; i < hashes.length; i++) {
+            bytes32 _docHash = hashes[i];
+            require(_docHash != bytes32(0), "Invalid hash");
 
-        Certification memory certification = Certification({
-            hash: _docHash,
-            certifier: msg.sender,
-            timestamp: block.timestamp
-        });
+            Certification memory certification = Certification({
+                hash: _docHash,
+                certifier: msg.sender,
+                timestamp: block.timestamp
+            });
 
-        documentHistory[_docHash].push(certification);
-        certificationsByAddress[msg.sender].push(_docHash);
+            documentHistory[_docHash].push(certification);
+            certificationsByAddress[msg.sender].push(_docHash);
 
-        emit DocumentCertified(_docHash, msg.sender);
+            emit DocumentCertified(_docHash, msg.sender);
+        }
     }
 
     function isDocumentCertified(bytes32 _docHash) public view returns (bool) {
