@@ -18,8 +18,8 @@ A web platform for certifying and revoking documents through smart contracts on 
 ### 1. Clone the repository
 
 ```bash
-  git clone https://github.com/your-username/your-project.git
-  cd your-project
+git clone https://gitlab-edu.supsi.ch/dti-isin/giuliano.gremlich/opzione-blockchain-engineering/24-25/progetti-studenti/fanto-marrofino.git
+cd fanto-marrofino
 ```
 
 ### 2. Install dependencies
@@ -27,75 +27,144 @@ A web platform for certifying and revoking documents through smart contracts on 
 #### Frontend
 
 ```bash
-  cd frontend
-  npm install
+cd frontend
+npm install
 ```
 
 #### Backend
 
 ```bash
-  cd backend
-  ./mvnw install
+cd backend
+./mvnw install
 ```
 
 #### Smart Contract
 
 ```bash
-  cd contracts
-  npm install
+cd contracts
+npm install
 ```
 
 ---
 
 ## 🚀 Run the Application (Locally)
 
+### 0. Start the MySQL Database (via Docker)
+
+Make sure you have Docker installed, then run:
+
+```bash
+docker run --name krostchain-mysql \
+  -e MYSQL_ROOT_PASSWORD=1234 \
+  -e MYSQL_DATABASE=blockchainDocuments \
+  -p 3306:3306 \
+  -d mysql:latest
+```
+
+> 📝 These credentials must match your backend `application.properties`.
+
+---
+
 ### 1. Start Hardhat Node
 
 ```bash
-  cd contracts
-  npx hardhat node
+cd blockchain
+npx hardhat node
 ```
+
+---
 
 ### 2. Deploy the Smart Contract (on localhost)
 
 ```bash
-  npx hardhat run scripts/deploy.ts --network localhost
+npx hardhat run scripts/deploy.ts --network localhost
 ```
+
+---
 
 ### 3. Start the Backend
 
 ```bash
-  cd backend
-  ./mvnw quarkus:dev
+cd backend
+./mvnw quarkus:dev
 ```
+
+---
 
 ### 4. Start the Frontend
 
 ```bash
-  cd frontend
-  npm run dev
+cd frontend
+npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 🚢 Deployment Guide (to testnet)
+## 🚢 Deployment Guide
 
-### 1. Configure `.env` in `/contracts`
+### 📍 Deploy on Localhost (for development)
 
-```
-PRIVATE_KEY=...
-ALCHEMY_API_URL=...
-```
-
-### 2. Deploy to Goerli (example)
+### 1. Start a local Hardhat node
 
 ```bash
-  npx hardhat run scripts/deploy.ts --network goerli
+cd blockchain
+npx hardhat node
 ```
 
-### 3. Update `config.ts` in the frontend with the new `contractAddress`.
+### 2. Deploy the contract to localhost
+
+```bash
+npx hardhat run scripts/deploy.ts --network localhost
+```
+
+### 3. Copy the deployed contract address
+   It will appear in the terminal output (e.g. `0x...`)
+
+### 4. Update the frontend config
+
+- Open: `frontend/src/config/config.ts`
+- Replace the `contractAddress` with the one from step 3
+
+---
+
+### 🌐 Deploy on Sepolia Testnet
+
+### 1. Edit `.env` inside `/contracts`
+
+Make sure it contains:
+
+```env
+PRIVATE_KEY=<your Sepolia private key>
+INFURA_API_KEY=a10fdf5acfcb4352828dc0b7a6a27b64
+ETHERSCAN_API_KEY=13S52KAKXZC6YQW3Y8X9E5ESP3WSSFZ81T
+```
+
+### 2. Deploy the contract to Sepolia
+
+```bash
+npx hardhat run scripts/deploy.ts --network sepolia
+```
+
+### 3. Update the frontend config
+
+- Open: `frontend/src/config/config.ts`
+- Replace the `contractAddress` with the new Sepolia address
+
+### 4. (Optional) Verify the contract on Etherscan
+
+```bash
+npx hardhat verify --network sepolia <contractAddress>
+```
+
+---
+
+### 🌐 Notes
+
+- The **frontend** uses `VITE_INFURA_API_KEY` (set in `frontend/.env`)
+- The `PROXY_ADDRESS` is saved in `.env` for reference but not used automatically
+- You can switch between local and Sepolia by editing `PRIVATE_KEY` and the deployment network
 
 ---
 
@@ -104,43 +173,47 @@ ALCHEMY_API_URL=...
 ### Frontend
 
 ```bash
-  cd frontend
-  npm run test
+cd frontend
+npm run test
 ```
 
 ### Backend
 
 ```bash
-  cd backend
-  ./mvnw test
+cd backend
+./mvnw test
 ```
 
 ### Smart Contracts
 
 ```bash
-  cd contracts
-  npx hardhat test
+cd contracts
+npx hardhat test
 ```
 
 ---
 
 ## 📸 Screenshots
 
-### 🔐 Document Certification
+### 📄 All documents page
 
-![Certify document](./screenshots/certify.png)
+![All documents page](./screenshots/all-documents.png)
 
-### ⚠️ Revocation with Reason
+### 🧾 Document details (certifications/revocations)
 
-![Revoke document](./screenshots/revoke.png)
+![Document details](./screenshots/document-details.png)
+
+### 👤 Profile page
+
+![Profile page](./screenshots/my-profile.png)
 
 ### 🛡️ Admin Dashboard
 
 ![Admin view](./screenshots/admin-dashboard.png)
 
-### 📩 Blockchain Notifications
+### 📩 Upload document
 
-![Notifications](./screenshots/notifications.png)
+![Upload document](./screenshots/upload-document.png)
 
 ---
 
@@ -148,9 +221,3 @@ ALCHEMY_API_URL=...
 
 - Antonio Marroffino
 - Luca Fantò
-
----
-
-## 📄 License
-
-MIT
