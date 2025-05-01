@@ -13,9 +13,7 @@ import {
 import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 import toast from 'react-hot-toast';
 import { formatAddress } from '../../utils/formatAddress.ts';
-import { DocumentCertification__factory } from '../../typechain-types';
-import { ethers } from 'ethers';
-import {contractAddress, provider} from "../../../config/config.ts";
+import { useUserRole } from '../../hook/blockchain/useUserRole';
 
 export default function Header() {
     const navigate = useNavigate();
@@ -24,7 +22,7 @@ export default function Header() {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const fullAddress = signer?.address || '';
 
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { role, isLoading } = useUserRole();
 
     const handleConnect = async () => {
         try {
@@ -50,27 +48,8 @@ export default function Header() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    useEffect(() => {
-        const checkRole = async () => {
-            if (!signer) return;
-            const contract = DocumentCertification__factory.connect(contractAddress, provider);
-            const DEFAULT_ADMIN_ROLE = ethers.keccak256(ethers.toUtf8Bytes("DEFAULT_ADMIN_ROLE"));
-
-            try {
-                const has = await contract.hasRole(DEFAULT_ADMIN_ROLE, await signer.getAddress());
-                setIsAdmin(has);
-            } catch (err) {
-                console.error("Error checking admin role:", err);
-            }
-        };
-
-        checkRole();
-    }, [signer]);
-
     return (
-        <header
-            className="bg-neutral-900 border-b border-neutral-800 px-6 py-4 flex items-center justify-between shadow-md"
-        >
+        <header className="bg-neutral-900 border-b border-neutral-800 px-6 py-4 flex items-center justify-between shadow-md">
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -84,7 +63,7 @@ export default function Header() {
                     </h1>
                 </div>
 
-                {isAdmin && (
+                {!isLoading && role === "Admin" && (
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
