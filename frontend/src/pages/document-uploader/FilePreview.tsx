@@ -1,15 +1,15 @@
 'use client'
 
-import { DocumentTextIcon } from '@heroicons/react/24/outline'
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import {DocumentTextIcon} from '@heroicons/react/24/outline'
+import {useEffect, useState} from 'react'
+import {AnimatePresence, motion} from 'framer-motion'
 
 type FilePreviewProps = {
     file: Blob & { name?: string }
     onClose: () => void
 }
 
-const FilePreview = ({ file, onClose }: FilePreviewProps) => {
+const FilePreview = ({file, onClose}: FilePreviewProps) => {
     const [previewContent, setPreviewContent] = useState<string>('')
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
         } else if (isPdf) {
             reader.readAsArrayBuffer(file)
             reader.onload = () => {
-                const blob = new Blob([reader.result!], { type: 'application/pdf' })
+                const blob = new Blob([reader.result!], {type: 'application/pdf'})
                 setPreviewContent(URL.createObjectURL(blob))
             }
         }
@@ -39,15 +39,15 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
         <AnimatePresence>
             <motion.div
                 className="absolute inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
             >
                 <motion.div
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.95, opacity: 0 }}
-                    transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+                    initial={{scale: 0.95, opacity: 0}}
+                    animate={{scale: 1, opacity: 1}}
+                    exit={{scale: 0.95, opacity: 0}}
+                    transition={{type: 'spring', damping: 20, stiffness: 200}}
                     className="bg-neutral-800 text-white rounded-xl w-full max-w-2xl p-6 shadow-2xl"
                 >
                     <div className="flex justify-between items-center mb-4">
@@ -75,7 +75,7 @@ const FilePreview = ({ file, onClose }: FilePreviewProps) => {
                             />
                         ) : previewContent ? (
                             <div className="text-center p-8">
-                                <DocumentTextIcon className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+                                <DocumentTextIcon className="w-16 h-16 text-yellow-400 mx-auto mb-4"/>
                                 <p className="text-neutral-400">
                                     Preview not available for this file format.
                                 </p>

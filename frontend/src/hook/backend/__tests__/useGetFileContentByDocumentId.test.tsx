@@ -1,9 +1,9 @@
 import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { vi, describe, beforeEach, it, expect, Mock } from 'vitest';
-import { useGetFileContentByDocumentId } from '../useGetFileContentByDocumentId';
-import { documentApi } from '../../../../config/config';
+import {renderHook, waitFor} from '@testing-library/react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {beforeEach, describe, expect, it, Mock, vi} from 'vitest';
+import {useGetFileContentByDocumentId} from '../useGetFileContentByDocumentId';
+import {documentApi} from '../../../../config/config';
 
 vi.mock('../../../../config/config', () => ({
     documentApi: {
@@ -13,7 +13,7 @@ vi.mock('../../../../config/config', () => ({
 
 describe('useGetFileContentByDocumentId', () => {
     let queryClient: QueryClient;
-    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({children}) => (
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
 
@@ -30,12 +30,12 @@ describe('useGetFileContentByDocumentId', () => {
     it('should fetch and return Blob data on success', async () => {
         const docId = 42;
         const mockContent = 'hello world';
-        const mockBlob = { text: async () => mockContent } as Blob;
-        (documentApi.documentsIdContentGet as Mock).mockResolvedValue({ data: mockBlob });
+        const mockBlob = {text: async () => mockContent} as Blob;
+        (documentApi.documentsIdContentGet as Mock).mockResolvedValue({data: mockBlob});
 
-        const { result } = renderHook(
+        const {result} = renderHook(
             () => useGetFileContentByDocumentId(docId),
-            { wrapper }
+            {wrapper}
         );
 
         await waitFor(() => {
@@ -53,9 +53,9 @@ describe('useGetFileContentByDocumentId', () => {
         const error = new Error('Download failed');
         (documentApi.documentsIdContentGet as Mock).mockRejectedValue(error);
 
-        const { result } = renderHook(
+        const {result} = renderHook(
             () => useGetFileContentByDocumentId(docId),
-            { wrapper }
+            {wrapper}
         );
 
         await waitFor(() => {

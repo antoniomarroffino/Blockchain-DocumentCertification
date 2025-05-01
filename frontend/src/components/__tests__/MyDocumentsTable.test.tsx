@@ -1,75 +1,74 @@
-import { render, screen } from "@testing-library/react";
-import { vi, describe, it, expect, beforeEach, Mock } from "vitest";
-import type { DocumentDTO } from "@dti-isin/backend-api-client";
-import type { JsonRpcSigner } from "ethers";
+import {render, screen} from "@testing-library/react";
+import {beforeEach, describe, expect, it, Mock, vi} from "vitest";
+import type {DocumentDTO} from "@dti-isin/backend-api-client";
+import type {JsonRpcSigner} from "ethers";
+import MyDocumentsTable from "../../pages/my-documents/MyDocumentsTable.tsx";
+import {useGetAllDocumentsGivenAddressWallet} from "../../hook/backend/useGetAllDocumentsGivenAddressWallet";
 
 vi.mock("../../hook/backend/useGetAllDocumentsGivenAddressWallet", () => ({
-  useGetAllDocumentsGivenAddressWallet: vi.fn(),
+    useGetAllDocumentsGivenAddressWallet: vi.fn(),
 }));
 vi.mock("../common/MyDocumentRow", () => ({
-  __esModule: true,
-  default: vi.fn(({ document }: { document: DocumentDTO }) => (
-    <div data-testid="row">{document.title}</div>
-  )),
+    __esModule: true,
+    default: vi.fn(({document}: { document: DocumentDTO }) => (
+        <div data-testid="row">{document.title}</div>
+    )),
 }));
 
-import MyDocumentsTable from "../../pages/my-documents/MyDocumentsTable.tsx";
-import { useGetAllDocumentsGivenAddressWallet } from "../../hook/backend/useGetAllDocumentsGivenAddressWallet";
-
 describe("MyDocumentsTable", () => {
-  const fakeSigner = { address: "0xABC" } as JsonRpcSigner;
+    const fakeSigner = {address: "0xABC"} as JsonRpcSigner;
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("renders loading state", () => {
-    (useGetAllDocumentsGivenAddressWallet as Mock).mockReturnValue({
-      data: undefined,
-      isLoading: true,
-      isError: false,
+    beforeEach(() => {
+        vi.clearAllMocks();
     });
 
-    render(<MyDocumentsTable signer={fakeSigner} />);
+    it("renders loading state", () => {
+        (useGetAllDocumentsGivenAddressWallet as Mock).mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isError: false,
+        });
 
-    const loadingText = screen.getByText("Loading documents...");
-    expect(loadingText).toHaveTextContent("Loading documents...");
-  });
+        render(<MyDocumentsTable signer={fakeSigner}/>);
 
-  it("renders error state", () => {
-    (useGetAllDocumentsGivenAddressWallet as Mock).mockReturnValue({
-      data: undefined,
-      isLoading: false,
-      isError: true,
+        const loadingText = screen.getByText("Loading documents...");
+        expect(loadingText).toHaveTextContent("Loading documents...");
     });
 
-    render(<MyDocumentsTable signer={fakeSigner} />);
+    it("renders error state", () => {
+        (useGetAllDocumentsGivenAddressWallet as Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: true,
+        });
 
-    const errorTitle = screen.getByText("Error on loading!");
-    expect(errorTitle).toHaveTextContent("Error on loading!");
-    const errorDetail = screen.getByText("Retry later");
-    expect(errorDetail).toHaveTextContent("Retry later");
-  });
+        render(<MyDocumentsTable signer={fakeSigner}/>);
 
-  it("renders list of documents when data is available", () => {
-    const docs: DocumentDTO[] = [
-      { id: "1", title: "Doc One" },
-      { id: "2", title: "Doc Two" },
-    ] as unknown as DocumentDTO[];
-    (useGetAllDocumentsGivenAddressWallet as Mock).mockReturnValue({
-      data: docs,
-      isLoading: false,
-      isError: false,
+        const errorTitle = screen.getByText("Error on loading!");
+        expect(errorTitle).toHaveTextContent("Error on loading!");
+        const errorDetail = screen.getByText("Retry later");
+        expect(errorDetail).toHaveTextContent("Retry later");
     });
 
-    render(<MyDocumentsTable signer={fakeSigner} />);
+    it("renders list of documents when data is available", () => {
+        const docs: DocumentDTO[] = [
+            {id: "1", title: "Doc One"},
+            {id: "2", title: "Doc Two"},
+        ] as unknown as DocumentDTO[];
+        (useGetAllDocumentsGivenAddressWallet as Mock).mockReturnValue({
+            data: docs,
+            isLoading: false,
+            isError: false,
+        });
 
-    const rows = screen.getAllByTestId("row");
-    expect(rows).toHaveLength(docs.length);
-    expect(rows[0]).toHaveTextContent("Doc One");
-    expect(rows[1]).toHaveTextContent("Doc Two");
-    expect(useGetAllDocumentsGivenAddressWallet).toHaveBeenCalledWith(
-      fakeSigner.address
-    );
-  });
+        render(<MyDocumentsTable signer={fakeSigner}/>);
+
+        const rows = screen.getAllByTestId("row");
+        expect(rows).toHaveLength(docs.length);
+        expect(rows[0]).toHaveTextContent("Doc One");
+        expect(rows[1]).toHaveTextContent("Doc Two");
+        expect(useGetAllDocumentsGivenAddressWallet).toHaveBeenCalledWith(
+            fakeSigner.address
+        );
+    });
 });

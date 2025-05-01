@@ -75,17 +75,11 @@ public class DocumentControllerTest {
     @Test
     @DisplayName("test04DownloadContent_Success")
     void test04DownloadContent_Success() {
-        // Arrange
         byte[] content = new byte[]{1, 2, 3};
         String mimeType = "application/pdf";
         MimeTypeWithContent mimeTypeWithContent = new MimeTypeWithContent(mimeType, content);
-
         when(this.documentService.getDocumentContentWithType(456L)).thenReturn(mimeTypeWithContent);
-
-        // Act
         Response response = this.documentController.downloadContent(456L);
-
-        // Assert
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertArrayEquals(content, (byte[]) response.getEntity());
         assertEquals(mimeType, response.getMediaType().toString());

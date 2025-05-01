@@ -1,10 +1,10 @@
 import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { DocumentDTO } from '@dti-isin/backend-api-client';
-import { vi, describe, beforeEach, it, expect, Mock } from 'vitest';
-import { useGetAllDocumentsGivenAddressWallet } from '../useGetAllDocumentsGivenAddressWallet.ts';
-import { documentApi } from '../../../../config/config.ts';
+import {renderHook, waitFor} from '@testing-library/react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import type {DocumentDTO} from '@dti-isin/backend-api-client';
+import {beforeEach, describe, expect, it, Mock, vi} from 'vitest';
+import {useGetAllDocumentsGivenAddressWallet} from '../useGetAllDocumentsGivenAddressWallet.ts';
+import {documentApi} from '../../../../config/config.ts';
 
 vi.mock('../../../../config/config.ts', () => ({
     documentApi: {
@@ -14,7 +14,7 @@ vi.mock('../../../../config/config.ts', () => ({
 
 describe('useGetAllDocumentsGivenAddressWallet', () => {
     let queryClient: QueryClient;
-    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({children}) => (
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
 
@@ -31,14 +31,14 @@ describe('useGetAllDocumentsGivenAddressWallet', () => {
     it('should fetch and return document data on success', async () => {
         const ownerWallet = '0x123';
         const mockDocs: DocumentDTO[] = [
-            { id: 1, title: 'Doc A' },
-            { id: 2, title: 'Doc B' },
+            {id: 1, title: 'Doc A'},
+            {id: 2, title: 'Doc B'},
         ];
-        (documentApi.documentsMineOwnerWalletGet as Mock).mockResolvedValue({ data: mockDocs });
+        (documentApi.documentsMineOwnerWalletGet as Mock).mockResolvedValue({data: mockDocs});
 
-        const { result } = renderHook(
+        const {result} = renderHook(
             () => useGetAllDocumentsGivenAddressWallet(ownerWallet),
-            { wrapper }
+            {wrapper}
         );
 
         await waitFor(() => {
@@ -53,9 +53,9 @@ describe('useGetAllDocumentsGivenAddressWallet', () => {
         const error = new Error('Fetch failed');
         (documentApi.documentsMineOwnerWalletGet as Mock).mockRejectedValue(error);
 
-        const { result } = renderHook(
+        const {result} = renderHook(
             () => useGetAllDocumentsGivenAddressWallet(ownerWallet),
-            { wrapper }
+            {wrapper}
         );
 
         await waitFor(() => {

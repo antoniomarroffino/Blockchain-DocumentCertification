@@ -6,7 +6,9 @@ import java.time.Instant;
 
 @Entity
 public class Document {
-    @Id @GeneratedValue private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String title;
     private String ownerWallet;
     private Instant uploadTimestamp;
@@ -18,7 +20,7 @@ public class Document {
     public Document() {
     }
 
-    public Document(Long id, String title, String ownerWallet, Instant uploadTimestamp,  byte[] content, String hash) {
+    public Document(Long id, String title, String ownerWallet, Instant uploadTimestamp, byte[] content, String hash) {
         this.id = id;
         this.title = title;
         this.ownerWallet = ownerWallet;
@@ -27,12 +29,12 @@ public class Document {
         this.hash = hash;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

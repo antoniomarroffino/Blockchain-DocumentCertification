@@ -6,13 +6,13 @@ import {useCertifierList} from "../../hook/blockchain/useCertifierList";
 import {useManageCertifier} from "../../hook/blockchain/useManageCertifier";
 import CertifierTable from "./CertifierTable";
 import {toast} from "react-hot-toast";
-import {ethers, } from "ethers";
+import {ethers,} from "ethers";
 import {hasCertifierRole} from "../../types/roles.ts";
 import {useMetamask} from "../../hook/metamask/useMetamask.ts";
 
 const AdminDashboardPage = () => {
     const [newAddress, setNewAddress] = useState<string>("");
-    const { signer } = useMetamask();
+    const {signer} = useMetamask();
 
     const {
         certifiers,
@@ -41,7 +41,6 @@ const AdminDashboardPage = () => {
         grant(newAddress);
         setNewAddress("");
     };
-
 
 
     return (

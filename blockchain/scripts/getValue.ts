@@ -1,7 +1,7 @@
-import { ethers } from 'hardhat';
+import {ethers} from 'hardhat';
 import {SimpleContract__factory} from "../typechain-types";
 
-const getValue = async (contractAddress:string) =>{
+const getValue = async (contractAddress: string) => {
 
     const simpleContract = SimpleContract__factory.connect(contractAddress, ethers.provider);
 

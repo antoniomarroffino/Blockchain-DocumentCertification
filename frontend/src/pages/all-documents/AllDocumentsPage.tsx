@@ -73,8 +73,9 @@ const AllDocumentsPage = () => {
                     <h2 className="card-title text-2xl text-white">All Documents</h2>
 
                     <CertifierGuard>
-                        <div className="bg-yellow-100/10 border border-yellow-400 rounded-lg p-3 flex items-center gap-2 max-w-full md:max-w-lg md:ml-auto">
-                            <InformationCircleIcon className="w-5 h-5 text-yellow-400 shrink-0" />
+                        <div
+                            className="bg-yellow-100/10 border border-yellow-400 rounded-lg p-3 flex items-center gap-2 max-w-full md:max-w-lg md:ml-auto">
+                            <InformationCircleIcon className="w-5 h-5 text-yellow-400 shrink-0"/>
                             <p className="text-sm text-yellow-300 leading-snug">
                                 You can select multiple documents using the checkboxes and certify them all at once.
                             </p>

@@ -1,6 +1,5 @@
 package model.dto;
 
-import ch.supsi.model.api.Document;
 import ch.supsi.model.dto.DocumentDTO;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.DisplayName;

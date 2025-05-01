@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class DocumentMapper implements IBaseMapper<Document, DocumentDTO> {
     @Override
     public DocumentDTO toDTO(Document entity) {
-        if(entity == null) return null;
+        if (entity == null) return null;
 
         DocumentDTO dto = new DocumentDTO();
         dto.setId(entity.getId());
@@ -22,10 +22,10 @@ public class DocumentMapper implements IBaseMapper<Document, DocumentDTO> {
 
     @Override
     public Document toEntity(DocumentDTO dto) {
-        if(dto == null) return null;
+        if (dto == null) return null;
 
         Document document = new Document();
-        if(dto.getId() != null)
+        if (dto.getId() != null)
             document.setId(dto.getId());
         document.setTitle(dto.getTitle());
         document.setOwnerWallet(dto.getOwnerWallet());

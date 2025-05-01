@@ -1,22 +1,22 @@
 'use client';
 
-import { JsonRpcSigner } from "ethers";
-import { useGetAllDocumentsGivenAddressWallet } from "../../hook/backend/useGetAllDocumentsGivenAddressWallet.ts";
+import {JsonRpcSigner} from "ethers";
+import {useGetAllDocumentsGivenAddressWallet} from "../../hook/backend/useGetAllDocumentsGivenAddressWallet.ts";
 import MyDocumentRow from "./MyDocumentRow.tsx";
 import MyDocumentCard from "./MyDocumentCard.tsx";
 import LoadingOverlay from "../../components/common/LoadingOverlay.tsx";
 import ErrorBanner from "../../components/common/ErrorBanner.tsx";
 import FilePreview from "../document-uploader/FilePreview.tsx";
-import { useGetFileContentByDocumentId } from "../../hook/backend/useGetFileContentByDocumentId.ts";
-import { useState } from "react";
-import { DocumentDTO } from "@dti-isin/backend-api-client";
+import {useGetFileContentByDocumentId} from "../../hook/backend/useGetFileContentByDocumentId.ts";
+import {useState} from "react";
+import {DocumentDTO} from "@dti-isin/backend-api-client";
 
 interface MyDocumentsTableProps {
     signer: JsonRpcSigner;
     searchTerm?: string;
 }
 
-const MyDocumentsTable = ({ signer, searchTerm = "" }: MyDocumentsTableProps) => {
+const MyDocumentsTable = ({signer, searchTerm = ""}: MyDocumentsTableProps) => {
     const {data: documents, isLoading, isError} = useGetAllDocumentsGivenAddressWallet(signer.address);
     const [selectedDocument, setSelectedDocument] = useState<DocumentDTO | null>(null);
     const {data: selectedBlob} = useGetFileContentByDocumentId(selectedDocument?.id ?? -1);

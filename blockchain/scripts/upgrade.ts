@@ -1,4 +1,4 @@
-import { ethers, upgrades } from "hardhat";
+import {ethers, upgrades} from "hardhat";
 import {DocumentCertification__factory} from "../typechain-types";
 
 require("dotenv").config();

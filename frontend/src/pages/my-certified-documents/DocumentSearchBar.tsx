@@ -5,7 +5,7 @@ interface Props {
     onChange: (value: string) => void;
 }
 
-const DocumentSearchBar = ({ searchTerm, onChange }: Props) => {
+const DocumentSearchBar = ({searchTerm, onChange}: Props) => {
     return (
         <div className="w-full">
             <input

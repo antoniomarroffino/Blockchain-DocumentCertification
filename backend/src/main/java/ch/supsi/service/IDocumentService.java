@@ -9,8 +9,12 @@ import java.util.List;
 
 public interface IDocumentService {
     DocumentDTO createDocument(UploadFormDTO documentDTO) throws IOException;
+
     byte[] getContentBytesByDocumentId(Long id);
+
     List<DocumentDTO> getAllDocuments();
+
     List<DocumentDTO> getDocumentsByOwner(String ownerWallet);
+
     MimeTypeWithContent getDocumentContentWithType(Long id);
 }

@@ -1,7 +1,7 @@
-import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { expect } from "chai";
-import { ethers, upgrades } from "hardhat";
-import { DocumentCertification__factory } from "../typechain-types";
+import {loadFixture} from "@nomicfoundation/hardhat-toolbox/network-helpers";
+import {expect} from "chai";
+import {ethers, upgrades} from "hardhat";
+import {DocumentCertification__factory} from "../typechain-types";
 
 describe("DocumentCertification", function () {
     async function deployFixture() {
@@ -10,16 +10,15 @@ describe("DocumentCertification", function () {
         const proxy = await upgrades.deployProxy(factory, []);
         await proxy.waitForDeployment();
 
-        // Grant certifier role to certifier
         const CERTIFIER_ROLE = await proxy.CERTIFIER_ROLE();
         await proxy.grantRole(CERTIFIER_ROLE, certifier.address);
 
-        return { proxy, owner, certifier, other, CERTIFIER_ROLE };
+        return {proxy, owner, certifier, other, CERTIFIER_ROLE};
     }
 
     describe("Initialization", function () {
         it("should set correct initial roles", async function () {
-            const { proxy, owner, CERTIFIER_ROLE } = await loadFixture(deployFixture);
+            const {proxy, owner, CERTIFIER_ROLE} = await loadFixture(deployFixture);
             const DEFAULT_ADMIN_ROLE = await proxy.DEFAULT_ADMIN_ROLE();
 
             expect(await proxy.hasRole(DEFAULT_ADMIN_ROLE, owner.address)).to.be.true;
@@ -27,7 +26,7 @@ describe("DocumentCertification", function () {
         });
 
         it("should start with no certifications", async function () {
-            const { proxy } = await loadFixture(deployFixture);
+            const {proxy} = await loadFixture(deployFixture);
             const randomHash = ethers.keccak256(ethers.toUtf8Bytes("random"));
             expect(await proxy.isDocumentCertified(randomHash)).to.be.false;
         });
@@ -41,7 +40,7 @@ describe("DocumentCertification", function () {
 
         describe("certifyDocuments()", function () {
             it("should allow batch certification", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 await expect(proxy.connect(certifier).certifyDocuments(sampleHashes))
                     .to.emit(proxy, "DocumentCertified")
                     .withArgs(sampleHashes[0], certifier.address)
@@ -50,7 +49,7 @@ describe("DocumentCertification", function () {
             });
 
             it("should reject certification from non-certifier", async function () {
-                const { proxy, other, CERTIFIER_ROLE } = await loadFixture(deployFixture);
+                const {proxy, other, CERTIFIER_ROLE} = await loadFixture(deployFixture);
                 await expect(
                     proxy.connect(other).certifyDocuments([sampleHashes[0]])
                 ).to.be.revertedWithCustomError(
@@ -63,7 +62,7 @@ describe("DocumentCertification", function () {
             });
 
             it("should reject empty hash", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 await expect(proxy.connect(certifier).certifyDocuments([ethers.ZeroHash]))
                     .to.be.revertedWith("Invalid hash");
             });
@@ -71,7 +70,7 @@ describe("DocumentCertification", function () {
 
         describe("Document History", function () {
             it("should correctly track certification history", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 const hash = sampleHashes[0];
 
                 await proxy.connect(certifier).certifyDocuments([hash]);
@@ -83,7 +82,7 @@ describe("DocumentCertification", function () {
             });
 
             it("should return correct last certification", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 const hash = sampleHashes[0];
 
                 await proxy.connect(certifier).certifyDocuments([hash]);
@@ -97,7 +96,7 @@ describe("DocumentCertification", function () {
 
         describe("Revocation", function () {
             it("should allow certification revocation with reason", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 const hash = sampleHashes[0];
                 const reason = "Document expired";
 
@@ -108,7 +107,7 @@ describe("DocumentCertification", function () {
             });
 
             it("should not allow revocation of uncertified document", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 const hash = sampleHashes[0];
 
                 await expect(proxy.connect(certifier).revokeCertification(hash, "reason"))
@@ -116,7 +115,7 @@ describe("DocumentCertification", function () {
             });
 
             it("should track revocations correctly", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 const hash = sampleHashes[0];
                 const reason = "Document expired";
 
@@ -132,7 +131,7 @@ describe("DocumentCertification", function () {
 
         describe("Query Functions", function () {
             it("should return certified documents by address", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 await proxy.connect(certifier).certifyDocuments(sampleHashes);
 
                 const certifiedDocs = await proxy.getCertifiedDocumentsByAddress(certifier.address);
@@ -140,7 +139,7 @@ describe("DocumentCertification", function () {
             });
 
             it("should count revocations by user correctly", async function () {
-                const { proxy, certifier } = await loadFixture(deployFixture);
+                const {proxy, certifier} = await loadFixture(deployFixture);
                 const hash = sampleHashes[0];
 
                 await proxy.connect(certifier).certifyDocuments([hash]);

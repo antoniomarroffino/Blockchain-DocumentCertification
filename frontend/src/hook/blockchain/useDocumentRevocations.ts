@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { documentCertificationContractNoTX } from "../../../config/config";
+import {useQuery} from "@tanstack/react-query";
+import {documentCertificationContractNoTX} from "../../../config/config";
 
 export interface Revocation {
     revoker: string;

@@ -2,139 +2,149 @@
 /* tslint:disable */
 /* eslint-disable */
 import type {
-  BaseContract,
-  BigNumberish,
-  BytesLike,
-  FunctionFragment,
-  Result,
-  Interface,
-  EventFragment,
-  ContractRunner,
-  ContractMethod,
-  Listener,
+    BaseContract,
+    BigNumberish,
+    BytesLike,
+    ContractMethod,
+    ContractRunner,
+    EventFragment,
+    FunctionFragment,
+    Interface,
+    Listener,
+    Result,
 } from "ethers";
 import type {
-  TypedContractEvent,
-  TypedDeferredTopicFilter,
-  TypedEventLog,
-  TypedLogDescription,
-  TypedListener,
-  TypedContractMethod,
+    TypedContractEvent,
+    TypedContractMethod,
+    TypedDeferredTopicFilter,
+    TypedEventLog,
+    TypedListener,
+    TypedLogDescription,
 } from "../common";
 
 export interface LockInterface extends Interface {
-  getFunction(
-    nameOrSignature: "owner" | "unlockTime" | "withdraw"
-  ): FunctionFragment;
+    getFunction(
+        nameOrSignature: "owner" | "unlockTime" | "withdraw"
+    ): FunctionFragment;
 
-  getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
 
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "unlockTime",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
+    encodeFunctionData(functionFragment: "owner", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "unlockTime", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+    encodeFunctionData(
+        functionFragment: "unlockTime",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
+
+    decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+
+    decodeFunctionResult(functionFragment: "unlockTime", data: BytesLike): Result;
+
+    decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 }
 
 export namespace WithdrawalEvent {
-  export type InputTuple = [amount: BigNumberish, when: BigNumberish];
-  export type OutputTuple = [amount: bigint, when: bigint];
-  export interface OutputObject {
-    amount: bigint;
-    when: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [amount: BigNumberish, when: BigNumberish];
+    export type OutputTuple = [amount: bigint, when: bigint];
+
+    export interface OutputObject {
+        amount: bigint;
+        when: bigint;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface Lock extends BaseContract {
-  connect(runner?: ContractRunner | null): Lock;
-  waitForDeployment(): Promise<this>;
+    interface: LockInterface;
+    owner: TypedContractMethod<[], [string], "view">;
+    unlockTime: TypedContractMethod<[], [bigint], "view">;
+    withdraw: TypedContractMethod<[], [void], "nonpayable">;
+    filters: {
+        "Withdrawal(uint256,uint256)": TypedContractEvent<
+            WithdrawalEvent.InputTuple,
+            WithdrawalEvent.OutputTuple,
+            WithdrawalEvent.OutputObject
+        >;
+        Withdrawal: TypedContractEvent<
+            WithdrawalEvent.InputTuple,
+            WithdrawalEvent.OutputTuple,
+            WithdrawalEvent.OutputObject
+        >;
+    };
 
-  interface: LockInterface;
+    connect(runner?: ContractRunner | null): Lock;
 
-  queryFilter<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
-  queryFilter<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
+    waitForDeployment(): Promise<this>;
 
-  on<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-  on<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
+    queryFilter<TCEvent extends TypedContractEvent>(
+        event: TCEvent,
+        fromBlockOrBlockhash?: string | number | undefined,
+        toBlock?: string | number | undefined
+    ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  once<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-  once<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
+    queryFilter<TCEvent extends TypedContractEvent>(
+        filter: TypedDeferredTopicFilter<TCEvent>,
+        fromBlockOrBlockhash?: string | number | undefined,
+        toBlock?: string | number | undefined
+    ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TCEvent extends TypedContractEvent>(
-    event: TCEvent
-  ): Promise<Array<TypedListener<TCEvent>>>;
-  listeners(eventName?: string): Promise<Array<Listener>>;
-  removeAllListeners<TCEvent extends TypedContractEvent>(
-    event?: TCEvent
-  ): Promise<this>;
+    on<TCEvent extends TypedContractEvent>(
+        event: TCEvent,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
 
-  owner: TypedContractMethod<[], [string], "view">;
+    on<TCEvent extends TypedContractEvent>(
+        filter: TypedDeferredTopicFilter<TCEvent>,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
 
-  unlockTime: TypedContractMethod<[], [bigint], "view">;
+    once<TCEvent extends TypedContractEvent>(
+        event: TCEvent,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
 
-  withdraw: TypedContractMethod<[], [void], "nonpayable">;
+    once<TCEvent extends TypedContractEvent>(
+        filter: TypedDeferredTopicFilter<TCEvent>,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
 
-  getFunction<T extends ContractMethod = ContractMethod>(
-    key: string | FunctionFragment
-  ): T;
+    listeners<TCEvent extends TypedContractEvent>(
+        event: TCEvent
+    ): Promise<Array<TypedListener<TCEvent>>>;
 
-  getFunction(
-    nameOrSignature: "owner"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "unlockTime"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "withdraw"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+    listeners(eventName?: string): Promise<Array<Listener>>;
 
-  getEvent(
-    key: "Withdrawal"
-  ): TypedContractEvent<
-    WithdrawalEvent.InputTuple,
-    WithdrawalEvent.OutputTuple,
-    WithdrawalEvent.OutputObject
-  >;
+    removeAllListeners<TCEvent extends TypedContractEvent>(
+        event?: TCEvent
+    ): Promise<this>;
 
-  filters: {
-    "Withdrawal(uint256,uint256)": TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    getFunction<T extends ContractMethod = ContractMethod>(
+        key: string | FunctionFragment
+    ): T;
+
+    getFunction(
+        nameOrSignature: "owner"
+    ): TypedContractMethod<[], [string], "view">;
+
+    getFunction(
+        nameOrSignature: "unlockTime"
+    ): TypedContractMethod<[], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "withdraw"
+    ): TypedContractMethod<[], [void], "nonpayable">;
+
+    getEvent(
+        key: "Withdrawal"
+    ): TypedContractEvent<
+        WithdrawalEvent.InputTuple,
+        WithdrawalEvent.OutputTuple,
+        WithdrawalEvent.OutputObject
     >;
-    Withdrawal: TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
-    >;
-  };
 }

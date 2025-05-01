@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { useMetamask } from "../metamask/useMetamask";
-import { DocumentCertification__factory } from "../../typechain-types";
+import {useEffect, useState} from "react";
+import {ethers} from "ethers";
+import {useMetamask} from "../metamask/useMetamask";
+import {DocumentCertification__factory} from "../../typechain-types";
 import {contractAddress} from "../../../config/config.ts";
 
 export type UserRole = "Admin" | "Certifier" | "Base User" | "Unknown";
 
 export const useUserRole = (): { role: UserRole; isLoading: boolean } => {
-    const { signer } = useMetamask();
+    const {signer} = useMetamask();
     const [role, setRole] = useState<UserRole>("Unknown");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -44,5 +44,5 @@ export const useUserRole = (): { role: UserRole; isLoading: boolean } => {
         checkRoles();
     }, [signer]);
 
-    return { role, isLoading };
+    return {role, isLoading};
 };

@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { documentCertificationContractNoTX } from "../../../config/config.ts";
+import {useQuery} from "@tanstack/react-query";
+import {documentCertificationContractNoTX} from "../../../config/config.ts";
 
 export type Certification = {
     hash: string;

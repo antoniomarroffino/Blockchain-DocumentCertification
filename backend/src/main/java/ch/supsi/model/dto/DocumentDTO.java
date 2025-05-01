@@ -1,10 +1,7 @@
 package ch.supsi.model.dto;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import io.vertx.mutiny.ext.web.FileUpload;
 
-
-import java.io.File;
 import java.time.Instant;
 
 @RegisterForReflection

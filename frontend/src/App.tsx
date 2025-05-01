@@ -23,38 +23,39 @@ function App() {
     return (
         <MetamaskProvider>
             <div className="min-h-screen flex flex-col bg-neutral-900">
-                <Header />
+                <Header/>
                 <div className="drawer lg:drawer-open">
-                    <input id="sidebar-drawer" type="checkbox" className="drawer-toggle" />
+                    <input id="sidebar-drawer" type="checkbox" className="drawer-toggle"/>
                     <div className="drawer-content flex flex-col">
-                        <main className="flex-1 p-4 md:p-8 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
+                        <main
+                            className="flex-1 p-4 md:p-8 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
                             <Routes>
-                                <Route path="/" element={<DashboardPage />} />
-                                <Route path="/uploadDocument" element={<DocumentUploaderPage />} />
-                                <Route path="/myDocuments" element={<MyDocumentsPage />} />
+                                <Route path="/" element={<DashboardPage/>}/>
+                                <Route path="/uploadDocument" element={<DocumentUploaderPage/>}/>
+                                <Route path="/myDocuments" element={<MyDocumentsPage/>}/>
                                 <Route path="/myCertifiedDocuments" element={
                                     <CertifierGuard>
-                                        <MyCertifiedDocumentsPage />
-                                    </CertifierGuard>} />
-                                <Route path="/allDocuments" element={<AllDocumentsPage />} />
-                                <Route path="/profile" element={<ProfilePage />} />
-                                <Route path="/document-details/:hash" element={<DocumentDetailsPage />} />
+                                        <MyCertifiedDocumentsPage/>
+                                    </CertifierGuard>}/>
+                                <Route path="/allDocuments" element={<AllDocumentsPage/>}/>
+                                <Route path="/profile" element={<ProfilePage/>}/>
+                                <Route path="/document-details/:hash" element={<DocumentDetailsPage/>}/>
                                 <Route path="/admin" element={
                                     <AdminRouteGuard>
-                                        <AdminDashboardPage />
+                                        <AdminDashboardPage/>
                                     </AdminRouteGuard>
-                                } />
+                                }/>
                             </Routes>
                         </main>
                     </div>
                     <div className="drawer-side z-50">
                         <label htmlFor="sidebar-drawer" className="drawer-overlay"></label>
-                        <Sidebar />
+                        <Sidebar/>
                     </div>
                 </div>
-                <Footer />
+                <Footer/>
             </div>
-            <Toaster position="bottom-right" />
+            <Toaster position="bottom-right"/>
         </MetamaskProvider>
     );
 }

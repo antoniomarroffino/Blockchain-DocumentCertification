@@ -1,7 +1,7 @@
 'use client';
 
-import { DocumentArrowUpIcon } from '@heroicons/react/24/solid';
-import { motion } from 'framer-motion';
+import {DocumentArrowUpIcon} from '@heroicons/react/24/solid';
+import {motion} from 'framer-motion';
 import React from 'react';
 
 interface FileDropzoneProps {
@@ -41,7 +41,7 @@ const FileDropzone = ({
 
     return (
         <motion.div
-            whileHover={!disabled ? { scale: 1.01 } : {}}
+            whileHover={!disabled ? {scale: 1.01} : {}}
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer ${
                 disabled
                     ? 'border-neutral-700 bg-neutral-900 opacity-50 cursor-not-allowed'
@@ -75,13 +75,13 @@ const FileDropzone = ({
                 </p>
             ) : (
                 <div className="flex flex-col items-center gap-4">
-                    <DocumentArrowUpIcon className="w-16 h-16 text-yellow-400" />
+                    <DocumentArrowUpIcon className="w-16 h-16 text-yellow-400"/>
                     <div>
                         <h3 className="font-semibold text-lg text-white">Drag and drop files</h3>
                         <p className="text-sm text-neutral-400">or click to browse</p>
                     </div>
                     <motion.button
-                        whileHover={{ scale: 1.05 }}
+                        whileHover={{scale: 1.05}}
                         className="btn bg-yellow-400 text-neutral-900 font-bold rounded-full px-6 py-2 hover:shadow-yellow-400/30 transition"
                     >
                         {currentFile ? 'Change File' : 'Select File'}

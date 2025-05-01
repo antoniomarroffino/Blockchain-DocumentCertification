@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { ethers } from "ethers";
+import {useState} from "react";
+import {ethers} from "ethers";
 import toast from "react-hot-toast";
-import { DocumentCertification__factory } from "../../typechain-types";
-import { useMetamask } from "../metamask/useMetamask";
-import { ROLES } from "../../types/roles.ts";
+import {DocumentCertification__factory} from "../../typechain-types";
+import {useMetamask} from "../metamask/useMetamask";
+import {ROLES} from "../../types/roles.ts";
 import {contractAddress} from "../../../config/config.ts";
 
 export const useManageCertifier = (onChange: () => void) => {
-    const { signer } = useMetamask();
+    const {signer} = useMetamask();
     const [loading, setLoading] = useState(false);
 
     const grant = async (address: string) => {
@@ -49,5 +49,5 @@ export const useManageCertifier = (onChange: () => void) => {
         }
     };
 
-    return { grant, revoke, loading };
+    return {grant, revoke, loading};
 };

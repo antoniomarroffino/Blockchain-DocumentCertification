@@ -1,58 +1,59 @@
-import { renderHook } from "@testing-library/react";
-import { useMetamask } from "../useMetamask";
-import { vi, describe, it, expect } from "vitest";
-import type { Mock } from "vitest";
-import { useContext } from "react";
-import { MetamaskContext } from "../../../context/MetamaskContext";
+import {renderHook} from "@testing-library/react";
+import {useMetamask} from "../useMetamask";
+import type {Mock} from "vitest";
+import {describe, expect, it, vi} from "vitest";
+import {useContext} from "react";
+import {MetamaskContext} from "../../../context/MetamaskContext";
 
 vi.mock("react", () => ({
-  ...vi.importActual("react"),
-  useContext: vi.fn(),
-  createContext: vi.fn(),
+    ...vi.importActual("react"),
+    useContext: vi.fn(),
+    createContext: vi.fn(),
 }));
 
 describe("useMetamask", () => {
-  const mockContextValue = {
-    connectWithMetamask: vi.fn(),
-    signer: undefined,
-    isLoading: false,
-    isConnected: true,
-    balance: "1.0",
-    network: "localhost",
-    chainId: 1337,
-  };
+    const mockContextValue = {
+        connectWithMetamask: vi.fn(),
+        signer: undefined,
+        isLoading: false,
+        isConnected: true,
+        balance: "1.0",
+        network: "localhost",
+        chainId: 1337,
+    };
 
-  it("should throw error when context is undefined", () => {
-    (useContext as Mock).mockReturnValue(undefined);
+    it("should throw error when context is undefined", () => {
+        (useContext as Mock).mockReturnValue(undefined);
 
-    const consoleError = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+        const consoleError = vi
+            .spyOn(console, "error")
+            .mockImplementation(() => {
+            });
 
-    expect(() => renderHook(() => useMetamask())).toThrowError(
-      "useMetamask must be used within a MetamaskProvider"
-    );
+        expect(() => renderHook(() => useMetamask())).toThrowError(
+            "useMetamask must be used within a MetamaskProvider"
+        );
 
-    consoleError.mockRestore();
-  });
+        consoleError.mockRestore();
+    });
 
-  it("should return context when available", () => {
-    (useContext as Mock).mockReturnValue(mockContextValue);
+    it("should return context when available", () => {
+        (useContext as Mock).mockReturnValue(mockContextValue);
 
-    const { result } = renderHook(() => useMetamask());
+        const {result} = renderHook(() => useMetamask());
 
-    expect(result.current).toMatchObject(mockContextValue);
-    expect(useContext).toHaveBeenCalledWith(MetamaskContext);
-  });
+        expect(result.current).toMatchObject(mockContextValue);
+        expect(useContext).toHaveBeenCalledWith(MetamaskContext);
+    });
 
-  it("should maintain referential equality between renders", () => {
-    (useContext as Mock).mockReturnValue(mockContextValue);
+    it("should maintain referential equality between renders", () => {
+        (useContext as Mock).mockReturnValue(mockContextValue);
 
-    const { result, rerender } = renderHook(() => useMetamask());
-    const firstResult = result.current;
+        const {result, rerender} = renderHook(() => useMetamask());
+        const firstResult = result.current;
 
-    rerender();
+        rerender();
 
-    expect(result.current).toBe(firstResult);
-  });
+        expect(result.current).toBe(firstResult);
+    });
 });

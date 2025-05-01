@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useCallback, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { useUploadDocument } from "../../hook/backend/useUploadDocument";
-import { useMetamask } from "../../hook/metamask/useMetamask";
-import { toast } from 'react-hot-toast';
+import React, {useCallback, useRef, useState} from 'react';
+import {motion} from 'framer-motion';
+import {useUploadDocument} from "../../hook/backend/useUploadDocument";
+import {useMetamask} from "../../hook/metamask/useMetamask";
+import {toast} from 'react-hot-toast';
 
 import WalletNotConnected from "../../components/common/WalletNotConnected";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
@@ -15,10 +15,10 @@ import ActionButtons from "./ActionButtons";
 import SuccessBanner from "../../components/common/SuccessBanner";
 
 const DocumentUploaderPage = () => {
-    const { isConnected, signer } = useMetamask();
+    const {isConnected, signer} = useMetamask();
     const [document, setDocument] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
-    const { mutateAsync: uploadDocument, isPending: isUploadingDocument } = useUploadDocument();
+    const {mutateAsync: uploadDocument, isPending: isUploadingDocument} = useUploadDocument();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [showPreview, setShowPreview] = useState(false);
     const [showSuccessBanner, setShowSuccessBanner] = useState(false);
@@ -82,18 +82,18 @@ const DocumentUploaderPage = () => {
     }, [handleFileSelection]);
 
     if (!isConnected) {
-        return <WalletNotConnected />;
+        return <WalletNotConnected/>;
     }
 
     if (isUploadingDocument) {
-        return <LoadingOverlay message="Uploading document..." />;
+        return <LoadingOverlay message="Uploading document..."/>;
     }
 
     return (
         <>
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
                 className="card bg-neutral-800 border border-neutral-700 shadow-xl"
             >
                 <div className="card-body p-6">

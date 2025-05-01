@@ -1,28 +1,28 @@
 'use client';
 
-import { format } from "date-fns";
-import { useDocumentHistory } from "../../hook/blockchain/useDocumentHistory";
-import { useDocumentRevocations } from "../../hook/blockchain/useDocumentRevocations";
+import {format} from "date-fns";
+import {useDocumentHistory} from "../../hook/blockchain/useDocumentHistory";
+import {useDocumentRevocations} from "../../hook/blockchain/useDocumentRevocations";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import ErrorBanner from "../../components/common/ErrorBanner";
-import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import {motion} from "framer-motion";
+import {useParams} from "react-router-dom";
 
 const DocumentDetailsPage = () => {
     const params = useParams();
     const docHash = params?.hash as string;
 
-    const { data: history, isLoading, isError, error } = useDocumentHistory(docHash);
-    const { data: revocations = [] } = useDocumentRevocations(docHash);
+    const {data: history, isLoading, isError, error} = useDocumentHistory(docHash);
+    const {data: revocations = []} = useDocumentRevocations(docHash);
 
-    if (isLoading) return <LoadingOverlay message="Loading document history..." />;
-    if (isError) return <ErrorBanner message={`Error loading history: ${error?.message}`} />;
+    if (isLoading) return <LoadingOverlay message="Loading document history..."/>;
+    if (isError) return <ErrorBanner message={`Error loading history: ${error?.message}`}/>;
 
     if (!history || history.length === 0) {
         return (
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
                 className="card bg-neutral-800 border border-neutral-700 shadow-xl"
             >
                 <div className="card-body p-6">
@@ -36,8 +36,8 @@ const DocumentDetailsPage = () => {
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
             className="card bg-neutral-800 border border-neutral-700 shadow-xl"
         >
             <div className="card-body p-6">

@@ -1,6 +1,5 @@
-import { ethers } from "ethers";
-import { JsonRpcSigner } from "ethers";
-import { DocumentCertification__factory } from "../typechain-types";
+import {ethers, JsonRpcSigner} from "ethers";
+import {DocumentCertification__factory} from "../typechain-types";
 import {contractAddress} from "../../config/config.ts";
 
 export const ROLES = {

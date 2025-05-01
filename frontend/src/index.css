@@ -1,46 +1,47 @@
 @import "tailwindcss";
+
 @plugin "daisyui";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 
-  color-scheme: light dark;
-  color: #333;
-  background-color: #f4f4f4;
+    color-scheme: light dark;
+    color: #333;
+    background-color: #f4f4f4;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body, html, #root {
-  @apply w-full h-full m-0 p-0;
+    @apply w-full h-full m-0 p-0;
 }
 
 @layer base {
-  body {
-    @apply text-base;
-  }
+    body {
+        @apply text-base;
+    }
 
-  h1 {
-    @apply text-2xl font-bold;
-  }
+    h1 {
+        @apply text-2xl font-bold;
+    }
 
-  a {
-    @apply text-blue-600 hover:text-blue-800 transition-colors;
-  }
+    a {
+        @apply text-blue-600 hover:text-blue-800 transition-colors;
+    }
 
-  button {
-    @apply rounded-md transition-all duration-300 ease-in-out;
-  }
+    button {
+        @apply rounded-md transition-all duration-300 ease-in-out;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
-  }
+    :root {
+        color: rgba(255, 255, 255, 0.87);
+        background-color: #242424;
+    }
 }

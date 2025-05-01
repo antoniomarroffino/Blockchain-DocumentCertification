@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { DocumentDTO } from "@dti-isin/backend-api-client";
-import { documentCertificationContractNoTX } from "../../../config/config.ts";
+import {useQuery} from "@tanstack/react-query";
+import {DocumentDTO} from "@dti-isin/backend-api-client";
+import {documentCertificationContractNoTX} from "../../../config/config.ts";
 
 export const useDocumentCertifiersMap = (documents?: DocumentDTO[]) => {
     return useQuery<Record<number, string>, Error>({

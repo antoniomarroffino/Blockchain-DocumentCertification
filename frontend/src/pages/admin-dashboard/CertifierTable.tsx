@@ -9,7 +9,7 @@ interface Props {
     onRevoke: (address: string) => void;
 }
 
-const CertifierTable: React.FC<Props> = ({ certifiers, currentAddress, loading, onRevoke }) => {
+const CertifierTable: React.FC<Props> = ({certifiers, currentAddress, loading, onRevoke}) => {
     return (
         <div className="overflow-x-auto">
             <table className="table w-full text-white">

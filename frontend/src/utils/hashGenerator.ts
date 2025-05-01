@@ -6,7 +6,7 @@ export interface CalculateDocumentHashPayload {
     documentContent: Blob;
 }
 
-export const calculateDocumentHash = async ({ title, ownerWallet, documentContent }: CalculateDocumentHashPayload) => {
+export const calculateDocumentHash = async ({title, ownerWallet, documentContent}: CalculateDocumentHashPayload) => {
     const buffer = await documentContent.arrayBuffer();
     const uint8Array = new Uint8Array(buffer);
 

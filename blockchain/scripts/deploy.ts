@@ -2,7 +2,7 @@ import {ethers, upgrades} from "hardhat";
 import {DocumentCertification__factory} from "../typechain-types";
 
 
-const deploy = async () =>{
+const deploy = async () => {
     const [deployer] = await ethers.getSigners();
     console.log("Deploying contracts with the account:", deployer.address);
 

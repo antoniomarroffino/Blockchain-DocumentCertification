@@ -100,7 +100,7 @@ export const MetamaskProvider: React.FC<{ children: React.ReactNode }> = ({child
     const connectWallet = useCallback(async () => {
         if (window.ethereum?.isMetaMask) {
             try {
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                await window.ethereum.request({method: 'eth_requestAccounts'});
             } catch (error) {
                 console.error("Accesso negato dall'utente:", error);
             }

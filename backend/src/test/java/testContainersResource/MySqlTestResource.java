@@ -1,7 +1,6 @@
 package testContainersResource;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.testcontainers.containers.MySQLContainer;
 
 import java.util.Map;
