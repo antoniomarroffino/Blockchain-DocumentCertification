@@ -1,8 +1,29 @@
-# 📜 KrostChain - Document Certification Platform on Blockchain
+# 🔗 KrostChain – Document Certification Platform on Blockchain
 
-A web platform for certifying and revoking documents through smart contracts on Ethereum. It includes a dashboard, notification panel, wallet integration, role management, and audit trail.
+A web platform for certifying and revoking documents through smart contracts on Ethereum.  
+It includes a dashboard, notification panel, wallet integration, role management, and audit trail.
 
 ---
+
+---
+
+## 🔍 Features
+
+KrostChain allows users to securely manage the certification and revocation of documents on the Ethereum blockchain.
+
+### 👤 As a registered user, you can:
+- Upload and certify documents
+- View your certified documents and their history
+- Receive notifications for updates and expirations
+- Revoke documents with a reason
+- Download certification proofs
+
+### 🛡️ As an admin or verifier, you can:
+- View all documents submitted by users
+- Monitor the activity of verifiers and manage permissions
+- Deploy and upgrade the smart contract if needed
+
+All documents are hashed and timestamped, ensuring authenticity, traceability, and immutability through blockchain technology.
 
 ## 📦 Tech Stack
 
@@ -18,8 +39,8 @@ A web platform for certifying and revoking documents through smart contracts on 
 ### 1. Clone the repository
 
 ```bash
-git clone https://gitlab-edu.supsi.ch/dti-isin/giuliano.gremlich/opzione-blockchain-engineering/24-25/progetti-studenti/fanto-marrofino.git
-cd fanto-marrofino
+git clone https://github.com/antoniomarroffino/Blockchain-DocumentCertification.git
+cd fanto-marroffino
 ```
 
 ### 2. Install dependencies
@@ -41,7 +62,7 @@ cd backend
 #### Smart Contract
 
 ```bash
-cd contracts
+cd blockchain
 npm install
 ```
 
@@ -51,10 +72,8 @@ npm install
 
 ### 0. Start the MySQL Database (via Docker)
 
-Make sure you have Docker installed, then run:
-
 ```bash
-docker run --name krostchain-mysql \
+docker run --name blockchainDocuments-mysql \
   -e MYSQL_ROOT_PASSWORD=1234 \
   -e MYSQL_DATABASE=blockchainDocuments \
   -p 3306:3306 \
@@ -87,10 +106,10 @@ npx hardhat run scripts/deploy.ts --network localhost
 ```bash
 cd backend
 mvn clean package 
-cd .\target\backend-api-client 
+cd ./target/backend-api-client 
 npm i 
 npm link 
-cd ..\..
+cd ../..
 ./mvnw quarkus:dev
 ```
 
@@ -112,53 +131,28 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 📍 Deploy on Localhost (for development)
 
-### 1. Start a local Hardhat node
-
-```bash
-cd blockchain
-npx hardhat node
-```
-
-### 2. Deploy the contract to localhost
-
-```bash
-npx hardhat run scripts/deploy.ts --network localhost
-```
-
-### 3. Copy the deployed contract address
-It will appear in the terminal output (e.g. `0x...`)
-
-### 4. Update the frontend config
-
-- Open: `frontend/src/config/config.ts`
-- Replace the `contractAddress` with the one from step 3
+1. Start a local Hardhat node
+2. Deploy the smart contract to localhost
+3. Copy the deployed address and update `frontend/src/config/config.ts`
 
 ---
 
 ### 🌐 Deploy on Sepolia Testnet
 
-### 1. Edit `.env` inside `/contracts`
-
-Make sure it contains:
-
+1. Edit `.env` inside `/contracts`:
 ```env
 PRIVATE_KEY=<your Sepolia private key>
-INFURA_API_KEY=a10fdf5acfcb4352828dc0b7a6a27b64
-ETHERSCAN_API_KEY=13S52KAKXZC6YQW3Y8X9E5ESP3WSSFZ81T
+INFURA_API_KEY=...
+ETHERSCAN_API_KEY=...
 ```
 
-### 2. Deploy the contract to Sepolia
-
+2. Deploy the contract:
 ```bash
 npx hardhat run scripts/deploy.ts --network sepolia
 ```
 
-### 3. Update the frontend config
-
-- Open: `frontend/src/config/config.ts`
-- Replace the `contractAddress` with the new Sepolia address
-
-### 4. (Optional) Verify the contract on Etherscan
+3. Update the frontend config
+4. (Optional) Verify on Etherscan
 
 ```bash
 npx hardhat verify --network sepolia <contractAddress>
@@ -168,21 +162,18 @@ npx hardhat verify --network sepolia <contractAddress>
 
 ### ✨ Upgrade the Smart Contract (if needed)
 
-If you made changes to the contract and need to **upgrade the deployed proxy**, run:
-
 ```bash
 npx hardhat run scripts/upgrade.ts --network sepolia
 ```
 
-> 🔐 Make sure the address in `.env` (under `PROXY_ADDRESS`) is correct before running.
+> 🔐 Ensure `PROXY_ADDRESS` in `.env` is correct
 
 ---
 
-### 🌐 Notes
+### 📝 Notes
 
-- The **frontend** uses `VITE_INFURA_API_KEY` (set in `frontend/.env`)
-- The `PROXY_ADDRESS` is saved in `.env` for reference but not used automatically
-- You can switch between local and Sepolia by editing `PRIVATE_KEY` and the deployment network
+- Frontend uses `VITE_INFURA_API_KEY` from `frontend/.env`
+- You can switch networks by editing `.env` variables
 
 ---
 
@@ -214,28 +205,32 @@ npx hardhat test
 ## 📸 Screenshots
 
 ### 📄 All documents page
-
 ![All documents page](./screenshots/all-documents.png)
 
 ### 🧾 Document details (certifications/revocations)
-
 ![Document details](./screenshots/document-details.png)
 
 ### 👤 Profile page
-
 ![Profile page](./screenshots/my-profile.png)
 
 ### 🛡️ Admin Dashboard
-
 ![Admin view](./screenshots/admin-dashboard.png)
 
 ### 📩 Upload document
-
 ![Upload document](./screenshots/upload-document.png)
 
 ---
 
-## 📚 Authors
+## 👥 Authors
 
-- Antonio Marroffino
-- Luca Fantò
+**Antonio Marroffino**
+- [GitHub](https://github.com/antoniomarroffino)
+- [LinkedIn](https://www.linkedin.com/in/antoniomarroffino)
+
+**Luca Fantò**
+
+---
+
+## 📜 License
+
+This project was developed for educational purposes as part of the Bachelor's degree in Computer Engineering at SUPSI.
